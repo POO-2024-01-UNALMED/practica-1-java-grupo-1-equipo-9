@@ -1,7 +1,11 @@
 package gestorAplicacion;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class Producto {
 	private int id;
+	private static int actual_id = 0;
 	private String nombre;
 	private TipoProducto tipo;
 	private float precio;
@@ -9,9 +13,13 @@ public class Producto {
 	private float precio_compra;
 	private float precio_base_compra;
 	private float impuesto;
-	private static int generar_id = 0;
+	
 
 	public Producto(String nombre, TipoProducto tipo, float precio, int cantidad, float precio_compra, float precio_base_compra, float impuesto) {
+		
+		Producto.actual_id += 1; 
+		this.id = Producto.actual_id;
+		
 		this.nombre = nombre;
 		this.tipo = tipo;
 		this.precio = precio;
@@ -19,10 +27,70 @@ public class Producto {
 		this.precio_compra = precio_compra;
 		this.precio_base_compra = precio_base_compra;
 		this.impuesto = impuesto;
-		this.id = Producto.generar_id;
-		Producto.generar_id++;
+		
+		
+	}
+	
+	public static ArrayList<Producto> listarProductosPorTipo(TipoProducto tipoProducto, ArrayList<Bodega> bodegas) {
+		
+		
+		ArrayList<Producto> resultado = new ArrayList<>();
+		
+		
+		for (Bodega bodega: bodegas) {
+			
+			for (Producto producto : bodega.getProductos()) {
+				
+				//Obtener los productos del tipo solicitado
+				if (producto.tipo.equals(tipoProducto) && producto.getCantidad() > 0) {
+					
+					//Falta agregar mensaje cuando no hay ningún producto en la bodega
+					resultado.add(producto);
+					
+				}
+				
+			}
+		}
+		
+		
+		
+		return resultado;
+		
+		
+		
+	}
+	
+	public static ArrayList<Producto> agregarProductoCarrito(ArrayList<Producto> productosTipo, ArrayList<Producto> productosSolicitados){
+		
+		for (Producto producto_solicitado : productosSolicitados) {
+			
+			for (Producto producto_tipo : productosTipo) {
+				
+				//Agregar al carrito de compras si hay suficientes productos en inventario
+				boolean hay_suficientes_productos = (producto_solicitado.getNombre().equals(producto_tipo.getNombre())) && (producto_solicitado.getCantidad() < producto_tipo.getCantidad());
+				
+				//Falta colocar mensaje al usuario de que no hay más productos disponibles en bodega
+				if (hay_suficientes_productos) {
+					
+					int cantidad_actual = producto_tipo.getCantidad();
+					int cantidad_solicitada = producto_solicitado.getCantidad();
+					
+					int cantidad_actualizada = cantidad_actual - cantidad_solicitada;
+					
+					producto_tipo.setCantidad(cantidad_actualizada);
+					
+				}
+				
+			}
+			
+		}
+		
+		
+		return productosSolicitados;
+		
 	}
 
+	
 	public int getId() {
 		return id;
 	}
@@ -62,6 +130,8 @@ public class Producto {
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
 	}
+	
+	
 
 	public float getPrecio_compra() {
 		return precio_compra;
@@ -87,13 +157,7 @@ public class Producto {
 		this.impuesto = impuesto;
 	}
 
-	public static int getGenerar_id() {
-		return generar_id;
-	}
-
-	public static void setGenerar_id(int generar_id) {
-		Producto.generar_id = generar_id;
-	}
+	
 	
 	
 }

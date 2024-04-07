@@ -1,9 +1,15 @@
 package gestorAplicacion;
 import java.util.ArrayList;
+
+import Finanzas.Ingreso;
+
 import java.time.*;
+
+import recompensas.*;
 
 public class Orden {
 	private int id;
+	private static int actual_id = 0;
 	private TipoOrden tipo;
 	private Empleado empleado;
 	private Cliente cliente;
@@ -13,18 +19,72 @@ public class Orden {
 	private String hora;
 	private float descuentos = 0;
 	private Supermercado supermercado;
-	private static int generar_id = 0;
+	
 	
 	public Orden(TipoOrden tipo, Supermercado supermercado, Empleado vendedor, Cliente comprador) {
+		
+		Orden.actual_id += 1;
+		this.id = Orden.actual_id;
+		
 		this.tipo = tipo;
 		this.supermercado = supermercado;
 		this.empleado = vendedor;
 		this.cliente = comprador;
 		this.fecha = LocalDate.now().toString();
 		this.hora = LocalTime.now().toString();
-		this.id = Orden.generar_id;
-		Orden.generar_id++;
+		
+		
+		
 	}
+	
+	
+	public float calcularCobroTotal(ArrayList<Producto> productos_listados) {
+		
+		float cobro_total = 0f;
+		
+		for (Producto producto : productos_listados) {
+			
+			cobro_total += producto.getPrecio();
+			
+		}
+		
+		return cobro_total;
+	
+	}
+	
+	
+	
+	
+	
+	public void generarOrden(TipoOrden tipoOrden, Supermercado supermercado , Empleado empleado, Cliente cliente, ArrayList<Producto> productos_listados, ArrayList<Promocion> promociones, ArrayList<Descuento> descuentos, ArrayList<BonoEmpleado> bonosEmpleados) {
+		
+		float cobro_total = calcularCobroTotal(productos_listados);
+		
+		//Bonificar empleado
+		BonoEmpleado.bonificarEmpleado(empleado, cobro_total , bonosEmpleados);
+		
+		//Bonificar cliente
+		Promocion.bonificarCliente(cliente, productos_listados, promociones);
+		
+		//Calcular el porcentaje de descuento del cliente
+		int porcentaje_descuento = Descuento.calcularDescuento(cliente, descuentos);
+		
+		if (porcentaje_descuento > 0) {
+			
+			cobro_total -= (cobro_total * porcentaje_descuento) / 100;
+			
+		}
+		
+		
+		//Registrar nueva orden
+		Orden nueva_orden = new Orden(tipoOrden, supermercado, empleado, cliente);
+		
+		//Registrar ingreso
+		Ingreso.registrarIngreso(cobro_total, nueva_orden, productos_listados); 
+		
+	}
+	
+	
 	
 	public TipoOrden getTipo() {
 		return tipo;
@@ -87,10 +147,5 @@ public class Orden {
 	public void setSupermercado(Supermercado supermercado) {
 		this.supermercado = supermercado;
 	}
-	public static int getGenerar_id() {
-		return Orden.generar_id;
-	}
-	public static void setGenerar_id(int id) {
-		Orden.generar_id = id;
-	}
+	
 }

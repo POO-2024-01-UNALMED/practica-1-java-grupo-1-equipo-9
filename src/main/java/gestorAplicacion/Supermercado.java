@@ -1,17 +1,35 @@
 package gestorAplicacion;
 import java.util.ArrayList;
 
+import recompensas.Descuento;
+import recompensas.Promocion;
+
 public class Supermercado {
 	private String nombre;
 	private ArrayList<Empleado> empleados = new ArrayList<>();
 	private ArrayList<Bodega> bodegas = new ArrayList<>();
 	private ArrayList<Orden> ordenes = new ArrayList<>();
+	private ArrayList<Promocion> promociones = new ArrayList<>();
+	private ArrayList<Descuento> descuentos = new ArrayList<>();
 	
+	public ArrayList<Promocion> getPromociones() {
+		return promociones;
+	}
+
+
 	public Supermercado(String nombre, ArrayList<Empleado> empleados, ArrayList<Bodega> bodegas) {
 		this.nombre = nombre;
 		this.empleados = empleados;
 		this.bodegas = bodegas;
 	}
+	
+	
+	public void vender() {
+		
+		
+		
+	}
+	
 
 	public String getNombre() {
 		return nombre;
