@@ -1,10 +1,7 @@
 package gestorAplicacion;
 import java.util.ArrayList;
-
-import Finanzas.Ingreso;
-
+import finanzas.Ingreso;
 import java.time.*;
-
 import recompensas.*;
 
 public class Orden {

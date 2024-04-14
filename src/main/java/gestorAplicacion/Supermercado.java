@@ -11,10 +11,6 @@ public class Supermercado {
 	private ArrayList<Orden> ordenes = new ArrayList<>();
 	private ArrayList<Promocion> promociones = new ArrayList<>();
 	private ArrayList<Descuento> descuentos = new ArrayList<>();
-	
-	public ArrayList<Promocion> getPromociones() {
-		return promociones;
-	}
 
 
 	public Supermercado(String nombre, ArrayList<Empleado> empleados, ArrayList<Bodega> bodegas) {
@@ -98,6 +94,31 @@ public class Supermercado {
 			if (empleados.get(i) == empleado) {
 				empleados.remove(i);
 				break;
+			}
+		}
+	}
+	
+	public ArrayList<Promocion> getPromociones() {
+		return promociones;
+	}
+	
+	public void verificarVencimiento() {
+		for (int i = 0;i<bodegas.size();i++) {
+			for (int j = 0;j<bodegas.get(i).getProductos().size();j++) {
+				for (int k = 0;k<bodegas.get(i).getProductos().get(j).getUnidades().size();k++) {
+					if (bodegas.get(i).getProductos().get(j).getUnidades().get(k).diasParaVencimiento() < 15) {
+						Unidad producto = bodegas.get(i).getProductos().get(j).getUnidades().get(k);
+						if (bodegas.get(i).getProductos().get(j).getUnidades().get(k).diasParaVencimiento() >= 0) {
+							System.out.println("Al producto "+producto.getTipo().getNombre()+" con código "+producto.getCodigo()+
+								" le faltan "+producto.diasParaVencimiento()+" dias para vencerse.");
+						}
+						else {
+							System.out.println("El producto "+producto.getTipo().getNombre()+" con código "+producto.getCodigo()+
+									" se venció hace "+producto.diasParaVencimiento()*(-1)+" dias.");
+						}
+						//Verificar si el producto se encuentra en descuento, sino, agregarlo
+					}	
+				}
 			}
 		}
 	}

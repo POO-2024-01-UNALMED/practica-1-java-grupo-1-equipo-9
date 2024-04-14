@@ -13,13 +13,12 @@ public class Producto {
 	private float precio_compra;
 	private float precio_base_compra;
 	private float impuesto;
-	
+	private ArrayList<Unidad> unidades = new ArrayList<>(); //Lista de unidades del producto con codigo y fecha de vencimiento 
 
 	public Producto(String nombre, TipoProducto tipo, float precio, int cantidad, float precio_compra, float precio_base_compra, float impuesto) {
 		
 		Producto.actual_id += 1; 
 		this.id = Producto.actual_id;
-		
 		this.nombre = nombre;
 		this.tipo = tipo;
 		this.precio = precio;
@@ -27,7 +26,6 @@ public class Producto {
 		this.precio_compra = precio_compra;
 		this.precio_base_compra = precio_base_compra;
 		this.impuesto = impuesto;
-		
 		
 	}
 	
@@ -130,8 +128,6 @@ public class Producto {
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
 	}
-	
-	
 
 	public float getPrecio_compra() {
 		return precio_compra;
@@ -157,7 +153,15 @@ public class Producto {
 		this.impuesto = impuesto;
 	}
 
+	public ArrayList<Unidad> getUnidades() {
+		return unidades;
+	}
+
+	public void setUnidades(ArrayList<Unidad> unidades) {
+		this.unidades = unidades;
+	}
 	
-	
-	
+	public void agregarUnidad(Unidad unidad) {
+		unidades.add(unidad);
+	}
 }

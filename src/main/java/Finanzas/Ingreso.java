@@ -1,4 +1,4 @@
-package Finanzas;
+package finanzas;
 
 import java.util.ArrayList;
 
