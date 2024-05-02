@@ -12,10 +12,9 @@ public class Bodega {
 	//en una orden
 	private ArrayList<Producto> productos = new ArrayList<>();
 	
-	public Bodega(String nombre, String barrio, ArrayList<Producto> productos) {
+	public Bodega(String nombre, String barrio) {
 		this.nombre = nombre;
 		this.barrio = barrio;
-		this.productos = productos;
 	}
 
 	public String getNombre() {

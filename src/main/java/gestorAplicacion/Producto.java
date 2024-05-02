@@ -9,38 +9,36 @@ public class Producto {
 	private String nombre;
 	private TipoProducto tipo;
 	private float precio;
-	private int cantidad;
 	private float precio_compra;
 	private float precio_base_compra;
 	private float impuesto;
 	private ArrayList<Unidad> unidades = new ArrayList<>(); //Lista de unidades del producto con codigo y fecha de vencimiento 
 
-	public Producto(String nombre, TipoProducto tipo, float precio, int cantidad, float precio_compra, float precio_base_compra, float impuesto) {
+	public Producto(String nombre, TipoProducto tipo, float precio, float precio_compra, float precio_base_compra, float impuesto) {
 		
 		Producto.actual_id += 1; 
 		this.id = Producto.actual_id;
 		this.nombre = nombre;
 		this.tipo = tipo;
 		this.precio = precio;
-		this.cantidad = cantidad;
 		this.precio_compra = precio_compra;
 		this.precio_base_compra = precio_base_compra;
 		this.impuesto = impuesto;
 		
 	}
 	
-	public static ArrayList<Producto> listarProductosPorTipo(TipoProducto tipoProducto, ArrayList<Bodega> bodegas) {
+	public static ArrayList<Producto> listarProductosPorTipo(TipoProducto tipoProducto, Supermercado supermercado) {
 		
 		
 		ArrayList<Producto> resultado = new ArrayList<>();
 		
 		
-		for (Bodega bodega: bodegas) {
+		for (Bodega bodega: supermercado.getBodegas()) {
 			
 			for (Producto producto : bodega.getProductos()) {
 				
 				//Obtener los productos del tipo solicitado
-				if (producto.tipo.equals(tipoProducto) && producto.getCantidad() > 0) {
+				if (producto.tipo.equals(tipoProducto) && producto.cantidadUnidades() > 0) {
 					
 					//Falta agregar mensaje cuando no hay ningún producto en la bodega
 					resultado.add(producto);
@@ -65,13 +63,13 @@ public class Producto {
 			for (Producto producto_tipo : productosTipo) {
 				
 				//Agregar al carrito de compras si hay suficientes productos en inventario
-				boolean hay_suficientes_productos = (producto_solicitado.getNombre().equals(producto_tipo.getNombre())) && (producto_solicitado.getCantidad() < producto_tipo.getCantidad());
+				boolean hay_suficientes_productos = (producto_solicitado.getNombre().equals(producto_tipo.getNombre())) && (producto_solicitado.cantidadUnidades() < producto_tipo.cantidadUnidades());
 				
 				//Falta colocar mensaje al usuario de que no hay más productos disponibles en bodega
 				if (hay_suficientes_productos) {
 					
-					int cantidad_actual = producto_tipo.getCantidad();
-					int cantidad_solicitada = producto_solicitado.getCantidad();
+					int cantidad_actual = producto_tipo.cantidadUnidades();
+					int cantidad_solicitada = producto_solicitado.cantidadUnidades();
 					
 					int cantidad_actualizada = cantidad_actual - cantidad_solicitada;
 					
@@ -121,12 +119,8 @@ public class Producto {
 		this.precio = precio;
 	}
 
-	public int getCantidad() {
-		return cantidad;
-	}
-
-	public void setCantidad(int cantidad) {
-		this.cantidad = cantidad;
+	public int cantidadUnidades() {
+		return unidades.size();
 	}
 
 	public float getPrecio_compra() {

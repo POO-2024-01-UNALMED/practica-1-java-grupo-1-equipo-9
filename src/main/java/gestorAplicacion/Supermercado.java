@@ -13,10 +13,8 @@ public class Supermercado {
 	private ArrayList<Descuento> descuentos = new ArrayList<>();
 
 
-	public Supermercado(String nombre, ArrayList<Empleado> empleados, ArrayList<Bodega> bodegas) {
+	public Supermercado(String nombre) {
 		this.nombre = nombre;
-		this.empleados = empleados;
-		this.bodegas = bodegas;
 	}
 	
 	
