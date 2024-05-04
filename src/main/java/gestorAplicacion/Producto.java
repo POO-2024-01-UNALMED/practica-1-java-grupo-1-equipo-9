@@ -27,36 +27,21 @@ public class Producto {
 		
 	}
 	
-	public static ArrayList<Producto> listarProductosPorTipo(TipoProducto tipoProducto, Supermercado supermercado) {
-		
-		
-		ArrayList<Producto> resultado = new ArrayList<>();
-		
-		
+	public static ArrayList<Unidad> listarProductosPorTipo(TipoProducto tipoProducto, Supermercado supermercado) {
+		ArrayList<Unidad> resultado = new ArrayList<>();
 		for (Bodega bodega: supermercado.getBodegas()) {
-			
-			for (Producto producto : bodega.getProductos()) {
-				
+			for (Unidad producto : bodega.getProductos()) {
 				//Obtener los productos del tipo solicitado
-				if (producto.tipo.equals(tipoProducto) && producto.cantidadUnidades() > 0) {
-					
-					//Falta agregar mensaje cuando no hay ningún producto en la bodega
+				if (producto.getTipo().tipo.equals(tipoProducto)) {
 					resultado.add(producto);
-					
 				}
-				
 			}
 		}
-		
-		
-		
-		return resultado;
-		
-		
+		return resultado;	
 		
 	}
 	
-	public static ArrayList<Producto> agregarProductoCarrito(ArrayList<Producto> productosTipo, ArrayList<Producto> productosSolicitados){
+	/*public static ArrayList<Producto> agregarProductoCarrito(ArrayList<Producto> productosTipo, ArrayList<Producto> productosSolicitados){
 		
 		for (Producto producto_solicitado : productosSolicitados) {
 			
@@ -73,7 +58,7 @@ public class Producto {
 					
 					int cantidad_actualizada = cantidad_actual - cantidad_solicitada;
 					
-					producto_tipo.setCantidad(cantidad_actualizada);
+					//producto_tipo.setCantidad(cantidad_actualizada); (Actualizar cantidades)
 					
 				}
 				
@@ -84,7 +69,7 @@ public class Producto {
 		
 		return productosSolicitados;
 		
-	}
+	}*/
 
 	
 	public int getId() {

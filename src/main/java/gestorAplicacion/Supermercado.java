@@ -101,22 +101,20 @@ public class Supermercado {
 	}
 	
 	public void verificarVencimiento() {
-		for (int i = 0;i<bodegas.size();i++) {
-			for (int j = 0;j<bodegas.get(i).getProductos().size();j++) {
-				for (int k = 0;k<bodegas.get(i).getProductos().get(j).getUnidades().size();k++) {
-					if (bodegas.get(i).getProductos().get(j).getUnidades().get(k).diasParaVencimiento() < 15) {
-						Unidad producto = bodegas.get(i).getProductos().get(j).getUnidades().get(k);
-						if (bodegas.get(i).getProductos().get(j).getUnidades().get(k).diasParaVencimiento() >= 0) {
-							System.out.println("Al producto "+producto.getTipo().getNombre()+" con código "+producto.getCodigo()+
-								" le faltan "+producto.diasParaVencimiento()+" dias para vencerse.");
-						}
-						else {
-							System.out.println("El producto "+producto.getTipo().getNombre()+" con código "+producto.getCodigo()+
-									" se venció hace "+producto.diasParaVencimiento()*(-1)+" dias.");
-						}
-						//Verificar si el producto se encuentra en descuento, sino, agregarlo
-					}	
-				}
+		for (Bodega bodega : this.getBodegas()) {
+			for (Unidad unidad : bodega.getProductos()) {
+				if (unidad.diasParaVencimiento() < 15) {
+					if (unidad.diasParaVencimiento() >= 0) {
+						System.out.println("Al producto " + unidad.getTipo().getNombre() + " con código: " + unidad.getCodigo() + 
+								", ubicado en " + bodega.getNombre() + " le quedan " + unidad.diasParaVencimiento() + " días para vencer.");
+					}
+					else {
+						System.out.println("El producto " + unidad.getTipo().getNombre() + " con código: " + unidad.getCodigo() + 
+								", ubicado en " + bodega.getNombre() + " se venció hace " + (unidad.diasParaVencimiento() * -1) + 
+								" días.");
+					}
+					//Verificar si el producto se encuentra en descuento, sino, agregarlo
+				}	
 			}
 		}
 	}
