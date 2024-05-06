@@ -15,8 +15,6 @@ public class Promocion {
 	private int puntos_obtenidos;
 	
 	
-	
-
 	public Promocion() {
 		this.id = 0;
 		this.is_activo = false;
