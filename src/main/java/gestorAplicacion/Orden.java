@@ -53,7 +53,7 @@ public class Orden {
 	
 	
 	
-	public void generarOrden(TipoOrden tipoOrden, Supermercado supermercado , Empleado empleado, Cliente cliente, ArrayList<Producto> productos_listados, ArrayList<Promocion> promociones, ArrayList<Descuento> descuentos, ArrayList<BonoEmpleado> bonosEmpleados) {
+	public void generarOrden(TipoOrden tipoOrden, Supermercado supermercado , Empleado empleado, Cliente cliente, ArrayList<Producto> productos_listados, ArrayList<BonoCliente> promociones, ArrayList<Descuento> descuentos, ArrayList<BonoEmpleado> bonosEmpleados) {
 		
 		float cobro_total = calcularCobroTotal(productos_listados);
 		
@@ -61,7 +61,7 @@ public class Orden {
 		BonoEmpleado.bonificarEmpleado(empleado, cobro_total , bonosEmpleados);
 		
 		//Bonificar cliente
-		Promocion.bonificarCliente(cliente, productos_listados, promociones);
+		BonoCliente.bonificarCliente(cliente, productos_listados, promociones);
 		
 		//Calcular el porcentaje de descuento del cliente
 		int porcentaje_descuento = Descuento.calcularDescuento(cliente, descuentos);

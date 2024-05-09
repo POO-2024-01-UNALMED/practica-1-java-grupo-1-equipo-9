@@ -7,7 +7,7 @@ import gestorAplicacion.Producto;
 
 
 
-public class Promocion {
+public class BonoCliente {
 	
 	private int id;
 	private boolean is_activo;
@@ -15,14 +15,14 @@ public class Promocion {
 	private int puntos_obtenidos;
 	
 	
-	public Promocion() {
+	public BonoCliente() {
 		this.id = 0;
 		this.is_activo = false;
 		this.requisitos = null;
 		this.puntos_obtenidos = 0;
 	}
 	
-	public Promocion(int id, boolean is_activo, ArrayList<RequisitoPromocion> requisitos, int puntos_obtenidos) {
+	public BonoCliente(int id, boolean is_activo, ArrayList<RequisitoPromocion> requisitos, int puntos_obtenidos) {
 
 		this.id = id;
 		this.is_activo = is_activo;
@@ -31,11 +31,11 @@ public class Promocion {
 	}
 
 
-	public static ArrayList<Promocion> promocionesActivas(ArrayList<Promocion> promociones) {
+	public static ArrayList<BonoCliente> promocionesActivas(ArrayList<BonoCliente> promociones) {
 		
-		ArrayList<Promocion> resultado = new ArrayList<>();
+		ArrayList<BonoCliente> resultado = new ArrayList<>();
 		
-		for (Promocion promocion : promociones) {
+		for (BonoCliente promocion : promociones) {
 			
 			if (promocion.is_activo) {
 				
@@ -61,7 +61,7 @@ public class Promocion {
 			
 			for (Producto producto : productos) {
 				
-				boolean requisito_cumplido = requisito.getProducto().getCantidad() == producto.getCantidad();
+				boolean requisito_cumplido = requisito.getProducto().cantidadUnidades() == producto.cantidadUnidades();
 				
 				//Algún producto cumple con algún requisito
 				if (requisito_cumplido) {
@@ -89,15 +89,15 @@ public class Promocion {
 	}
 	
 	
-	public static Promocion seleccionPromoCliente(ArrayList<Producto> productos, ArrayList<Promocion> promociones) {
+	public static BonoCliente seleccionPromoCliente(ArrayList<Producto> productos, ArrayList<BonoCliente> promociones) {
 		
 		
-		Promocion promocion_elegida = new Promocion();
+		BonoCliente promocion_elegida = new BonoCliente();
 		
 		
-		for (Promocion promocion_iteracion : promociones) {
+		for (BonoCliente promocion_iteracion : promociones) {
 			
-			boolean cumple_requisitos = Promocion.cumpleRequisitos(productos, promocion_iteracion.getRequisitos());
+			boolean cumple_requisitos = BonoCliente.cumpleRequisitos(productos, promocion_iteracion.getRequisitos());
 			
 			boolean es_mejor_promocion = (cumple_requisitos) && (promocion_elegida.getPuntos_obtenidos() < promocion_iteracion.getPuntos_obtenidos());
 			
@@ -118,14 +118,13 @@ public class Promocion {
 		
 	}
 	
-	public static void bonificarCliente(Cliente cliente, ArrayList<Producto> productos , ArrayList<Promocion> promociones) {
+	public static void bonificarCliente(Cliente cliente, ArrayList<Producto> productos , ArrayList<BonoCliente> promociones) {
 		
-		ArrayList<Promocion> promociones_activas = Promocion.promocionesActivas(promociones);
+		ArrayList<BonoCliente> promociones_activas = BonoCliente.promocionesActivas(promociones);
 		
-		Promocion promocion_ganadora = Promocion.seleccionPromoCliente(productos, promociones_activas);
+		BonoCliente promocion_ganadora = BonoCliente.seleccionPromoCliente(productos, promociones_activas);
 		
 		//Aumentar acumulado puntos cliente
-		
 		if (promocion_ganadora.getPuntos_obtenidos() > 0) {
 			
 			int puntos_cliente = cliente.getPuntos();
