@@ -12,8 +12,7 @@ public class BonoEmpleado {
 	private int puntos_ganados;
 	
 	
-	
-	
+
 	public static ArrayList<BonoEmpleado> bonosActivos(ArrayList<BonoEmpleado> bonosEmpleados) {
 		
 		ArrayList<BonoEmpleado> resultado = new ArrayList<>();

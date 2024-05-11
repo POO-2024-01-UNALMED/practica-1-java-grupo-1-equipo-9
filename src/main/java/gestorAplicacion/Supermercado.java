@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import finanzas.Impuesto;
 import recompensas.BonoCliente;
+import recompensas.BonoEmpleado;
 import recompensas.Descuento;
+import recompensas.PagoBonoEmpleado;
 
 
 public class Supermercado {
@@ -20,6 +22,36 @@ public class Supermercado {
 
 	public Supermercado(String nombre) {
 		this.nombre = nombre;
+	}
+	
+	public static void pagarEmpleados(ArrayList<Empleado> empleados, ArrayList<BonoEmpleado> bonosEmpleados, ArrayList<PagoBonoEmpleado> pagosBonosEmpleados , float recursos) {
+		
+		float dinero_disponible = recursos;
+		
+	
+		for (Empleado empleado : empleados) {
+			
+			//El empleado no ha sido despedido
+			if (empleado.isActivo()) {
+				
+				
+				float salario = Empleado.salario;
+				int porcentaje_bono = PagoBonoEmpleado.obtenerPorcentajeBonoEmpleado(empleado, pagosBonosEmpleados);
+				
+				float total_pago = salario + (salario * porcentaje_bono) / 100;
+				
+				//Registrar el gasto del pago del salario empleado
+				
+				
+				//Falta descontar la cantidad total de ingresos
+				
+				
+			}
+			
+			
+		}
+		
+		
 	}
 	
 	
