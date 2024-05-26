@@ -1,8 +1,18 @@
 package gestorAplicacion;
 import java.security.PublicKey;
-import java.util.ArrayList;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+import finanzas.Deuda;
+import finanzas.Gasto;
 import finanzas.Impuesto;
+import finanzas.Ingreso;
+import finanzas.TipoGasto;
 import recompensas.BonoCliente;
 import recompensas.BonoEmpleado;
 import recompensas.Descuento;
@@ -10,44 +20,103 @@ import recompensas.PagoBonoEmpleado;
 
 
 public class Supermercado {
+	
 	private String nombre;
 	private ArrayList<Empleado> empleados = new ArrayList<>();
 	private ArrayList<Bodega> bodegas = new ArrayList<>();
 	private ArrayList<Orden> ordenes = new ArrayList<>();
 	private ArrayList<BonoCliente> promociones = new ArrayList<>();
 	private ArrayList<Descuento> descuentos = new ArrayList<>();
+	private ArrayList<Ingreso> ingresos;
+	private float total_ingresos;
+	private ArrayList<Gasto> gastos;
+	private float total_gastos;
+	private ArrayList<Deuda> deudas;
+	private float total_deuda;
+	private ArrayList<Surtidor> surtidores; 
+	private ArrayList<Producto> productos;
 	
-	//Asignar pago de impuesto, sea automático o manual los pagos al fin de mes
-	private boolean pago_impuesto_auto;
-
+	
 	public Supermercado(String nombre) {
 		this.nombre = nombre;
 	}
 	
-	public static void pagarEmpleados(ArrayList<Empleado> empleados, ArrayList<BonoEmpleado> bonosEmpleados, ArrayList<PagoBonoEmpleado> pagosBonosEmpleados , float recursos) {
+	public void abastecer(Surtidor surtidor, ArrayList<Producto> productos) {
 		
-		float dinero_disponible = recursos;
 		
-	
-		for (Empleado empleado : empleados) {
+		for (Producto producto : productos) {
 			
-			//El empleado no ha sido despedido
-			if (empleado.isActivo()) {
+			
+			for (Producto producto_surtidor : surtidor.getProductos()) {
 				
 				
-				float salario = Empleado.salario;
-				int porcentaje_bono = PagoBonoEmpleado.obtenerPorcentajeBonoEmpleado(empleado, pagosBonosEmpleados);
-				
-				float total_pago = salario + (salario * porcentaje_bono) / 100;
-				
-				//Registrar el gasto del pago del salario empleado
-				
-				
-				//Falta descontar la cantidad total de ingresos
-				
+				if (producto_surtidor.getId() == producto.getId()) {
+					
+					boolean comprar = Surtidor.puedePagarSurtidor(
+							this, 
+							producto_surtidor.getPrecio_compra(), 
+							producto.getCantidad_comprar(),
+							producto_surtidor.getImpuesto()
+							);
+					
+					float costo_actual = Surtidor.calcularCostoActual(
+							producto_surtidor.getPrecio_compra(), 
+							producto.getCantidad_comprar());
+					
+					boolean tieneImpuesto = Impuesto.tieneImpuesto(producto);
+					
+					
+					//En caso de tener que pagar impuestos
+					if (tieneImpuesto) {
+						
+						boolean pago_impuesto = Surtidor.pagarImpuestoProducto(this, producto, producto.getCantidad_comprar());
+						
+						//En caso de no tener suficiente dinero para pagar el impuesto
+						if (!pago_impuesto) {
+							
+							comprar = false;
+						}
+						
+					}
+					
+					
+					//El supermercado tiene dinero suficiente para comprar los productos
+					if (comprar) {
+						
+						
+						//Primero pagamos el total por los productos
+						Gasto.registrarGasto(costo_actual, TipoGasto.IMPUESTO_PRODUCTO, this);
+					
+						
+						//Generar N cantidad de unidades de acuerdo al producto elegido
+						for (int i = 0; i < producto.getCantidad_comprar(); i++) {
+							
+							String vecimiento = Unidad.generarFechaVencimiento();
+							
+							ArrayList<Bodega> bodegas = this.getBodegas();
+							
+							Random n_random = new Random(); 
+							
+						    //Elegir cualquier bodega del supermercado 
+						    Bodega bodega_obtenida = bodegas.get(n_random.nextInt(bodegas.size() + 1));
+							
+						    //Se crea la unidad para poder tener una fecha de vencimiento más actual
+							Unidad nueva_unidad = new Unidad(vecimiento, producto, bodega_obtenida);
+							
+							producto.agregarUnidad(nueva_unidad);
+							
+						}
+						
+					}
+					
+					else {
+						System.out.println("El supermercado no puede comprar: " + producto.getNombre());
+					}
+					
+				}
 				
 			}
-			
+				
 			
 		}
 		
@@ -55,16 +124,67 @@ public class Supermercado {
 	}
 	
 	
-	public static void pagarImpuestos(ArrayList<Impuesto> impuestos, float ingresos) {
+	public static float calcularCobroTotal(ArrayList<Producto> productos_listados) {
 		
-	  	
+		float cobro_total = 0f;
+		
+		for (Producto producto : productos_listados) {
+			
+			cobro_total += producto.getPrecio();
+			
+		}
+		
+		return cobro_total;
+	
+	}
+	
+	
+	public static void pagarImpuestos(ArrayList<Impuesto> impuestos, float ingresos, Supermercado supermercado) {
+		  	
 	  ArrayList<Impuesto> impuestos_actuales = Impuesto.listarImpuestos(impuestos);
 	  
-	  float total_pagado = Impuesto.tributar(impuestos_actuales, ingresos);
+	  float total_pagado = Impuesto.tributar(impuestos_actuales, ingresos, supermercado);
 	  
 	  System.out.println("El pago de los impuestos se realizó con éxito, total: " + total_pagado);
 	  
-	  
+	}
+	
+	
+	
+	public static String getFechaActual() {
+		
+		LocalDate fechaActual = LocalDate.now();
+
+        // Definir el formato para la fecha
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        // Formatear la fecha como string
+        String fecha = fechaActual.format(formato);
+        
+        return fecha;
+		
+	}
+	
+	
+	public static String getHoraActual() {
+		
+		LocalTime horaActual = LocalTime.now();
+
+        // Definir el formato para la hora
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        // Formatear la fecha como string
+        String hora = horaActual.format(formato);
+        
+        return hora;
+		
+	}
+	
+	
+	public void agregarIngreso(Ingreso ingreso) {
+		
+		this.ingresos.add(ingreso);
+		
 	}
 	
 
@@ -104,14 +224,6 @@ public class Supermercado {
 		ordenes.add(orden);
 	}
 	
-	public boolean getPagoImpuestoAuto() {
-		return this.pago_impuesto_auto;
-	}
-	
-	public void setPagoImpuestoAuto(boolean value) {
-		this.pago_impuesto_auto = value;
-	}
-	
 	public void quitarOrden(Orden orden) {
 		for (int i = 0;i<ordenes.size();i++) {
 			if (ordenes.get(i) == orden) {
@@ -138,6 +250,116 @@ public class Supermercado {
 		empleados.add(empleado);
 	}
 	
+	
+	
+	
+	public float calcularTotalIngresos() {
+		
+		float resultado = 0f;
+		
+		for (Ingreso ingreso : this.ingresos) {
+			
+			resultado += ingreso.getGanancia_total();
+			
+		}
+		
+		return resultado;
+		
+	}
+	
+	public ArrayList<Ingreso> getArrayListIngresos(){
+		return this.ingresos;
+	}
+
+	public void setIngresos(ArrayList<Ingreso> ingresos) {
+		this.ingresos = ingresos;
+	}
+	
+	
+	public float getTotal_ingresos() {
+		return this.total_ingresos;
+	}
+
+	public void setTotal_ingresos(float total_ingresos) {
+		this.total_ingresos = total_ingresos;
+	}
+	
+	
+	
+	public float getTotal_deuda() {
+		return total_deuda;
+	}
+
+	public void setTotal_deuda(float total_deuda) {
+		this.total_deuda = total_deuda;
+	}
+	
+	
+	public float calcularTotalDeuda() {
+		
+		float resultado = 0f;
+		
+		for (Deuda deuda : this.deudas) {
+			
+			resultado += deuda.getValor();
+			
+		}
+		
+		return resultado;
+		
+	}
+	
+	
+
+	public ArrayList<Deuda> getArrayListDeudas() {
+		return deudas;
+	}
+
+	public void setArrayListDeudas(ArrayList<Deuda> deudas) {
+		this.deudas = deudas;
+	}
+	
+	
+	
+	public Producto buscarProductoPorId(int id) {
+		
+		Producto resultado = null;
+		
+		for (Producto producto : this.getProductos()) {
+			
+			if (producto.getId() == id) {
+				
+				resultado = producto;
+				
+				break;
+				
+			}
+			
+		}
+		
+		
+		return resultado;
+	
+	}
+	
+	
+	
+	public ArrayList<Producto> getProductos() {
+		return productos;
+	}
+
+	public void setProductos(ArrayList<Producto> productos) {
+		this.productos = productos;
+	}
+
+	public ArrayList<Surtidor> getSurtidores() {
+		return surtidores;
+	}
+
+	public void setSurtidores(ArrayList<Surtidor> surtidores) {
+		this.surtidores = surtidores;
+	}
+
 	public void quitarEmpleado(Empleado empleado) {
 		for (int i = 0;i<empleados.size();i++) {
 			if (empleados.get(i) == empleado) {

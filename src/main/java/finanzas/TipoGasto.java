@@ -1,5 +1,5 @@
 package finanzas;
 
 public enum TipoGasto {
-	COMPRA, SALARIO
+	COMPRA, SALARIO, IMPUESTO , IMPUESTO_PRODUCTO
 }

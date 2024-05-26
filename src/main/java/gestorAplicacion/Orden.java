@@ -35,27 +35,14 @@ public class Orden {
 	}
 	
 	
-	public float calcularCobroTotal(ArrayList<Producto> productos_listados) {
-		
-		float cobro_total = 0f;
-		
-		for (Producto producto : productos_listados) {
-			
-			cobro_total += producto.getPrecio();
-			
-		}
-		
-		return cobro_total;
-	
-	}
-	
 	
 	
 	
 	
 	public void generarOrden(TipoOrden tipoOrden, Supermercado supermercado , Empleado empleado, Cliente cliente, ArrayList<Producto> productos_listados, ArrayList<BonoCliente> promociones, ArrayList<Descuento> descuentos, ArrayList<BonoEmpleado> bonosEmpleados) {
 		
-		float cobro_total = calcularCobroTotal(productos_listados);
+		//Falta tener en cuenta la cantidad total de productos que se quiere vender
+		float cobro_total = Supermercado.calcularCobroTotal(productos_listados);
 		
 		//Bonificar empleado
 		BonoEmpleado.bonificarEmpleado(empleado, cobro_total , bonosEmpleados);
@@ -77,9 +64,12 @@ public class Orden {
 		Orden nueva_orden = new Orden(tipoOrden, supermercado, empleado, cliente);
 		
 		//Registrar ingreso
-		Ingreso.registrarIngreso(cobro_total, nueva_orden, productos_listados); 
+		new Ingreso(cobro_total, nueva_orden, productos_listados, supermercado); 
+		
+		
 		
 	}
+	
 	
 	
 	

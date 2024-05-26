@@ -2,7 +2,13 @@ package gestorAplicacion;
 
 import java.util.ArrayList;
 
+import finanzas.Deuda;
+import finanzas.Gasto;
+import finanzas.TipoDeuda;
+import finanzas.TipoGasto;
+import recompensas.BonoEmpleado;
 import recompensas.MetaEmpleado;
+import recompensas.PagoBonoEmpleado;
 
 public class Empleado extends Persona{
 	private int id;
@@ -26,6 +32,55 @@ public class Empleado extends Persona{
 	   
 	   
 	   
+	}
+	
+	
+	public static void pagarEmpleados(ArrayList<Empleado> empleados, ArrayList<BonoEmpleado> bonosEmpleados, ArrayList<PagoBonoEmpleado> pagosBonosEmpleados , Supermercado supermercado) {
+		
+		float dinero_disponible = supermercado.getTotal_ingresos();
+		
+	
+		for (Empleado empleado : empleados) {
+			
+			//El empleado no ha sido despedido
+			if (empleado.isActivo()) {
+				
+				
+				float salario = Empleado.salario;
+				int porcentaje_bono = PagoBonoEmpleado.obtenerPorcentajeBonoEmpleado(empleado, pagosBonosEmpleados);
+				
+				float total_pago = salario + (salario * porcentaje_bono) / 100;
+				
+				
+				//En caso de tener suficientes ingresos para pagar al empleado
+				if (dinero_disponible > total_pago) {
+					
+					
+					//Registramos el gasto
+					dinero_disponible = Gasto.registrarGasto(total_pago, TipoGasto.SALARIO, supermercado);
+					
+				}
+				
+				//El supermercado no tiene dinero para pagarle al empleado
+				//Se endeuda el supermercado.
+				else {
+					
+					float deuda_actual = supermercado.getTotal_deuda();
+					supermercado.setTotal_deuda(total_pago + deuda_actual);
+					
+					Deuda nueva_deuda = new Deuda(total_pago, TipoDeuda.PAGO_EMPLEADO , supermercado);
+					supermercado.getArrayListDeudas().add(nueva_deuda);
+					
+				}
+				
+				
+				
+			}
+			
+			
+		}
+		
+		
 	}
 	
 	

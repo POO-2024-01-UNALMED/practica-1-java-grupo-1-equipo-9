@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import gestorAplicacion.Orden;
 import gestorAplicacion.Producto;
+import gestorAplicacion.Supermercado;
 
 //Fecha
 import java.time.LocalDate;
@@ -19,12 +20,12 @@ public class Ingreso {
 	private String hora;
 	private float ganancia_total;
 	private Orden orden;
-	private ArrayList<Producto> productos;
+	private ArrayList<Producto> productos;	
+	private Supermercado supermercado;
 	
 	
 	
-	
-	public Ingreso(float ganancia_total, Orden orden, ArrayList<Producto> productos) {
+	public Ingreso(float ganancia_total, Orden orden, ArrayList<Producto> productos, Supermercado supermercado) {
 		
 		//El id se registra automaticamente
 		Ingreso.actual_id += 1;
@@ -37,16 +38,31 @@ public class Ingreso {
 		this.ganancia_total = ganancia_total;
 		this.orden = orden;
 		this.productos = productos;
+		
+		this.supermercado = supermercado;
+		
+		
+		//Registrar el ingreso en el supermercado
+		supermercado.agregarIngreso(this);
+		
+		//Actualizar el valor total de ingresos
+		ArrayList<Ingreso> ingresos_actuales = supermercado.getArrayListIngresos();
+		
+		float total_ingresos = 0f;
+		
+		for (Ingreso ingreso : ingresos_actuales) {
+			
+			total_ingresos += ingreso.getGanancia_total();
+			
+		}
+		
+		//Guardar el total de las ganancias de los ingresos
+		supermercado.setTotal_ingresos(total_ingresos);
+		
 	}
 	
 	
 
-	public static void registrarIngreso(float ganancia_total, Orden orden, ArrayList<Producto> productos) {
-		
-		new Ingreso(ganancia_total, orden, productos);
-	
-	}
-	
 	
 	public int getId() {
 		return id;
@@ -97,7 +113,7 @@ public class Ingreso {
 		this.hora = hora;
 	}
 	public float getGanancia_total() {
-		return ganancia_total;
+		return this.ganancia_total;
 	}
 	public void setGanancia_total(float ganancia_total) {
 		this.ganancia_total = ganancia_total;

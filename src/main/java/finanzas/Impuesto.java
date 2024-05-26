@@ -1,6 +1,10 @@
 package finanzas;
 
 import java.util.ArrayList;
+import java.util.Random;
+
+import gestorAplicacion.Producto;
+import gestorAplicacion.Supermercado;
 
 public class Impuesto {
 	
@@ -10,6 +14,7 @@ public class Impuesto {
 	String fecha_limite;
 	boolean is_pagado;
 	float multa;
+	Supermercado supermercado;
 	
 	
 
@@ -62,7 +67,7 @@ public class Impuesto {
 	}
 	
 	
-	public static float tributar(ArrayList<Impuesto> impuestos_activos, float ingresos) {
+	public static float tributar(ArrayList<Impuesto> impuestos_activos, float ingresos, Supermercado supermercado) {
 		
 		//Avisar que tiene alguna multa
 		Impuesto.algunaMulta(impuestos_activos);
@@ -72,37 +77,42 @@ public class Impuesto {
 				
 		for (Impuesto impuesto : impuestos_activos) {
 			
-			float total_cobro = impuesto.getPago() + impuesto.getMulta();
+			float impuesto_actual = impuesto.getPago() + impuesto.getMulta();
 			
 			//En caso de que el supermercado tenga plata suficiente para pagar el impuesto
-			if (ingresos_actuales > total_cobro) {
+			if (ingresos_actuales > impuesto_actual) {
 				
 				impuesto.setIs_pagado(true);
 				impuesto.setMulta(0);
 				
-				ingresos_actuales -= total_cobro;
-				total_impuesto += total_cobro;
+				//Mostraremos este valor al final
+				total_impuesto += impuesto_actual;
+				
+				Gasto.registrarGasto(impuesto_actual, TipoGasto.IMPUESTO, supermercado);
 				
 			} 
 			
 			//El supermercado no dinero dinero suficiente para pagar
 			else {
 				
-				System.out.print("El supermercado no tiene dinero suficiente para pagar los otros impuestos!!");
-				break;
-				
+				//Generar multa, se genera al azar, entre un valor de 5100 y 9500
+				float multa = 5100 + new Random().nextFloat() * (9500 - 5100);
+				impuesto.setMulta(multa);
 			}
 			
 		}
 		
 		//Falta colocar la parte de actualizar el valor total de los ingresos de la clase Ingreso
-		
-		
 		return total_impuesto;
 	
 	}
 
-
+	
+	public static boolean tieneImpuesto(Producto producto) {
+		
+		return producto.getImpuesto() > 0;
+		
+	}
 
 
 	public int getId() {

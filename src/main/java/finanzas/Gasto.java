@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import gestorAplicacion.Empleado;
 import gestorAplicacion.Orden;
 import gestorAplicacion.Producto;
+import gestorAplicacion.Supermercado;
 
 public class Gasto {
 	
@@ -15,22 +16,44 @@ public class Gasto {
 	private float total_pagado;
 	private TipoGasto concepto;
 	private ArrayList<Producto> productos;
+	private ArrayList<Gasto> deudas;
+	private float total_deuda;
+	private Supermercado supemercado;
 	
-	//Registrar pago empleado, falta colocar la fecha y la hora
-	public Gasto(float total_pagado, TipoGasto concepto) {
+
+	public Gasto(float total_pagado, TipoGasto concepto, Supermercado supermercado) {
 		
+	
+		//Fecha actual
+		String fecha = Supermercado.getFechaActual();
+		
+		//Hora actual
+		String hora = Supermercado.getHoraActual();
+		
+		
+		this.fecha = fecha;
+		this.hora = hora;		
 		this.total_pagado = total_pagado;
 		this.concepto = concepto;
-		
+		this.supemercado = supermercado;
+	
 	}
 	
 	
-	public Gasto(int id, String fecha, String hora, Empleado comprador, float total_pagado, TipoGasto concepto,
+	public Gasto(Empleado comprador, float total_pagado, TipoGasto concepto,
 			ArrayList<Producto> productos) {
 		
-		this.id = id;
+	
+		//Fecha actual
+		String fecha = Supermercado.getFechaActual();
+		
+		//Hora actual
+		String hora = Supermercado.getHoraActual();
+		
+		
 		this.fecha = fecha;
 		this.hora = hora;
+		
 		this.comprador = comprador;
 		this.total_pagado = total_pagado;
 		this.concepto = concepto;
@@ -38,9 +61,33 @@ public class Gasto {
 	}
 	
 	
+	public static float registrarGasto(float total_pago, TipoGasto tipo_gasto, Supermercado supermercado) {
+		
+		//Registrar el gasto del pago del salario empleado
+		Gasto nuevo_gasto = new Gasto(total_pago, tipo_gasto, supermercado );
+		
+		//Descontar la cantidad total de ingresos
+		float total_ingresos = supermercado.getTotal_ingresos() - total_pago;
+		
+		//Evitar valores negativos
+		if (total_ingresos > 0) {
+			
+			supermercado.setTotal_ingresos(total_ingresos);
+			return total_ingresos;
+			
+		}
+		
+		else {
+			
+			supermercado.setTotal_ingresos(0f);
+			return 0f;
+		}
+		
+		
+		
+	}
 	
-
-
+	
 	public int getId() {
 		return id;
 	}

@@ -2,16 +2,21 @@ package gestorAplicacion;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Producto {
 	private int id;
 	private static int actual_id = 0;
 	private String nombre;
 	private TipoProducto tipo;
-	private float precio;
+	private float precio_venta;
 	private float precio_compra;
 	private float precio_base_compra;
 	private float impuesto;
+	private int cantidad_comprar;
+	
+
 	private ArrayList<Unidad> unidades = new ArrayList<>(); //Lista de unidades del producto con codigo y fecha de vencimiento 
 
 	public Producto(String nombre, TipoProducto tipo, float precio, float precio_compra, float precio_base_compra, float impuesto) {
@@ -20,23 +25,25 @@ public class Producto {
 		this.id = Producto.actual_id;
 		this.nombre = nombre;
 		this.tipo = tipo;
-		this.precio = precio;
+		this.precio_venta = precio;
 		this.precio_compra = precio_compra;
 		this.precio_base_compra = precio_base_compra;
 		this.impuesto = impuesto;
 		
 	}
 	
-	public static ArrayList<Unidad> listarProductosPorTipo(TipoProducto tipoProducto, Supermercado supermercado) {
+	public static ArrayList<Unidad> listarProductosPorTipo(TipoProducto tipoProducto, Supermercado supermercado, int cantidad) {
 		ArrayList<Unidad> resultado = new ArrayList<>();
 		for (Bodega bodega: supermercado.getBodegas()) {
 			for (Unidad producto : bodega.getProductos()) {
 				//Obtener los productos del tipo solicitado
+				//Falta colocar que disminuya la cantidad de unidades
 				if (producto.getTipo().tipo.equals(tipoProducto)) {
 					resultado.add(producto);
 				}
 			}
 		}
+		
 		return resultado;	
 		
 	}
@@ -70,7 +77,73 @@ public class Producto {
 		return productosSolicitados;
 		
 	}*/
+	
+	
+	public static void ordenarProductoPrecioCompra(ArrayList<Producto> productos) {
+		
+        Collections.sort(productos, new Comparator<Producto>() {
+            @Override
+            public int compare(Producto p1, Producto p2) {
+                return Float.compare(p1.getPrecio_base_compra(), p2.getPrecio_base_compra());
+            }
+        });
+        
+    }
+	
+	
+	//Compara el precio base o normal que debería tener el producto, con el precio actual debido a la inflación
+	//Trata de ver si un producto actualmente está barato
+	public static boolean productoBarato(Producto producto) {
+		
+		return producto.getPrecio_compra() < producto.getPrecio_base_compra();
+		
+	}
+	
+	
+	public static ArrayList<Producto> sugerenciaEficiente(Supermercado supermercado){
+		
+		ArrayList<Producto> posibles_productos = new ArrayList<Producto>();
+		
+		ArrayList<Surtidor> surtidores  = supermercado.getSurtidores();
+		
+		for (Surtidor surtidor : surtidores) {
+			
+			
+			for (Producto producto : surtidor.getProductos() ) {
+				
+				//El producto actualmente está barato
+				boolean barato = Producto.productoBarato(producto);
+				
+				if (barato) {
+					
+					posibles_productos.add(producto);
+					
+				}
+				
 
+			}
+			
+			
+		}
+		
+		
+		//Ordenar los productos por precio de compra, de menor a mayor
+		Producto.ordenarProductoPrecioCompra(posibles_productos);
+	
+		
+		//En caso de que hayan más de 5 productos obtenidos, solo elegimos los 5 primeros más baratos
+		if (posibles_productos.size() > 5) {
+		
+			return (ArrayList<Producto>) posibles_productos.subList(0, 5);
+			
+		}
+		
+		else {
+			return posibles_productos;
+		}
+		
+	}
+	
 	
 	public int getId() {
 		return id;
@@ -97,11 +170,11 @@ public class Producto {
 	}
 
 	public float getPrecio() {
-		return precio;
+		return precio_venta;
 	}
 
 	public void setPrecio(float precio) {
-		this.precio = precio;
+		this.precio_venta = precio;
 	}
 
 	public int cantidadUnidades() {
@@ -143,4 +216,18 @@ public class Producto {
 	public void agregarUnidad(Unidad unidad) {
 		unidades.add(unidad);
 	}
+
+	public int getCantidad_comprar() {
+		return cantidad_comprar;
+	}
+
+	public void setCantidad_comprar(int cantidad_comprar) {
+		this.cantidad_comprar = cantidad_comprar;
+	}
+	
+	
+
+	
+	
+	
 }

@@ -53,7 +53,7 @@ public class MetaEmpleado {
 						
 					}
 					
-					//No Cumplió alcanzar la meta de N puntos solicitados al mes
+					//No pudo alcanzar la meta de N puntos solicitados al mes
 					if ( meta_actual.getPuntos_requeridos() > meta_empleado.getPuntos_requeridos() ) {
 						
 						continuar = false;

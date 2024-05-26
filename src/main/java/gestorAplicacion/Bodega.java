@@ -45,4 +45,6 @@ public class Bodega {
 		productos.add(producto);
 	}
 	
+	
+	
 }
