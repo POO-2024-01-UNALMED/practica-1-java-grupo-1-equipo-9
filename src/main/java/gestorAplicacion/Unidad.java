@@ -15,18 +15,20 @@ public class Unidad {
 	private Producto tipo;
 	private Bodega ubicacion;
 	
-	public Unidad(String vencimiento, Producto tipo, Bodega ubicacion) {
+	public Unidad(Producto tipo, Bodega ubicacion) {
 		
 		Unidad.actual_codigo += 1; 
 		
 		//El código se genera automaticamente
 		this.codigo = Unidad.actual_codigo;
 		
-		this.vencimiento = vencimiento;
+		this.vencimiento = generarFechaVencimiento();
+		
 		this.tipo = tipo;
 		this.ubicacion = ubicacion;
 		tipo.agregarUnidad(this);
-		ubicacion.agregarProducto(this);
+		ubicacion.agregarProducto(this.getTipo());
+		
 	}
 
 	public int getCodigo() {
@@ -95,4 +97,7 @@ public class Unidad {
 		long dias = ChronoUnit.DAYS.between(hoy, venc);
 		return dias;
 	}
+	
+	
+	
 }

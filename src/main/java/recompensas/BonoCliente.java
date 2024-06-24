@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import gestorAplicacion.Cliente;
 import gestorAplicacion.Producto;
+import gestorAplicacion.Unidad;
 
 
 
@@ -33,7 +34,7 @@ public class BonoCliente {
 
 	public static ArrayList<BonoCliente> promocionesActivas(ArrayList<BonoCliente> promociones) {
 		
-		ArrayList<BonoCliente> resultado = new ArrayList<>();
+		ArrayList<BonoCliente> resultado = new ArrayList<BonoCliente>();
 		
 		for (BonoCliente promocion : promociones) {
 			
@@ -56,15 +57,16 @@ public class BonoCliente {
 		
 		for (RequisitoPromocion requisito : requisitos) {
 			
-			
 			boolean continuar = false;
 			
 			for (Producto producto : productos) {
 				
-				boolean requisito_cumplido = requisito.getProducto().cantidadUnidades() == producto.cantidadUnidades();
+				boolean nombre = (requisito.getProducto().equals(producto.getNombre()));
+				boolean cantidad = (producto.getCantidad_venta() >= requisito.getCantidad());
+				boolean requisitos_cumplidos = nombre && cantidad;
 				
 				//Algún producto cumple con algún requisito
-				if (requisito_cumplido) {
+				if (requisitos_cumplidos) {
 					
 					continuar = true;
 					break;
@@ -91,9 +93,7 @@ public class BonoCliente {
 	
 	public static BonoCliente seleccionPromoCliente(ArrayList<Producto> productos, ArrayList<BonoCliente> promociones) {
 		
-		
 		BonoCliente promocion_elegida = new BonoCliente();
-		
 		
 		for (BonoCliente promocion_iteracion : promociones) {
 			
@@ -111,10 +111,7 @@ public class BonoCliente {
 			
 		}
 		
-		
 		return promocion_elegida;
-		
-		
 		
 	}
 	
@@ -133,9 +130,12 @@ public class BonoCliente {
 			
 			cliente.setPuntos(total_puntos);
 			
+			System.out.println("Felicidades has ganado: " + total_puntos + " puntos en total!!!");
+			System.out.println("Recuerda seguir comprando más productos, participa y gana buenísimos premios");
+			System.out.println("Cada puntos acumulados te sirven para aumentar tus probabilidades de ganar!!! :)");
+			
 		}
 		
-
 	}
 
 

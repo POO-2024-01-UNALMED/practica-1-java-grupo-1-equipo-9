@@ -22,11 +22,11 @@ import recompensas.PagoBonoEmpleado;
 public class Supermercado {
 	
 	private String nombre;
-	private ArrayList<Empleado> empleados = new ArrayList<>();
-	private ArrayList<Bodega> bodegas = new ArrayList<>();
-	private ArrayList<Orden> ordenes = new ArrayList<>();
-	private ArrayList<BonoCliente> promociones = new ArrayList<>();
-	private ArrayList<Descuento> descuentos = new ArrayList<>();
+	private ArrayList<Empleado> empleados = new ArrayList<Empleado>();
+	private ArrayList<Bodega> bodegas = new ArrayList<Bodega>();
+	private ArrayList<Orden> ordenes = new ArrayList<Orden>();
+	private ArrayList<BonoCliente> promociones = new ArrayList<BonoCliente>();
+	private ArrayList<Descuento> descuentos = new ArrayList<Descuento>();
 	private ArrayList<Ingreso> ingresos;
 	private float total_ingresos;
 	private ArrayList<Gasto> gastos;
@@ -123,20 +123,7 @@ public class Supermercado {
 		
 	}
 	
-	
-	public static float calcularCobroTotal(ArrayList<Producto> productos_listados) {
-		
-		float cobro_total = 0f;
-		
-		for (Producto producto : productos_listados) {
-			
-			cobro_total += producto.getPrecio();
-			
-		}
-		
-		return cobro_total;
-	
-	}
+
 	
 	
 	public static void pagarImpuestos(ArrayList<Impuesto> impuestos, float ingresos, Supermercado supermercado) {

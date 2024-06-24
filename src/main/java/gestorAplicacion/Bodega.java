@@ -10,7 +10,7 @@ public class Bodega {
 	//como vamos a trabajar con un solo atributo de cantidad, necesitamos saber la cantidad
 	//de productos que están disponibles y la cantidad de productos que compra el cliente
 	//en una orden
-	private ArrayList<Unidad> productos = new ArrayList<>();
+	private ArrayList<Producto> productos = new ArrayList<Producto>();
 	
 	public Bodega(String nombre, String barrio) {
 		this.nombre = nombre;
@@ -33,18 +33,17 @@ public class Bodega {
 		this.barrio = barrio;
 	}
 
-	public ArrayList<Unidad> getProductos() {
+	public ArrayList<Producto> getProductos() {
 		return productos;
 	}
 
-	public void setProductos(ArrayList<Unidad> productos) {
+	public void setProductos(ArrayList<Producto> productos) {
 		this.productos = productos;
 	}
 	
-	public void agregarProducto(Unidad producto) {
+	public void agregarProducto(Producto producto) {
 		productos.add(producto);
 	}
-	
 	
 	
 }

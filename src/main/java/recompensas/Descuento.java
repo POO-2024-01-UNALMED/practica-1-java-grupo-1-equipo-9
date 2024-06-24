@@ -48,7 +48,6 @@ public class Descuento {
 		
 		int porcentaje_descuento = 0;
 		
-		
 		for (Descuento descuento : descuentos) {
 			
 			//Porcentaje descuento elegido como posible candidato
@@ -66,14 +65,11 @@ public class Descuento {
 			//El único descuento que más beneficie al cliente
 			if ( (por_desc_elegido < por_desc_actual) && (pts_cliente > pts_desc_actual) ) {
 				
-				
 				descuento_elegido = descuento;
-				
-				
+	
 			}
 			
 		}
-		
 		
 		if (descuento_elegido.getPorcentaje_descuento() > 0) {
 			

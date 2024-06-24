@@ -5,16 +5,17 @@ import java.time.*;
 import recompensas.*;
 
 public class Orden {
+	
 	private int id;
-	private static int actual_id = 0;
+	private static int actual_id;
 	private TipoOrden tipo;
 	private Empleado empleado;
 	private Cliente cliente;
-	private ArrayList<Producto> productos = new ArrayList<>();
-	private float precio_total = 0;
+	private ArrayList<Producto> productos = new ArrayList<Producto>();
+	private float precio_total;
 	private String fecha;
 	private String hora;
-	private float descuentos = 0;
+	private float descuentos;
 	private Supermercado supermercado;
 	
 	
@@ -30,22 +31,13 @@ public class Orden {
 		this.fecha = LocalDate.now().toString();
 		this.hora = LocalTime.now().toString();
 		
-		
-		
 	}
 	
 	
-	
-	
-	
-	
-	public void generarOrden(TipoOrden tipoOrden, Supermercado supermercado , Empleado empleado, Cliente cliente, ArrayList<Producto> productos_listados, ArrayList<BonoCliente> promociones, ArrayList<Descuento> descuentos, ArrayList<BonoEmpleado> bonosEmpleados) {
+	public static void generarOrden(TipoOrden tipoOrden, Supermercado supermercado, Empleado vendedor , Cliente cliente, ArrayList<Producto> productos_listados, ArrayList<BonoCliente> promociones, ArrayList<Descuento> descuentos) {
 		
-		//Falta tener en cuenta la cantidad total de productos que se quiere vender
-		float cobro_total = Supermercado.calcularCobroTotal(productos_listados);
 		
-		//Bonificar empleado
-		BonoEmpleado.bonificarEmpleado(empleado, cobro_total , bonosEmpleados);
+		float cobro_total = Producto.calcularCobroTotal(productos_listados);
 		
 		//Bonificar cliente
 		BonoCliente.bonificarCliente(cliente, productos_listados, promociones);
@@ -59,14 +51,18 @@ public class Orden {
 			
 		}
 		
-		
 		//Registrar nueva orden
-		Orden nueva_orden = new Orden(tipoOrden, supermercado, empleado, cliente);
+		Orden nueva_orden = new Orden(tipoOrden, supermercado, vendedor, cliente);
+		ArrayList<Orden> ordenes = supermercado.getOrdenes();
+		ordenes.add(nueva_orden);
+		supermercado.setOrdenes(ordenes);
+		
 		
 		//Registrar ingreso
-		new Ingreso(cobro_total, nueva_orden, productos_listados, supermercado); 
-		
-		
+		Ingreso nuevo_ingreso = new Ingreso(cobro_total, nueva_orden, productos_listados, supermercado); 
+		ArrayList<Ingreso> ingresos = supermercado.getArrayListIngresos();
+		ingresos.add(nuevo_ingreso);
+		supermercado.setIngresos(ingresos);
 		
 	}
 	
