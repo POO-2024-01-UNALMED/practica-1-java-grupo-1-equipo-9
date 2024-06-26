@@ -1,29 +1,35 @@
 package recompensas;
 
+import gestorAplicacion.TipoProducto;
+
 public class RequisitoPromocion {
 	
-	private String producto;
-	private int cantidad;
-	
-	
-	public String getProducto() {
-		return producto;
-	}
-	
-	public void setProducto(String producto) {
-		this.producto = producto;
-	}
-
-	public int getCantidad() {
-		return cantidad;
-	}
-
-	public void setCantidad(int cantidad) {
-		this.cantidad = cantidad;
-	}
-	
-	
+	private TipoProducto tipo;
+	private float total_compra;
 	
 
+	public RequisitoPromocion(TipoProducto tipo, float total_compra) {
+
+		this.tipo = tipo;
+		this.total_compra = total_compra;
+	}
+	
+
+	public TipoProducto getTipoProducto() {
+		return this.tipo;
+	}
+	
+	public void setTipoProducto(TipoProducto tipo) {
+		this.tipo = tipo;
+	}
+
+	public float getTotalCobro() {
+		return this.total_compra;
+	}
+
+	public void setTotalCobro(float cantidad) {
+		this.total_compra = cantidad;
+	}
+	
 	
 }

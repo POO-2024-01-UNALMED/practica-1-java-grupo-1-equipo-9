@@ -6,18 +6,25 @@ import finanzas.Deuda;
 import finanzas.Gasto;
 import finanzas.TipoDeuda;
 import finanzas.TipoGasto;
-import recompensas.BonoEmpleado;
 import recompensas.MetaEmpleado;
 import recompensas.PagoBonoEmpleado;
 
 public class Empleado extends Persona{
+	
+	public static int actual_id;
 	private int id;
 	private boolean activo = true;
 	private ArrayList<MetaEmpleado> metas;
-	private int puntos;
-	public static float salario;
 	
 	
+	
+	public Empleado(String nombre, long cedula) {
+		super(nombre, cedula);
+		this.actual_id++;
+		this.id = actual_id;
+	}
+
+
 	public static void despedirEmpleado(Empleado empleado, ArrayList<MetaEmpleado> metas) {
 		
 	   boolean despedir = MetaEmpleado.cumplioMetas(empleado, metas);
@@ -30,11 +37,9 @@ public class Empleado extends Persona{
 	   }
 	   
 	   
-	   
-	   
 	}
 	
-	
+	/*
 	public static void pagarEmpleados(ArrayList<Empleado> empleados, ArrayList<BonoEmpleado> bonosEmpleados, ArrayList<PagoBonoEmpleado> pagosBonosEmpleados , Supermercado supermercado) {
 		
 		float dinero_disponible = supermercado.getTotal_ingresos();
@@ -82,7 +87,7 @@ public class Empleado extends Persona{
 		
 		
 	}
-	
+	*/
 	
 	public Empleado(int id, String nombre, long cedula) {
 		super(nombre, cedula);
@@ -113,16 +118,6 @@ public class Empleado extends Persona{
 
 	public void setMetas(ArrayList<MetaEmpleado> metas) {
 		this.metas = metas;
-	}
-
-
-	public int getPuntos() {
-		return puntos;
-	}
-
-
-	public void setPuntos(int puntos) {
-		this.puntos = puntos;
 	}
 	
 	

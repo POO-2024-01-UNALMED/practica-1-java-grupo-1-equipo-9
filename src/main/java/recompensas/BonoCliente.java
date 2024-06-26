@@ -11,24 +11,27 @@ import gestorAplicacion.Unidad;
 public class BonoCliente {
 	
 	private int id;
-	private boolean is_activo;
+	private static int actual_id;
+	private boolean is_activo = true;
 	private ArrayList<RequisitoPromocion> requisitos;
 	private int puntos_obtenidos;
 	
 	
 	public BonoCliente() {
-		this.id = 0;
+		
 		this.is_activo = false;
 		this.requisitos = null;
 		this.puntos_obtenidos = 0;
+		
 	}
 	
-	public BonoCliente(int id, boolean is_activo, ArrayList<RequisitoPromocion> requisitos, int puntos_obtenidos) {
-
-		this.id = id;
-		this.is_activo = is_activo;
+	public BonoCliente(ArrayList<RequisitoPromocion> requisitos, int puntos_obtenidos) {
+		
+		BonoCliente.actual_id++;
+		this.id = BonoCliente.actual_id;
 		this.requisitos = requisitos;
 		this.puntos_obtenidos = puntos_obtenidos;
+		
 	}
 
 
@@ -51,7 +54,7 @@ public class BonoCliente {
 	}
 	
 	
-	public static boolean cumpleRequisitos(ArrayList<Producto> productos, ArrayList<RequisitoPromocion> requisitos) {
+	public static boolean cumpleRequisitos(ArrayList<Producto> productos, float cobro_total, ArrayList<RequisitoPromocion> requisitos) {
 		
 		boolean resultado = true;
 		
@@ -61,16 +64,17 @@ public class BonoCliente {
 			
 			for (Producto producto : productos) {
 				
-				boolean nombre = (requisito.getProducto().equals(producto.getNombre()));
-				boolean cantidad = (producto.getCantidad_venta() >= requisito.getCantidad());
-				boolean requisitos_cumplidos = nombre && cantidad;
+				boolean cumple_tipo = (requisito.getTipoProducto().equals(producto.getTipo()));
+				boolean cumple_total_cobro = (cobro_total >= requisito.getTotalCobro());
+				boolean requisitos_cumplidos = (cumple_tipo && cumple_total_cobro);
 				
 				//Algún producto cumple con algún requisito
+				//Tipo de producto y precio cobrado.
 				if (requisitos_cumplidos) {
 					
 					continuar = true;
 					break;
-
+					
 				}
 				
 			}
@@ -91,13 +95,13 @@ public class BonoCliente {
 	}
 	
 	
-	public static BonoCliente seleccionPromoCliente(ArrayList<Producto> productos, ArrayList<BonoCliente> promociones) {
+	public static BonoCliente seleccionPromoCliente(ArrayList<Producto> productos, float cobro_compra , ArrayList<BonoCliente> promociones) {
 		
 		BonoCliente promocion_elegida = new BonoCliente();
 		
 		for (BonoCliente promocion_iteracion : promociones) {
 			
-			boolean cumple_requisitos = BonoCliente.cumpleRequisitos(productos, promocion_iteracion.getRequisitos());
+			boolean cumple_requisitos = BonoCliente.cumpleRequisitos(productos, cobro_compra , promocion_iteracion.getRequisitos());
 			
 			boolean es_mejor_promocion = (cumple_requisitos) && (promocion_elegida.getPuntos_obtenidos() < promocion_iteracion.getPuntos_obtenidos());
 			
@@ -115,11 +119,11 @@ public class BonoCliente {
 		
 	}
 	
-	public static void bonificarCliente(Cliente cliente, ArrayList<Producto> productos , ArrayList<BonoCliente> promociones) {
+	public static void bonificarCliente(Cliente cliente, ArrayList<Producto> productos, float cobro_compra , ArrayList<BonoCliente> promociones) {
 		
 		ArrayList<BonoCliente> promociones_activas = BonoCliente.promocionesActivas(promociones);
 		
-		BonoCliente promocion_ganadora = BonoCliente.seleccionPromoCliente(productos, promociones_activas);
+		BonoCliente promocion_ganadora = BonoCliente.seleccionPromoCliente(productos, cobro_compra ,promociones_activas);
 		
 		//Aumentar acumulado puntos cliente
 		if (promocion_ganadora.getPuntos_obtenidos() > 0) {
@@ -130,9 +134,10 @@ public class BonoCliente {
 			
 			cliente.setPuntos(total_puntos);
 			
-			System.out.println("Felicidades has ganado: " + total_puntos + " puntos en total!!!");
-			System.out.println("Recuerda seguir comprando más productos, participa y gana buenísimos premios");
-			System.out.println("Cada puntos acumulados te sirven para aumentar tus probabilidades de ganar!!! :)");
+			System.out.println("El cliente : " + cliente.getNombre() + ", ha ganado: " + puntos_promocion + " puntos!!!");
+			System.out.println("al seguir comprando más productos, participa y gana buenísimos premios");
+			System.out.println("cada punto acumulado te sirve para aumentar tus probabilidades de ganar!");
+			System.out.println();
 			
 		}
 		

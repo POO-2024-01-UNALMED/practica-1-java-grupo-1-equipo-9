@@ -17,13 +17,13 @@ public class Producto{
 	private float precio_compra;
 	private float precio_base_compra; //El precio precio_base_compra es el que normalmente debería encontrarse el producto cuando el supermercado le compra al surtidor.
 									  //Por ejemplo un tomate puede que normalmente valga $2.000 pero otras veces su precio será superior al esperado.
-	private float impuesto;
+
 	private int cantidad_comprar;
 	private int cantidad_venta;
 	
 	private ArrayList<Unidad> unidades = new ArrayList<Unidad>(); //Lista de unidades del producto con codigo y fecha de vencimiento 
 	
-	public Producto(String nombre, TipoProducto tipo, float precio_venta, float precio_compra, float precio_base_compra, float impuesto) {
+	public Producto(String nombre, TipoProducto tipo, float precio_venta, float precio_compra, float precio_base_compra) {
 		
 		Producto.actual_id += 1; 
 		this.id = Producto.actual_id;
@@ -32,7 +32,7 @@ public class Producto{
 		this.precio_venta = precio_venta;
 		this.precio_compra = precio_compra;
 		this.precio_base_compra = precio_base_compra;
-		this.impuesto = impuesto;
+		
 		
 	}
 	
@@ -60,7 +60,7 @@ public class Producto{
 		}
 		
 		return resultado;	
-		
+
 	}
 	
 	
@@ -69,8 +69,11 @@ public class Producto{
 		
 		boolean haySuficientesUnidades = producto.cantidadUnidades() >= cantidadIngresada;
 		Producto resultado = new Producto(producto.getTipo(), 0,0);
+	
 		
 		int unidadesdNoVencidas = 0;
+		
+		ArrayList<Unidad> unidadesParaEliminar = new ArrayList<Unidad>();
 		
 		//El supermercado tiene suficiente cantidad de unidades del producto solicitado
 		//pero falta revisar si ninguna está vencida.
@@ -83,16 +86,26 @@ public class Producto{
 					
 					unidadesdNoVencidas++;
 				
-					int codigoActual = unidad.getCodigo();
+			
+			
+					unidadesParaEliminar.add(unidad);
 					
-					//Eliminamos de nuestro inventario las unidades vendidas
-					producto.getUnidades().removeIf(unidadActual -> unidadActual.getCodigo() == codigoActual);
+					//En caso de haber obtenido la cantidad de unidades esperadas para la venta
+					if (unidadesdNoVencidas == cantidadIngresada) {
+						break;
+					}
 					
 				}
 				
 			}
 			
-	
+			//Eliminamos de nuestro inventario las unidades seleccionadas para vender 
+			if (unidadesParaEliminar.size() > 0) {
+				producto.getUnidades().removeAll(unidadesParaEliminar);
+			}
+				
+			 
+		
 			//Sobreescribimos el valor del objeto al que hace referencia el apuntador "resultado"
 			//a los atributos cantidad_venta  y precio_venta
 			//posteriormente usamos esos datos para calcular el total a cobrar
@@ -107,22 +120,25 @@ public class Producto{
 				
 				int cantidadFaltante = cantidadIngresada - unidadesdNoVencidas;
 				
-				System.out.println("¡Vaya!... lo sentimos, pero hicieron falta: " + cantidadFaltante + " Unidades del producto: " + producto.getNombre());
+				System.out.println("¡Vaya!... lo sentimos, pero hicieron falta: " + cantidadFaltante + " Unidades del producto: " + producto.getNombre().toUpperCase());
 				System.out.println("Esto se debe a que las otras unidades faltantes estaban a punto de vencerse o ya se vencieron :,,(");
 				
 			}
 	
 		}
 		
+		//Cuando el supermercado no tiene la cantidad de unidades del producto que busca el cliente
 		else {
 			
-			System.out.println("Lo sentimos pero no tenemos la cantidad de unidades que buscas :'(");
+			System.out.println("Lo sentimos pero no tenemos la cantidad de unidades que buscas del producto: || " + producto.getNombre() + " || " + 
+					" :'(");
 			
 		}
 		
 		return resultado;
 		
 	}
+	
 	
 	public static float calcularCobroTotal(ArrayList<Producto> productos_listados) {
 		
@@ -257,13 +273,7 @@ public class Producto{
 		this.precio_base_compra = precio_base_compra;
 	}
 
-	public float getImpuesto() {
-		return impuesto;
-	}
-
-	public void setImpuesto(float impuesto) {
-		this.impuesto = impuesto;
-	}
+	
 
 	public ArrayList<Unidad> getUnidades() {
 		return unidades;

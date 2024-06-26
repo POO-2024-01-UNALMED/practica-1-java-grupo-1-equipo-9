@@ -7,21 +7,25 @@ import gestorAplicacion.Cliente;
 public class Descuento {
 	
 	private int id;
-	private boolean is_activo;
+	private static int actual_id;
+	private boolean is_activo = true;
 	private int porcentaje_descuento;
 	private int puntos_necesarios;
 	
 	
 	public Descuento() {
 		
-		this.id = 0;
-		this.is_activo = false;
-		this.porcentaje_descuento = 0;
-		this.puntos_necesarios = 0;
-		
 	}
 	
-	
+	public Descuento(int porcentaje_descuento, int puntos_necesarios) {
+		
+		Descuento.actual_id++;
+		this.id = Descuento.actual_id;
+		this.porcentaje_descuento = porcentaje_descuento;
+		this.puntos_necesarios = puntos_necesarios;
+		
+	}
+
 	public static ArrayList<Descuento> descuentosActivos(ArrayList<Descuento> descuentos) {
 		
 		ArrayList<Descuento> resultado = new ArrayList<>();
@@ -48,13 +52,13 @@ public class Descuento {
 		
 		int porcentaje_descuento = 0;
 		
-		for (Descuento descuento : descuentos) {
+		for (Descuento descuento : descuentos_actuales) {
 			
 			//Porcentaje descuento elegido como posible candidato
-			int por_desc_elegido = descuento_elegido.getPorcentaje_descuento();
+			int porc_desc_elegido = descuento_elegido.getPorcentaje_descuento();
 			
 			//Descuento porcentaje actual, pues está en la iteración del for
-			int por_desc_actual = descuento.getPorcentaje_descuento();
+			int porc_desc_actual = descuento.getPorcentaje_descuento();
 			
 			//Puntos del cliente
 			int pts_cliente = cliente.getPuntos();
@@ -63,7 +67,7 @@ public class Descuento {
 			int pts_desc_actual = descuento.getPuntos_necesarios();
 			
 			//El único descuento que más beneficie al cliente
-			if ( (por_desc_elegido < por_desc_actual) && (pts_cliente > pts_desc_actual) ) {
+			if ( (porc_desc_elegido < porc_desc_actual) && (pts_cliente > pts_desc_actual) ) {
 				
 				descuento_elegido = descuento;
 	
@@ -75,6 +79,14 @@ public class Descuento {
 			
 			porcentaje_descuento = descuento_elegido.getPorcentaje_descuento();
 			
+			//Le quitamos puntos al cliente, pues usó el descuento
+			int cliente_pts = cliente.getPuntos() - descuento_elegido.getPuntos_necesarios();
+			cliente.setPuntos(cliente_pts);
+			
+			System.out.println("El cliente : " + cliente.getNombre() + ", ha conseguido un jugoso descuento: " + porcentaje_descuento + " %");
+			System.out.println("Los puntos necesarios para acceder al descuento fueron: " + descuento_elegido.getPuntos_necesarios() + " puntos.");
+			System.out.println("Los puntos actuales del cliente son: " + cliente.getPuntos() + " puntos.");
+			System.out.println();
 		}
 		
 		return porcentaje_descuento;

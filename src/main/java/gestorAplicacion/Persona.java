@@ -1,9 +1,10 @@
 package gestorAplicacion;
 
 public class Persona {
+	
 	private String nombre;
 	private long cedula;
-	private int puntos = 0;
+	private int puntos;
 	
 	public Persona(String nombre, long cedula) {
 		this.nombre = nombre;
@@ -31,6 +32,14 @@ public class Persona {
 	}
 	
 	public void setPuntos(int puntos) {
-		this.puntos = puntos;
+		
+		if (puntos <= 0) {
+			this.puntos = 0;
+		}
+		
+		else {
+			this.puntos = puntos;
+		}
+		
 	}
 }

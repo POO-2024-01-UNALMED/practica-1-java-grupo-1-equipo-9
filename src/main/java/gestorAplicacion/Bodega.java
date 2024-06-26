@@ -2,19 +2,15 @@ package gestorAplicacion;
 import java.util.ArrayList;
 
 public class Bodega {
+	
 	private String nombre;
 	private String barrio;
+	private ArrayList<Producto> productos;
 	
-	//Se recomienda que al agregar algún producto a la lista se haga clonación profunda
-	//del objeto del producto, para el manejo del atributo cantidad del producto
-	//como vamos a trabajar con un solo atributo de cantidad, necesitamos saber la cantidad
-	//de productos que están disponibles y la cantidad de productos que compra el cliente
-	//en una orden
-	private ArrayList<Producto> productos = new ArrayList<Producto>();
-	
-	public Bodega(String nombre, String barrio) {
+	public Bodega(String nombre, String barrio, ArrayList<Producto> productos) {
 		this.nombre = nombre;
 		this.barrio = barrio;
+		this.productos = productos;
 	}
 
 	public String getNombre() {
@@ -41,9 +37,6 @@ public class Bodega {
 		this.productos = productos;
 	}
 	
-	public void agregarProducto(Producto producto) {
-		productos.add(producto);
-	}
 	
 	
 }

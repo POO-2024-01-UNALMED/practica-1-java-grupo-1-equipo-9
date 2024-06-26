@@ -2,6 +2,7 @@ package finanzas;
 
 import java.util.ArrayList;
 
+import DataTiempo.Tiempo;
 import gestorAplicacion.Orden;
 import gestorAplicacion.Producto;
 import gestorAplicacion.Supermercado;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 
 //Hora
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Ingreso {
 	
@@ -32,8 +34,8 @@ public class Ingreso {
 		this.id = Ingreso.getActual_id();
 	
 		
-		this.fecha = fechaActual();
-		this.hora = horaActual();
+		this.fecha = Tiempo.generarFechaActual();
+		this.hora = Tiempo.generarHoraActual();
 		
 		this.ganancia_total = ganancia_total;
 		this.orden = orden;
@@ -83,21 +85,7 @@ public class Ingreso {
 	}
 
 	
-	public String fechaActual() {
-		
-		String fecha = LocalDate.now().toString();
-		
-		return fecha;
-		
-	}
 	
-	public String horaActual() {
-		
-		String hora = LocalTime.now().toString();
-		
-		return hora;
-		
-	}
 
 	public String getFecha() {
 		return fecha;

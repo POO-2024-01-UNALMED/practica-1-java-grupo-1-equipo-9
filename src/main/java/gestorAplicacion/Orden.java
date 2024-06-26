@@ -1,5 +1,7 @@
 package gestorAplicacion;
 import java.util.ArrayList;
+
+import DataTiempo.Tiempo;
 import finanzas.Ingreso;
 import java.time.*;
 import recompensas.*;
@@ -28,8 +30,8 @@ public class Orden {
 		this.supermercado = supermercado;
 		this.empleado = vendedor;
 		this.cliente = comprador;
-		this.fecha = LocalDate.now().toString();
-		this.hora = LocalTime.now().toString();
+		this.fecha = Tiempo.generarFechaActual();
+		this.hora = Tiempo.generarHoraActual();
 		
 	}
 	
@@ -40,7 +42,7 @@ public class Orden {
 		float cobro_total = Producto.calcularCobroTotal(productos_listados);
 		
 		//Bonificar cliente
-		BonoCliente.bonificarCliente(cliente, productos_listados, promociones);
+		BonoCliente.bonificarCliente(cliente, productos_listados, cobro_total , promociones);
 		
 		//Calcular el porcentaje de descuento del cliente
 		int porcentaje_descuento = Descuento.calcularDescuento(cliente, descuentos);
@@ -63,6 +65,12 @@ public class Orden {
 		ArrayList<Ingreso> ingresos = supermercado.getArrayListIngresos();
 		ingresos.add(nuevo_ingreso);
 		supermercado.setIngresos(ingresos);
+		
+		
+		System.out.println("Hemos registrado con éxito la Orden para el supermercado: " + supermercado.getNombre());
+		System.out.println("Fecha: " + Tiempo.formatoFecha(nueva_orden.getFecha()));
+		System.out.println("Hora: " + Tiempo.formatoHora(nueva_orden.getHora()));
+	
 		
 	}
 	
@@ -130,5 +138,27 @@ public class Orden {
 	public void setSupermercado(Supermercado supermercado) {
 		this.supermercado = supermercado;
 	}
+
+
+	public String getFecha() {
+		return fecha;
+	}
+
+
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
+	}
+
+
+	public String getHora() {
+		return hora;
+	}
+
+
+	public void setHora(String hora) {
+		this.hora = hora;
+	}
+	
+	
 	
 }

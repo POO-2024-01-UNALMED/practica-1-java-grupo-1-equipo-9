@@ -14,7 +14,6 @@ import finanzas.Impuesto;
 import finanzas.Ingreso;
 import finanzas.TipoGasto;
 import recompensas.BonoCliente;
-import recompensas.BonoEmpleado;
 import recompensas.Descuento;
 import recompensas.PagoBonoEmpleado;
 
@@ -23,6 +22,7 @@ public class Supermercado {
 	
 	private String nombre;
 	private ArrayList<Empleado> empleados = new ArrayList<Empleado>();
+	private float salario_empleados;
 	private ArrayList<Bodega> bodegas = new ArrayList<Bodega>();
 	private ArrayList<Orden> ordenes = new ArrayList<Orden>();
 	private ArrayList<BonoCliente> promociones = new ArrayList<BonoCliente>();
@@ -37,10 +37,34 @@ public class Supermercado {
 	private ArrayList<Producto> productos;
 	
 	
-	public Supermercado(String nombre) {
+
+
+	public Supermercado(String nombre, ArrayList<Empleado> empleados, float salario_empleados,
+			ArrayList<Bodega> bodegas, ArrayList<Orden> ordenes, ArrayList<BonoCliente> promociones,
+			ArrayList<Descuento> descuentos, ArrayList<Ingreso> ingresos, float total_ingresos, ArrayList<Gasto> gastos,
+			float total_gastos, ArrayList<Deuda> deudas, float total_deuda, ArrayList<Surtidor> surtidores,
+			ArrayList<Producto> productos) {
+		
 		this.nombre = nombre;
+		this.empleados = empleados;
+		this.salario_empleados = salario_empleados;
+		this.bodegas = bodegas;
+		this.ordenes = ordenes;
+		this.promociones = promociones;
+		this.descuentos = descuentos;
+		this.ingresos = ingresos;
+		this.total_ingresos = total_ingresos;
+		this.gastos = gastos;
+		this.total_gastos = total_gastos;
+		this.deudas = deudas;
+		this.total_deuda = total_deuda;
+		this.surtidores = surtidores;
+		this.productos = productos;
 	}
-	
+
+
+
+	/*
 	public void abastecer(Surtidor surtidor, ArrayList<Producto> productos) {
 		
 		
@@ -122,6 +146,7 @@ public class Supermercado {
 		
 		
 	}
+	*/
 	
 
 	
@@ -238,8 +263,7 @@ public class Supermercado {
 	}
 	
 	
-	
-	
+
 	public float calcularTotalIngresos() {
 		
 		float resultado = 0f;
@@ -330,7 +354,6 @@ public class Supermercado {
 	}
 	
 	
-	
 	public ArrayList<Producto> getProductos() {
 		return productos;
 	}
@@ -360,6 +383,7 @@ public class Supermercado {
 		return promociones;
 	}
 	
+	/*
 	public void verificarVencimiento() {
 		for (Bodega bodega : this.getBodegas()) {
 			for (Unidad unidad : bodega.getProductos()) {
@@ -378,4 +402,5 @@ public class Supermercado {
 			}
 		}
 	}
+	*/
 }
