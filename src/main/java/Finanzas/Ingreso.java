@@ -2,7 +2,7 @@ package finanzas;
 
 import java.util.ArrayList;
 
-import DataTiempo.Tiempo;
+import herramientas.DataTiempo.Tiempo;
 import gestorAplicacion.Orden;
 import gestorAplicacion.Producto;
 import gestorAplicacion.Supermercado;

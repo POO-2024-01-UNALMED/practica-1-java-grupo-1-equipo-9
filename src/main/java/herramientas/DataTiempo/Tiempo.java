@@ -1,4 +1,4 @@
-package DataTiempo;
+package herramientas.DataTiempo;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -39,7 +39,7 @@ public class Tiempo {
 		DateTimeFormatter entradaFormato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate fechaData = LocalDate.parse(fechaStr, entradaFormato);
 
-        DateTimeFormatter salidaFormato = DateTimeFormatter.ofPattern("EEEE d MMMM 'de' yyyy");
+        DateTimeFormatter salidaFormato = DateTimeFormatter.ofPattern("EEEE d 'de' MMMM 'de' yyyy'.'");
         String fechaObtenida = fechaData.format(salidaFormato);
         String resultado = Character.toUpperCase(fechaObtenida.charAt(0)) + fechaObtenida.substring(1);
 

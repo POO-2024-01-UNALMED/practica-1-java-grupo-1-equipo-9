@@ -18,10 +18,11 @@ public class Producto{
 	private float precio_base_compra; //El precio precio_base_compra es el que normalmente debería encontrarse el producto cuando el supermercado le compra al surtidor.
 									  //Por ejemplo un tomate puede que normalmente valga $2.000 pero otras veces su precio será superior al esperado.
 
-	private int cantidad_comprar;
-	private int cantidad_venta;
+	private int cantidad_venta;  //Cantidad disponible para vender.
+	private int cantidad_compra; //Para abastecer el supermercado.
 	
 	private ArrayList<Unidad> unidades = new ArrayList<Unidad>(); //Lista de unidades del producto con codigo y fecha de vencimiento 
+
 	
 	public Producto(String nombre, TipoProducto tipo, float precio_venta, float precio_compra, float precio_base_compra) {
 		
@@ -33,7 +34,6 @@ public class Producto{
 		this.precio_compra = precio_compra;
 		this.precio_base_compra = precio_base_compra;
 		
-		
 	}
 	
 	//Información necesaria que se pasará desde el método agregarProductoCarrito() para después calcular el cobro total 
@@ -42,6 +42,7 @@ public class Producto{
 		this.precio_venta = precio_venta;
 		this.cantidad_venta = cantidad_venta;
 	}
+	
 	
 	
 	public static ArrayList<Producto> listarProductosPorTipo(TipoProducto tipoProducto, Supermercado supermercado) {
@@ -66,7 +67,8 @@ public class Producto{
 	
 	
 	public static Producto agregarProductoCarrito(Producto producto, int cantidadIngresada){
-		
+	
+	
 		boolean haySuficientesUnidades = producto.cantidadUnidades() >= cantidadIngresada;
 		Producto resultado = new Producto(producto.getTipo(), 0,0);
 	
@@ -86,8 +88,6 @@ public class Producto{
 					
 					unidadesdNoVencidas++;
 				
-			
-			
 					unidadesParaEliminar.add(unidad);
 					
 					//En caso de haber obtenido la cantidad de unidades esperadas para la venta
@@ -105,7 +105,6 @@ public class Producto{
 			}
 				
 			 
-		
 			//Sobreescribimos el valor del objeto al que hace referencia el apuntador "resultado"
 			//a los atributos cantidad_venta  y precio_venta
 			//posteriormente usamos esos datos para calcular el total a cobrar
@@ -154,6 +153,64 @@ public class Producto{
 	
 	}
 	
+	public static ArrayList<Producto> sugerirProductosEscasos(Supermercado supermercado){
+		
+		ArrayList<Producto> resultado = new ArrayList<Producto>();
+		
+		for (Bodega bodega: supermercado.getBodegas()) {
+			for (Producto producto : bodega.getProductos()) {
+				
+				if (producto.cantidadUnidades() == 0) {
+					resultado.add(producto);
+				}
+				
+			}
+		}
+		
+		return resultado;	
+		
+	}
+	
+	public static ArrayList<Producto> getTodosProductos(Supermercado supermercado){
+		
+		ArrayList<Producto> resultado = new ArrayList<Producto>();
+		
+		for (Bodega bodega: supermercado.getBodegas()) {
+			for (Producto producto : bodega.getProductos()) {
+				
+				resultado.add(producto);
+			
+			}
+		}
+		
+		return resultado;	
+		
+	}
+	
+	
+	public void asignarUnidadesCompra(int cantidadIngresada){
+		
+		(this).setCantidad_compra(cantidadIngresada);
+		
+	}
+	
+	
+	public static float calcularAbastecimiento(ArrayList<Producto> productos_listados) {
+		
+		float cobro_total = 0f;
+		
+		for (Producto producto : productos_listados) {
+			
+			cobro_total += producto.getPrecio_compra() * producto.getCantidad_compra();
+			
+		}
+		
+		System.out.println("El cobro total es: $" + cobro_total);
+		
+		return cobro_total;
+	
+	}
+	
 	
 	public static void ordenarProductoPrecioCompra(ArrayList<Producto> productos) {
 		
@@ -176,49 +233,6 @@ public class Producto{
 	}
 	
 	
-	public static ArrayList<Producto> sugerenciaEficiente(Supermercado supermercado){
-		
-		ArrayList<Producto> posibles_productos = new ArrayList<Producto>();
-		
-		ArrayList<Surtidor> surtidores  = supermercado.getSurtidores();
-		
-		for (Surtidor surtidor : surtidores) {
-			
-			
-			for (Producto producto : surtidor.getProductos() ) {
-				
-				//El producto actualmente está barato
-				boolean barato = Producto.productoBarato(producto);
-				
-				if (barato) {
-					
-					posibles_productos.add(producto);
-					
-				}
-				
-
-			}
-			
-			
-		}
-		
-		
-		//Ordenar los productos por precio de compra, de menor a mayor
-		Producto.ordenarProductoPrecioCompra(posibles_productos);
-	
-		
-		//En caso de que hayan más de 5 productos obtenidos, solo elegimos los 5 primeros más baratos
-		if (posibles_productos.size() > 5) {
-		
-			return (ArrayList<Producto>) posibles_productos.subList(0, 5);
-			
-		}
-		
-		else {
-			return posibles_productos;
-		}
-		
-	}
 	
 	
 	public int getId() {
@@ -287,14 +301,6 @@ public class Producto{
 		unidades.add(unidad);
 	}
 
-	public int getCantidad_comprar() {
-		return cantidad_comprar;
-	}
-
-	public void setCantidad_comprar(int cantidad_comprar) {
-		this.cantidad_comprar = cantidad_comprar;
-	}
-
 	public int getCantidad_venta() {
 		return cantidad_venta;
 	}
@@ -302,12 +308,21 @@ public class Producto{
 	public void setCantidad_venta(int cantidad_venta) {
 		this.cantidad_venta = cantidad_venta;
 	}
+
+	public int getCantidad_compra() {
+		return cantidad_compra;
+	}
+
+	public void setCantidad_compra(int cantidad_compra) {
+		this.cantidad_compra = cantidad_compra;
+	}
+
+
 	
 	
 	
 	
 
-	
 	
 	
 }

@@ -16,11 +16,10 @@ public class Empleado extends Persona{
 	private boolean activo = true;
 	private ArrayList<MetaEmpleado> metas;
 	
-	
-	
+
 	public Empleado(String nombre, long cedula) {
 		super(nombre, cedula);
-		this.actual_id++;
+		Empleado.actual_id++;
 		this.id = actual_id;
 	}
 

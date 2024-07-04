@@ -2,9 +2,9 @@ package gestorAplicacion;
 
 public class Persona {
 	
-	private String nombre;
-	private long cedula;
-	private int puntos;
+	protected String nombre;
+	protected long cedula;
+	protected int puntos;
 	
 	public Persona(String nombre, long cedula) {
 		this.nombre = nombre;

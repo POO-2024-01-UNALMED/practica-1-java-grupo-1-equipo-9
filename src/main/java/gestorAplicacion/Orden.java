@@ -1,7 +1,7 @@
 package gestorAplicacion;
 import java.util.ArrayList;
 
-import DataTiempo.Tiempo;
+import herramientas.DataTiempo.Tiempo;
 import finanzas.Ingreso;
 import java.time.*;
 import recompensas.*;
@@ -17,7 +17,6 @@ public class Orden {
 	private float precio_total;
 	private String fecha;
 	private String hora;
-	private float descuentos;
 	private Supermercado supermercado;
 	
 	
@@ -36,7 +35,7 @@ public class Orden {
 	}
 	
 	
-	public static void generarOrden(TipoOrden tipoOrden, Supermercado supermercado, Empleado vendedor , Cliente cliente, ArrayList<Producto> productos_listados, ArrayList<BonoCliente> promociones, ArrayList<Descuento> descuentos) {
+	public static void generarOrden(TipoOrden tipoOrden, Supermercado supermercado, Empleado vendedor, Cliente cliente, ArrayList<Producto> productos_listados, ArrayList<BonoCliente> promociones, ArrayList<Descuento> descuentos) {
 		
 		
 		float cobro_total = Producto.calcularCobroTotal(productos_listados);
@@ -126,12 +125,7 @@ public class Orden {
 	public void setPrecio_total(float precio_total) {
 		this.precio_total = precio_total;
 	}
-	public float getDescuentos() {
-		return descuentos;
-	}
-	public void setDescuentos(float descuentos) {
-		this.descuentos = descuentos;
-	}
+	
 	public Supermercado getSupermercado() {
 		return supermercado;
 	}

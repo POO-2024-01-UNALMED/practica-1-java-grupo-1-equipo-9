@@ -148,31 +148,25 @@ public class BonoCliente {
 		return id;
 	}
 
-
 	public void setId(int id) {
 		this.id = id;
 	}
-
 
 	public boolean isIs_activo() {
 		return is_activo;
 	}
 
-
 	public void setIs_activo(boolean is_activo) {
 		this.is_activo = is_activo;
 	}
-
 
 	public ArrayList<RequisitoPromocion> getRequisitos() {
 		return requisitos;
 	}
 
-
 	public void setRequisitos(ArrayList<RequisitoPromocion> requisitos) {
 		this.requisitos = requisitos;
 	}
-
 
 	public int getPuntos_obtenidos() {
 		return puntos_obtenidos;
@@ -182,8 +176,6 @@ public class BonoCliente {
 	public void setPuntos_obtenidos(int puntos_obtenidos) {
 		this.puntos_obtenidos = puntos_obtenidos;
 	}
-	
-	
 	
 
 }

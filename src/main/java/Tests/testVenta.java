@@ -12,7 +12,6 @@ import gestorAplicacion.Empleado;
 import gestorAplicacion.Orden;
 import gestorAplicacion.Producto;
 import gestorAplicacion.Supermercado;
-import gestorAplicacion.Surtidor;
 import gestorAplicacion.TipoOrden;
 import gestorAplicacion.TipoProducto;
 import gestorAplicacion.Unidad;
@@ -146,7 +145,6 @@ public class testVenta {
 		Cliente cliente2 = new Cliente("Sasfasd", 7567878);
 		Cliente cliente3 = new Cliente("Marcelo agáchate y conócelo", 78787878);
 		cliente3.setPuntos(20000);
-
 		//Fin Clientes
 		
 		//Ordenes
@@ -210,7 +208,7 @@ public class testVenta {
 		//Supermercado
 		Supermercado elPaisa = new Supermercado("El paisa", empleadosA, 1200, bodegasA, ordenes , 
 				promociones1, descuentos1, new ArrayList<Ingreso>(), 0, new ArrayList<Gasto>(), 0, 
-				new ArrayList<Deuda>(), 0, new ArrayList<Surtidor>(), productosA);
+				new ArrayList<Deuda>(), 0, productosA);
 		
 		//Fin Supermercado
 		

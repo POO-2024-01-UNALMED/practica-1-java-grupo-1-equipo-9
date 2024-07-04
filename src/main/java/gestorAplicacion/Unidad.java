@@ -4,6 +4,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -53,8 +54,28 @@ public class Unidad {
 		this.tipo = tipo;
 	}
 	
+	public static void abastecerUnidadesProducto(ArrayList<Producto> productos) {
+		
+		for(Producto producto: productos) {
+		
+			//Creamos las nuevas unidades con su fecha de vencimiento de forma automática.
+			for (int i = 0 ; i < producto.getCantidad_compra(); i++) {
+				
+				Unidad nueva_unidad = new Unidad(producto);
+				
+			}
+			
+			//Quitamos la cantidad de unidades que se deben comprar (ya se compraron).
+			producto.setCantidad_compra(0);
+			
+		}
+		
+		System.out.println("¡Todo bien, todo bonito!");
+		System.out.println("Unidades de los productos solicitados abastecidos!!!");
+		System.out.println();
+		
+	}
 
-	
 	//Devuelve una fecha al azar, comprendida entre la fecha actual y dos meses en el futuro
 	public static String generarFechaVencimiento() {
 		
@@ -85,7 +106,5 @@ public class Unidad {
 		long dias = ChronoUnit.DAYS.between(hoy, venc);
 		return dias;
 	}
-	
-	
-	
+
 }

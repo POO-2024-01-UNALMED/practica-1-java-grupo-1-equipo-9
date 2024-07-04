@@ -33,16 +33,12 @@ public class Supermercado {
 	private float total_gastos;
 	private ArrayList<Deuda> deudas;
 	private float total_deuda;
-	private ArrayList<Surtidor> surtidores; 
 	private ArrayList<Producto> productos;
 	
-	
-
-
 	public Supermercado(String nombre, ArrayList<Empleado> empleados, float salario_empleados,
 			ArrayList<Bodega> bodegas, ArrayList<Orden> ordenes, ArrayList<BonoCliente> promociones,
 			ArrayList<Descuento> descuentos, ArrayList<Ingreso> ingresos, float total_ingresos, ArrayList<Gasto> gastos,
-			float total_gastos, ArrayList<Deuda> deudas, float total_deuda, ArrayList<Surtidor> surtidores,
+			float total_gastos, ArrayList<Deuda> deudas, float total_deuda,
 			ArrayList<Producto> productos) {
 		
 		this.nombre = nombre;
@@ -58,7 +54,6 @@ public class Supermercado {
 		this.total_gastos = total_gastos;
 		this.deudas = deudas;
 		this.total_deuda = total_deuda;
-		this.surtidores = surtidores;
 		this.productos = productos;
 	}
 
@@ -148,8 +143,31 @@ public class Supermercado {
 	}
 	*/
 	
+	public boolean supermercadoPuedeComprarProductos(float total_pagar) {
+		
+		boolean resultado = false;
+		
+		float supermercado_dinero = this.total_ingresos;
+		
+		if (supermercado_dinero >= total_pagar) {
+			resultado = true;
+			
+			System.out.println("El supermercado: " + this.nombre + " ha pagado: $" + total_pagar + " en total");
+			float ingresos_actuales = this.total_ingresos - total_pagar;
+			this.setTotal_ingresos(ingresos_actuales);
+			System.out.println("El saldo actual del supermercado es: " + this.getTotal_ingresos());
+			System.out.println("");
+			
+		}
+		
+		else {
+			System.out.println("El supermercado no tiene suficiente dinero para pagar los productos :,(");
+		}
+		
+		return resultado;
+		
+	}
 
-	
 	
 	public static void pagarImpuestos(ArrayList<Impuesto> impuestos, float ingresos, Supermercado supermercado) {
 		  	
@@ -162,37 +180,7 @@ public class Supermercado {
 	}
 	
 	
-	
-	public static String getFechaActual() {
-		
-		LocalDate fechaActual = LocalDate.now();
 
-        // Definir el formato para la fecha
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-        // Formatear la fecha como string
-        String fecha = fechaActual.format(formato);
-        
-        return fecha;
-		
-	}
-	
-	
-	public static String getHoraActual() {
-		
-		LocalTime horaActual = LocalTime.now();
-
-        // Definir el formato para la hora
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("HH:mm:ss");
-
-        // Formatear la fecha como string
-        String hora = horaActual.format(formato);
-        
-        return hora;
-		
-	}
-	
-	
 	public void agregarIngreso(Ingreso ingreso) {
 		
 		this.ingresos.add(ingreso);
@@ -292,9 +280,16 @@ public class Supermercado {
 	}
 
 	public void setTotal_ingresos(float total_ingresos) {
-		this.total_ingresos = total_ingresos;
+		
+		if (total_ingresos < 0 ) {
+			this.total_ingresos = 0;
+		}
+		
+		else {
+			this.total_ingresos = total_ingresos;
+		}
+		
 	}
-	
 	
 	
 	public float getTotal_deuda() {
@@ -362,13 +357,6 @@ public class Supermercado {
 		this.productos = productos;
 	}
 
-	public ArrayList<Surtidor> getSurtidores() {
-		return surtidores;
-	}
-
-	public void setSurtidores(ArrayList<Surtidor> surtidores) {
-		this.surtidores = surtidores;
-	}
 
 	public void quitarEmpleado(Empleado empleado) {
 		for (int i = 0;i<empleados.size();i++) {
