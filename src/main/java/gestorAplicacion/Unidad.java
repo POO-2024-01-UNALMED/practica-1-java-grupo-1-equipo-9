@@ -1,33 +1,31 @@
 package gestorAplicacion;
+import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Unidad {
 	
-	public static int actual_codigo;
+	public static int actual_codigo = 0;
 	private int codigo;
 	private String vencimiento;
-	private Producto tipo;
-
-
-	public Unidad(Producto tipo) {
+	private Producto tipo_producto;
+	private Bodega bodega;
+	private ArrayList<Descuento> descuentos = new ArrayList<>();
+	
+	public Unidad(String vencimiento, Producto tipo, Bodega ubicacion) {
 		
 		Unidad.actual_codigo += 1; 
-		
-		//El código se genera automaticamente
-		this.codigo = Unidad.actual_codigo;
-		
-		this.vencimiento = generarFechaVencimiento();
-		
-		this.tipo = tipo;
+		codigo = Unidad.actual_codigo;
+		this.vencimiento = vencimiento;
+		tipo_producto = tipo;
+		bodega = ubicacion;
 		tipo.agregarUnidad(this);
-		
+		ubicacion.agregarProducto(this);
 	}
 
 	public int getCodigo() {
@@ -47,50 +45,40 @@ public class Unidad {
 	}
 
 	public Producto getTipo() {
-		return tipo;
+		return tipo_producto;
 	}
 
 	public void setTipo(Producto tipo) {
-		this.tipo = tipo;
+		tipo_producto = tipo;
 	}
 	
-	public static void abastecerUnidadesProducto(ArrayList<Producto> productos) {
-		
-		for(Producto producto: productos) {
-		
-			//Creamos las nuevas unidades con su fecha de vencimiento de forma automática.
-			for (int i = 0 ; i < producto.getCantidad_compra(); i++) {
-				
-				Unidad nueva_unidad = new Unidad(producto);
-				
-			}
-			
-			//Quitamos la cantidad de unidades que se deben comprar (ya se compraron).
-			producto.setCantidad_compra(0);
-			
-		}
-		
-		System.out.println("¡Todo bien, todo bonito!");
-		System.out.println("Unidades de los productos solicitados abastecidos!!!");
-		System.out.println();
-		
+	public Bodega getUbicacion() {
+		return bodega;
 	}
 
+	public void setUbicacion(Bodega ubicacion) {
+		bodega = ubicacion;
+	}
+	
 	//Devuelve una fecha al azar, comprendida entre la fecha actual y dos meses en el futuro
 	public static String generarFechaVencimiento() {
 		
 		LocalDate fechaActual = LocalDate.now();
         
-        // Fecha máxima (3 meses en el futuro)
-        LocalDate fechaMaxima = fechaActual.plus(3, ChronoUnit.MONTHS);
+        // Fecha máxima (dos meses en el futuro)
+        LocalDate fechaMaxima = fechaActual.plus(2, ChronoUnit.MONTHS);
  
-
+        
+        //Número aleatorio de días entre 0 y el número de días entre la fecha actual y la fecha máxima
         long dias = ChronoUnit.DAYS.between(fechaActual, fechaMaxima);
         long diasAleatorios = ThreadLocalRandom.current().nextLong(0, dias + 1);
         
         // Generar la fecha aleatoria sumando los días aleatorios a la fecha actual
         LocalDate fechaAleatoria = fechaActual.plusDays(diasAleatorios);
-       
+        
+        //Agregamos otros mes más
+        fechaAleatoria.plusDays(30);
+        
         //Formato fecha
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String fecha = fechaAleatoria.format(formato);
@@ -101,10 +89,54 @@ public class Unidad {
 
 	public long diasParaVencimiento() {
 		LocalDate hoy = LocalDate.now();
-		DateTimeFormatter frm = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH);
+		DateTimeFormatter frm = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
 		LocalDate venc = LocalDate.parse(vencimiento, frm);
 		long dias = ChronoUnit.DAYS.between(hoy, venc);
 		return dias;
 	}
+	
+	public Descuento calcularOferta() {
+		Descuento descuento_final = null;
+		int valor_descuento = 0;
+		if (descuentos.size() != 0) {
+			for (Descuento descuento : descuentos) {
+				if (descuento.getPorcentaje_descuento() > valor_descuento) {
+					valor_descuento = descuento.getPorcentaje_descuento();
+					descuento_final = descuento;
+				}
+			}
+		}
+		return descuento_final;
+	}
+	
+	public float calcularPrecio() {
+		Descuento descuento = calcularOferta();
+		if (descuento != null)
+			return getTipo().getPrecio() * (100 - descuento.getPorcentaje_descuento()) / 100;
+		else
+			return getTipo().getPrecio();
+	}
+	
+	public boolean isOferta() {
+		boolean oferta = false;
+		if (descuentos.size() != 0)
+			oferta = true;
+		return oferta;
+	}
 
+	public ArrayList<Descuento> getDescuentos() {
+		return descuentos;
+	}
+
+	public void setDescuentos(ArrayList<Descuento> descuentos) {
+		this.descuentos = descuentos;
+	}
+	
+	public void agregarDescuento(Descuento descuento) {
+		this.descuentos.add(descuento);
+	}
+	
+	public void eliminarDescuento(Descuento descuento) {
+		this.descuentos.remove(descuento);
+	}
 }

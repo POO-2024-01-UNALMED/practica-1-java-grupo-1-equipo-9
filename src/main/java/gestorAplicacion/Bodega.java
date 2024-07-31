@@ -2,15 +2,13 @@ package gestorAplicacion;
 import java.util.ArrayList;
 
 public class Bodega {
-	
 	private String nombre;
 	private String barrio;
-	private ArrayList<Producto> productos;
+	private ArrayList<Unidad> productos = new ArrayList<>();
 	
-	public Bodega(String nombre, String barrio, ArrayList<Producto> productos) {
+	public Bodega(String nombre, String barrio) {
 		this.nombre = nombre;
 		this.barrio = barrio;
-		this.productos = productos;
 	}
 
 	public String getNombre() {
@@ -29,13 +27,20 @@ public class Bodega {
 		this.barrio = barrio;
 	}
 
-	public ArrayList<Producto> getProductos() {
+	public ArrayList<Unidad> getProductos() {
 		return productos;
 	}
 
-	public void setProductos(ArrayList<Producto> productos) {
+	public void setProductos(ArrayList<Unidad> productos) {
 		this.productos = productos;
 	}
 	
+	public void agregarProducto(Unidad unidad) {
+		productos.add(unidad);
+	}
+	
+	public void quitarProducto(Unidad unidad) {
+		productos.remove(unidad);
+	}
 	
 }
