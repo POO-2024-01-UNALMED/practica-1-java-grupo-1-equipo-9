@@ -4,6 +4,7 @@ import java.util.ArrayList;
 public class Bodega {
 	private String nombre;
 	private String barrio;
+	private Supermercado supermercado;
 	private ArrayList<Unidad> productos = new ArrayList<>();
 	
 	public Bodega(String nombre, String barrio) {
@@ -27,6 +28,14 @@ public class Bodega {
 		this.barrio = barrio;
 	}
 
+	public Supermercado getSupermercado() {
+		return supermercado
+	}
+	
+	public void setSupermercado(Supermercado supermercado) {
+		this.supermercado = supermercado;
+	}
+	
 	public ArrayList<Unidad> getProductos() {
 		return productos;
 	}
