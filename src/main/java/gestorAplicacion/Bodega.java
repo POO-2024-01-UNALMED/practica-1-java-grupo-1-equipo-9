@@ -8,7 +8,7 @@ public class Bodega {
 	private ArrayList<Unidad> productos = new ArrayList<>();
 	private ArrayList<ArrayList<Unidad>> promos = new ArrayList<>();
 	
-	public Bodega(String nombre, String barrio) {
+	public Bodega(String nombre, String barrio, Supermercado supermercado) {
 		this.nombre = nombre;
 		this.barrio = barrio;
 	}

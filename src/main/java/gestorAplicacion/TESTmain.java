@@ -1,9 +1,12 @@
 package gestorAplicacion;
 
 import gestorAplicacion.*;
-
+import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class TESTmain {
 
@@ -12,24 +15,26 @@ public class TESTmain {
 		Supermercado sup1 = new Supermercado("MercaChicles");
 		Empleado emp1 = new Empleado("Pepe", 12345, sup1, 2000000);
 		Cliente cli1 = new Cliente("Jaimito", 23456);
-		Bodega bod1 = new Bodega("Bodega Principal", "Barrio Tapitas");
-		Bodega bod2 = new Bodega("Bodega Secundaria", "Barrio la Piedrita");
+		Bodega bod1 = new Bodega("Bodega Principal", "Cordoba", sup1);
+		Bodega bod2 = new Bodega("Bodega Secundaria", "La Piedra", sup1);
 		sup1.agregarEmpleado(emp1);
 		sup1.agregarBodega(bod1);
 		sup1.agregarBodega(bod2);
-		Producto prod1 = new Producto("Leche Coranta", TipoProducto.ALIMENTO, 3000, 2000);
+		Producto prod1 = new Producto("Leche Colanta", TipoProducto.ALIMENTO, 3000, 2000);
 		Producto prod2 = new Producto("Vodka Absoluti", TipoProducto.BEBIDA, 90000, 50000);
-		Producto prod3 = new Producto("Leche Arqueria", TipoProducto.ALIMENTO, 3100, 2100);
-		Unidad uni1 = new Unidad("2024-04-28", prod1, bod1);
+		Producto prod3 = new Producto("Leche Alqueria", TipoProducto.ALIMENTO, 3100, 2100);
+		Unidad uni1 = new Unidad("2024-09-20", prod1, bod1);
 		Unidad uni2 = new Unidad("2024-08-10", prod1, bod1);
-		Unidad uni3 = new Unidad("2024-06-05", prod1, bod2);
+		Unidad uni3 = new Unidad("2024-10-05", prod1, bod2);
 		
-		Unidad uni4 = new Unidad("2024-05-30", prod2, bod2);
+		Unidad uni4 = new Unidad("2024-09-30", prod2, bod2);
 		Unidad uni5 = new Unidad("2024-07-08", prod2, bod1);
-		Unidad uni6 = new Unidad("2024-05-27", prod2, bod1);
+		Unidad uni6 = new Unidad("2024-11-27", prod2, bod1);
 		
-		Unidad uni7 = new Unidad("2024-06-08", prod3, bod1);
-
+		Unidad uni7 = new Unidad("2024-12-08", prod3, bod2);
+		Unidad uni8 = new Unidad("2024-10-20", prod3, bod1);
+		Unidad uni9 = new Unidad("2024-09-27", prod3, bod2);
+		Unidad uni10 = new Unidad("2025-01-30", prod3, bod1);
 		
 /*	//Prueba Verificar dias
 		System.out.println("-- Iniciando Prueba de dias para vencer... --");
@@ -57,7 +62,7 @@ public class TESTmain {
 /*	//Prueba Descuentos
 	//	Descuento desc1 = new Descuento("Descuento Alimentos", TipoProducto.ALIMENTO, 25);
 		Descuento desc2 = new Descuento("Descuento Leche Coranta", prod1, 30);
-*/		Descuento desc3 = new Descuento("Descuento cerca de vencer", uni2, 50);
+*/		//Descuento desc3 = new Descuento("Descuento cerca de vencer", uni2, 50);
 //Prueba Orden (FUNCIONALIDAD 1)---------------------------------------------------------------------------------------
 		Orden orden1 = new Orden(sup1, emp1, cli1);
 		ArrayList<Producto> lista1 = sup1.productosPorTipo(TipoProducto.ALIMENTO);
@@ -145,5 +150,58 @@ public class TESTmain {
 		
 //Prueba Manejo de Inventario (FUNCIONALIDAD 2)-----------------------------------------------------------------------------
 		sup1.verificarVencimiento(15);
+	
+
+
+//__________________________________________________________________________________________________________________________________________________________________________________________________________
+
+	Scanner scanner = new Scanner(System.in);
+	
+	System.out.println("BIENVENIDO\n¿Qué desa hacer?");
+	System.out.println("1. Generar orden.\n2. Administrar productos proximos a vencer.");
+	System.out.print("Ingrese el numero de la opcion que desees:");
+	int eleccion = scanner.nextInt();
+	//if (eleccion == 1) {
+		
+	//} 
+	
+	if (eleccion == 2) {
+		
+		//System.out.print("Nota: ingrese 000 para ir al menú anterior.");
+		System.out.print("Ingrese los dias para la busqueda:");
+		int eleccion1 = scanner.nextInt();
+		
+		ArrayList<Bodega> bodegas = sup1.getBodegas();
+		ArrayList<Unidad> unidades = new ArrayList<Unidad>();
+		ArrayList<Unidad> avencer = new ArrayList<Unidad>();
+		for (int i=0 ; i < bodegas.size(); i++) {
+			
+			unidades.addAll(bodegas.get(i).getProductos());
+			
+		}
+		
+		for (int i=0; i < unidades.size(); i++) {
+			long dias = unidades.get(i).diasParaVencimiento();
+			if (dias <= eleccion1) {
+				avencer.add(unidades.get(i));
+			}
+		}
+		
+		Collections.sort(avencer, new Comparator<Unidad>() {
+			@Override
+			public int compare(Unidad u1, Unidad u2) {
+                return Long.compare(u1.diasParaVencimiento(), u2.diasParaVencimiento());
+            }
+		});
+		
+		System.out.println("Estos son los productos vencidos o proximos a vencer:");
+		for (int i=0; i<avencer.size(); i++) {
+			System.out.println(avencer.get(i));
+		}
+		
+		
 	}
-}
+	
+}}
+
+
