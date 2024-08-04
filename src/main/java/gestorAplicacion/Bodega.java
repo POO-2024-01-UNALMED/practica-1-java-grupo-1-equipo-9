@@ -6,7 +6,7 @@ public class Bodega {
 	private String barrio;
 	private Supermercado supermercado;
 	private ArrayList<Unidad> productos = new ArrayList<>();
-	private ArrayList<Arraylist<Unidad>> promos = new ArrayList<>();
+	private ArrayList<ArrayList<Unidad>> promos = new ArrayList<>();
 	
 	public Bodega(String nombre, String barrio) {
 		this.nombre = nombre;
@@ -30,7 +30,7 @@ public class Bodega {
 	}
 
 	public Supermercado getSupermercado() {
-		return supermercado
+		return supermercado;
 	}
 	
 	public void setSupermercado(Supermercado supermercado) {
@@ -49,11 +49,11 @@ public class Bodega {
 		productos.add(unidad);
 	}
 	
-	public ArrayList<Arraylist<Unidad>> getPromos() {
-		return Promos;
+	public ArrayList<ArrayList<Unidad>> getPromos() {
+		return promos;
 	}
 	
-	public void setPromos(ArrayList<Arraylist<Unidad>> promos) {
+	public void setPromos(ArrayList<ArrayList<Unidad>> promos) {
 		this.promos = promos;
 	}
 	
