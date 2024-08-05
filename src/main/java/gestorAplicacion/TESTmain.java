@@ -159,7 +159,7 @@ public class TESTmain {
 	
 	System.out.println("BIENVENIDO\n¿Qué desa hacer?");
 	System.out.println("1. Generar orden.\n2. Administrar productos proximos a vencer.");
-	System.out.print("Ingrese el numero de la opción que desees: ");
+	System.out.print("Ingrese el numero de la opción que desea: ");
 	int eleccion = scanner.nextInt();
 	//if (eleccion == 1) {
 		
@@ -209,6 +209,32 @@ public class TESTmain {
 				System.out.println("Nombre: " + avencer.get(i).getTipo().getNombre() + ", Codigo: " + avencer.get(i).getCodigo() + ", Ubicacion: "+ avencer.get(i).getUbicacion().getNombre() +", Dias para vencer: " + avencer.get(i).diasParaVencimiento());
 			}
 		}
+		
+		System.out.println("\nProductos disponibles para hacerle descuentos:");
+		
+		for (int i=0; i<avencer.size(); i++) {
+			
+			if( avencer.get(i).diasParaVencimiento() > 0 ) {
+				
+				System.out.println(" Nombre: " + avencer.get(i).getTipo().getNombre() + ", Codigo: " + avencer.get(i).getCodigo() + ", Dias para vencer: " + avencer.get(i).diasParaVencimiento());
+				if (avencer.get(i).getDescuentos().size() == 0) {
+					System.out.print("   No tiene descuentos disponibles ¿desea crear uno?\n   1.SI\n   2.NO\n   Ingrese el numero de la opción que desea: ");
+					int eleccion2 = scanner.nextInt();
+					if(eleccion2 == 1) {
+						System.out.println("(Se crea el descuento)");
+					}
+				}
+				
+				else{
+					System.out.println("Descuentos disponibles: " + avencer.get(i).getDescuentos());
+				}
+				
+				
+			}
+			
+		}
+		
+		
 		
 		
 	}
