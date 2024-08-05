@@ -27,10 +27,6 @@ public class Unidad {
 		tipo.agregarUnidad(this);
 		ubicacion.agregarProducto(this);
 	}
-	
-	public String toString() {
-        return "Nombre: " + tipo_producto.getNombre() + ", Codigo: " + codigo + ", Ubicacion: "+ this.getUbicacion().getNombre() +", Dias para vencer: " + this.diasParaVencimiento();
-    }
 
 	public int getCodigo() {
 		return codigo;

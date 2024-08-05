@@ -24,7 +24,7 @@ public class TESTmain {
 		Producto prod2 = new Producto("Vodka Absoluti", TipoProducto.BEBIDA, 90000, 50000);
 		Producto prod3 = new Producto("Leche Alqueria", TipoProducto.ALIMENTO, 3100, 2100);
 		Unidad uni1 = new Unidad("2024-09-20", prod1, bod1);
-		Unidad uni2 = new Unidad("2024-08-10", prod1, bod1);
+		Unidad uni2 = new Unidad("2024-08-01", prod1, bod1);
 		Unidad uni3 = new Unidad("2024-10-05", prod1, bod2);
 		
 		Unidad uni4 = new Unidad("2024-09-30", prod2, bod2);
@@ -195,8 +195,17 @@ public class TESTmain {
 		});
 		
 		System.out.println("Estos son los productos vencidos o proximos a vencer:");
+		
 		for (int i=0; i<avencer.size(); i++) {
-			System.out.println(avencer.get(i));
+			
+			if( avencer.get(i).diasParaVencimiento() <= 0 ) {
+				
+				System.out.println("Nombre: " + avencer.get(i).getTipo().getNombre() + ", Codigo: " + avencer.get(i).getCodigo() + ", Ubicación: " + avencer.get(i).getUbicacion().getNombre() + ", VENCIDO");
+			}
+			
+			else { 
+				System.out.println("Nombre: " + avencer.get(i).getTipo().getNombre() + ", Codigo: " + avencer.get(i).getCodigo() + ", Ubicacion: "+ avencer.get(i).getUbicacion().getNombre() +", Dias para vencer: " + avencer.get(i).diasParaVencimiento());
+			}
 		}
 		
 		
