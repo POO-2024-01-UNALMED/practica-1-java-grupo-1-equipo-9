@@ -159,7 +159,7 @@ public class TESTmain {
 	
 	System.out.println("BIENVENIDO\n¿Qué desa hacer?");
 	System.out.println("1. Generar orden.\n2. Administrar productos proximos a vencer.");
-	System.out.print("Ingrese el numero de la opcion que desees:");
+	System.out.print("Ingrese el numero de la opción que desees: ");
 	int eleccion = scanner.nextInt();
 	//if (eleccion == 1) {
 		
@@ -168,7 +168,7 @@ public class TESTmain {
 	if (eleccion == 2) {
 		
 		//System.out.print("Nota: ingrese 000 para ir al menú anterior.");
-		System.out.print("Ingrese los dias para la busqueda:");
+		System.out.print("Ingrese los días para la busqueda: ");
 		int eleccion1 = scanner.nextInt();
 		
 		ArrayList<Bodega> bodegas = sup1.getBodegas();
@@ -201,6 +201,8 @@ public class TESTmain {
 			if( avencer.get(i).diasParaVencimiento() <= 0 ) {
 				
 				System.out.println("Nombre: " + avencer.get(i).getTipo().getNombre() + ", Codigo: " + avencer.get(i).getCodigo() + ", Ubicación: " + avencer.get(i).getUbicacion().getNombre() + ", VENCIDO");
+				avencer.get(i).getUbicacion().quitarProducto(avencer.get(i));
+				
 			}
 			
 			else { 
