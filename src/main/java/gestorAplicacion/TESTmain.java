@@ -20,9 +20,15 @@ public class TESTmain {
 		sup1.agregarEmpleado(emp1);
 		sup1.agregarBodega(bod1);
 		sup1.agregarBodega(bod2);
-		Producto prod1 = new Producto("Leche Colanta", TipoProducto.ALIMENTO, 3000, 2000);
-		Producto prod2 = new Producto("Vodka Absoluti", TipoProducto.BEBIDA, 90000, 50000);
-		Producto prod3 = new Producto("Leche Alqueria", TipoProducto.ALIMENTO, 3100, 2100);
+		Producto prod1 = new Producto("leche Colanta", TipoProducto.ALIMENTO, 3000, 2000);
+		Producto prod2 = new Producto("vodka Absoluti", TipoProducto.BEBIDA, 90000, 50000);
+		Producto prod3 = new Producto("leche Alqueria", TipoProducto.ALIMENTO, 3100, 2100);
+		Producto prod4 = new Producto("detergente Fav", TipoProducto.ASEO, 6500, 5000);
+		Producto prod5 = new Producto("jabón Dove", TipoProducto.CUIDADOPERSONAL, 18900, 13450);
+		Producto prod6 = new Producto("cuido Dog Chow", TipoProducto.MASCOTA, 125000, 98000);
+		Producto prod7 = new Producto("spray Raid", TipoProducto.OTRO, 17000, 15100);
+		Producto prod8 = new Producto("cepillo Pro 425", TipoProducto.CUIDADOPERSONAL, 4700, 3000);
+		
 		Unidad uni1 = new Unidad("2024-09-20", prod1, bod1);
 		Unidad uni2 = new Unidad("2024-08-01", prod1, bod1);
 		Unidad uni3 = new Unidad("2024-10-05", prod1, bod2);
@@ -35,6 +41,32 @@ public class TESTmain {
 		Unidad uni8 = new Unidad("2024-10-20", prod3, bod1);
 		Unidad uni9 = new Unidad("2024-09-27", prod3, bod2);
 		Unidad uni10 = new Unidad("2025-01-30", prod3, bod1);
+		
+		Unidad uni11 = new Unidad("2026-02-25", prod4, bod1);
+		Unidad uni12 = new Unidad("2026-02-25", prod4, bod1);
+		Unidad uni13 = new Unidad("2026-02-25", prod4, bod2);
+		Unidad uni14 = new Unidad("2026-02-25", prod4, bod2);
+		
+		Unidad uni15 = new Unidad("2025-08-06", prod5, bod1);
+		Unidad uni16 = new Unidad("2025-08-06", prod5, bod1);
+		Unidad uni17 = new Unidad("2025-04-30", prod5, bod2);
+		
+		Unidad uni18 = new Unidad("2024-12-31", prod6, bod1);
+		Unidad uni19 = new Unidad("2024-12-31", prod6, bod2);
+		Unidad uni20 = new Unidad("2025-01-30", prod6, bod2);
+		Unidad uni21 = new Unidad("2025-01-30", prod6, bod1);
+		Unidad uni22 = new Unidad("2025-06-10", prod6, bod2);
+		
+		Unidad uni23 = new Unidad("2030-01-01", prod7, bod1);
+		Unidad uni24 = new Unidad("2030-01-01", prod7, bod1);
+		Unidad uni25 = new Unidad("2030-01-01", prod7, bod2);
+		Unidad uni26 = new Unidad("2030-01-01", prod7, bod2);
+		
+		Unidad uni27 = new Unidad("2025-03-25", prod8, bod1);
+		Unidad uni28 = new Unidad("2025-03-25", prod8, bod1);
+		Unidad uni29 = new Unidad("2025-05-01", prod8, bod2);
+		Unidad uni30 = new Unidad("2025-05-01", prod8, bod2);
+		Unidad uni31 = new Unidad("2025-07-10", prod8, bod1);
 		
 /*	//Prueba Verificar dias
 		System.out.println("-- Iniciando Prueba de dias para vencer... --");
@@ -210,13 +242,13 @@ public class TESTmain {
 			}
 		}
 		
-		System.out.println("\nProductos disponibles para hacerle descuentos:");
+		System.out.println("______________________________________________________________________________________________________\nProductos disponibles para hacerle descuentos:");
 		
 		for (int i=0; i<avencer.size(); i++) {
 			
 			if( avencer.get(i).diasParaVencimiento() > 0 ) {
 				
-				System.out.println(" Nombre: " + avencer.get(i).getTipo().getNombre() + ", Codigo: " + avencer.get(i).getCodigo() + ", Dias para vencer: " + avencer.get(i).diasParaVencimiento());
+				System.out.println("______________________________________________________________________________________________________\nNombre: " + avencer.get(i).getTipo().getNombre() + ", Codigo: " + avencer.get(i).getCodigo() + ", Dias para vencer: " + avencer.get(i).diasParaVencimiento());
 				if (avencer.get(i).getDescuentos().size() == 0) {
 					System.out.print("   No tiene descuentos disponibles ¿desea crear uno?\n   1.SI\n   2.NO\n   Ingrese el numero de la opción que desea: ");
 					int eleccion2 = scanner.nextInt();
