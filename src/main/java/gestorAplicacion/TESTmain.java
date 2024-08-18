@@ -20,7 +20,7 @@ public class TESTmain {
 		sup1.agregarEmpleado(emp1);
 		sup1.agregarBodega(bod1);
 		sup1.agregarBodega(bod2);
-		Producto prod1 = new Producto("leche Colanta", TipoProducto.ALIMENTO, 3000, 2000);
+		Producto prod1 = new Producto("leche Colanta", TipoProducto.BEBIDA, 3000, 2000);
 		Producto prod2 = new Producto("vodka Absoluti", TipoProducto.BEBIDA, 90000, 50000);
 		Producto prod3 = new Producto("leche Alqueria", TipoProducto.ALIMENTO, 3100, 2100);
 		Producto prod4 = new Producto("detergente Fav", TipoProducto.ASEO, 6500, 5000);
@@ -33,7 +33,7 @@ public class TESTmain {
 		Unidad uni2 = new Unidad("2024-08-01", prod1, bod1);
 		Unidad uni3 = new Unidad("2024-10-05", prod1, bod2);
 		
-		System.out.println("----------numero unidades = " + sup1.numeroUnidades(prod8));
+		//System.out.println("----------numero unidades = " + sup1.numeroUnidades(prod8));
 		
 		Unidad uni4 = new Unidad("2024-09-30", prod2, bod2);
 		Unidad uni5 = new Unidad("2024-07-08", prod2, bod1);
@@ -68,7 +68,13 @@ public class TESTmain {
 		Unidad uni28 = new Unidad("2025-03-25", prod8, bod1);
 		Unidad uni29 = new Unidad("2025-05-01", prod8, bod2);
 		Unidad uni30 = new Unidad("2025-05-01", prod8, bod2);
-		Unidad uni31 = new Unidad("2025-07-10", prod8, bod1);
+		Unidad uni31 = new Unidad("2025-07-10", prod8, bod1);	
+		
+		//CREACION DE DESCUENTOS PARA PRUEBAS
+		Descuento descuentoUno = new Descuento("Refrescantes y baratas", TipoProducto.BEBIDA, 10);
+		Descuento descuentoDos = new Descuento("Borrachera económica", prod2, 15);
+		
+		
 		
 /*	//Prueba Verificar dias
 		System.out.println("-- Iniciando Prueba de dias para vencer... --");
@@ -97,7 +103,7 @@ public class TESTmain {
 	//	Descuento desc1 = new Descuento("Descuento Alimentos", TipoProducto.ALIMENTO, 25);
 		Descuento desc2 = new Descuento("Descuento Leche Coranta", prod1, 30);
 */		//Descuento desc3 = new Descuento("Descuento cerca de vencer", uni2, 50);
-//Prueba Orden (FUNCIONALIDAD 1)---------------------------------------------------------------------------------------
+/* //Prueba Orden (FUNCIONALIDAD 1)---------------------------------------------------------------------------------------
 		Orden orden1 = new Orden(sup1, emp1, cli1);
 		ArrayList<Producto> lista1 = sup1.productosPorTipo(TipoProducto.ALIMENTO);
 		for (Producto producto : lista1) {
@@ -185,11 +191,11 @@ public class TESTmain {
 //Prueba Manejo de Inventario (FUNCIONALIDAD 2)-----------------------------------------------------------------------------
 		sup1.verificarVencimiento(15);
 	
-
+	*/
 
 //__________________________________________________________________________________________________________________________________________________________________________________________________________
 
-/*	Scanner scanner = new Scanner(System.in);
+	Scanner scanner = new Scanner(System.in);
 	
 	System.out.println("BIENVENIDO\n¿Qué desa hacer?");
 	System.out.println("1. Generar orden.\n2. Administrar productos proximos a vencer.");
@@ -255,23 +261,32 @@ public class TESTmain {
 					System.out.print("   No tiene descuentos disponibles ¿desea crear uno?\n   1.SI\n   2.NO\n   Ingrese el numero de la opción que desea: ");
 					int eleccion2 = scanner.nextInt();
 					if(eleccion2 == 1) {
-						System.out.println("(Se crea el descuento)");
+						System.out.print("Ingrese el nombre del descuento: ");
+						String nombreDescuento = scanner.next();
+						System.out.print("Ingrese el porcentaje de descuento: ");
+						int porcentajeDescuento = scanner.nextInt();
+						Descuento descuentoPorVencimiento = new Descuento(nombreDescuento, avencer.get(i), porcentajeDescuento);
 					}
 				}
 				
 				else{
-					System.out.println("Descuentos disponibles: " + avencer.get(i).getDescuentos());
-				}
-				
-				
+					System.out.println("Mejor descuento:");
+					System.out.println("Promo: " + avencer.get(i).calcularOferta().getNombre() + " Descuento: " + avencer.get(i).calcularOferta().getPorcentaje_descuento() + "% (Antes: " + avencer.get(i).getTipo().getPrecio() + " Ahora: " + avencer.get(i).calcularPrecio() + ")");
+					
+					
+					System.out.print("¿Desea agregar un nuevo descuento?\n   1.SI\n   2.NO\n   Ingrese el numero de la opción que desea: ");
+					int eleccion3 = scanner.nextInt();
+					if (eleccion3 == 1) {
+						System.out.print("Ingrese el nombre del descuento: ");
+						String nombreDescuento = scanner.next();
+						System.out.print("Ingrese el porcentaje de descuento: ");
+						int porcentajeDescuento = scanner.nextInt();
+						Descuento descuentoPorVencimiento = new Descuento(nombreDescuento, avencer.get(i), porcentajeDescuento);
+					}
+				}	
 			}
-			
 		}
-		
-		
-		
-		
-	}*/
+	}
 		System.out.println(sup1.numeroUnidades(prod1));
 	}
 }
