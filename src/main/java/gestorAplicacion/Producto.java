@@ -4,8 +4,10 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.io.Serializable;
 
-public class Producto {
+public class Producto implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private static int actual_id = 0;
 	private String nombre;
@@ -14,6 +16,8 @@ public class Producto {
 	private float precio_compra;
 	private static ArrayList<Producto> lista_productos = new ArrayList<>();
 	private ArrayList<Unidad> unidades = new ArrayList<>(); //Lista de unidades del producto con codigo y fecha de vencimiento 
+	private ArrayList<Supermercado> supermercados = new ArrayList<>();
+	private ArrayList<Integer> unidadesSupermercado = new ArrayList<>();
 
 	public Producto(String nombre, TipoProducto tipo, float precio, float precio_compra) {
 		
@@ -90,11 +94,20 @@ public class Producto {
 		this.unidades = unidades;
 	}
 	
-	public void agregarUnidad(Unidad unidad) {
+	public void agregarUnidad(Unidad unidad, Bodega bodega) {
 		unidades.add(unidad);
+		int indice = supermercados.indexOf(bodega.getSupermercado());
+		if (indice == -1) {
+			supermercados.add(bodega.getSupermercado());
+			unidadesSupermercado.add(1);
+		}
+		else {
+			int valor = unidadesSupermercado.get(indice);
+			unidadesSupermercado.set(indice, (valor + 1));
+		}
+			
 	}
 
-	
 	public static ArrayList<Producto> getLista_productos() {
 		return lista_productos;
 	}
@@ -103,4 +116,28 @@ public class Producto {
 		Producto.lista_productos = lista_productos;
 	}
 
+	public float getPrecio_venta() {
+		return precio_venta;
+	}
+
+	public void setPrecio_venta(float precio_venta) {
+		this.precio_venta = precio_venta;
+	}
+
+	public ArrayList<Supermercado> getSupermercados() {
+		return supermercados;
+	}
+
+	public void setSupermercados(ArrayList<Supermercado> supermercados) {
+		this.supermercados = supermercados;
+	}
+
+	public ArrayList<Integer> getUnidadesSupermercado() {
+		return unidadesSupermercado;
+	}
+
+	public void setUnidadesSupermercado(ArrayList<Integer> unidadesSupermercado) {
+		this.unidadesSupermercado = unidadesSupermercado;
+	}
+	
 }

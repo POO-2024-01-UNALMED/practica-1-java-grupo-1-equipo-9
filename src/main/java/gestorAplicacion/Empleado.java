@@ -1,8 +1,10 @@
 package gestorAplicacion;
 
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Empleado extends Persona{
+public class Empleado extends Persona implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private boolean activo = true;
 	private float salario;

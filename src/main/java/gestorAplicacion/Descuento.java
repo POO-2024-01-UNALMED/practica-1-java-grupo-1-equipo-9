@@ -1,9 +1,10 @@
 package gestorAplicacion;
 
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Descuento {
-
+public class Descuento implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private String nombre;
 	private TipoProducto tipo_en_promocion;
 	private Producto producto_en_promocion;

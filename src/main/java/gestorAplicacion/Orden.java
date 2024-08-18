@@ -1,8 +1,10 @@
 package gestorAplicacion;
 import java.util.ArrayList;
 import java.time.*;
+import java.io.Serializable;
 
-public class Orden {
+public class Orden implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private static int actual_id = 0;
 	private Empleado empleado;

@@ -7,9 +7,10 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
+import java.io.Serializable;
 
-public class Unidad {
-	
+public class Unidad implements Serializable {
+	private static final long serialVersionUID = 1L;
 	public static int actual_codigo = 0;
 	private int codigo;
 	private String vencimiento;
@@ -24,7 +25,7 @@ public class Unidad {
 		this.vencimiento = vencimiento;
 		tipo_producto = tipo;
 		bodega = ubicacion;
-		tipo.agregarUnidad(this);
+		tipo.agregarUnidad(this, ubicacion);
 		ubicacion.agregarProducto(this);
 	}
 
@@ -87,12 +88,12 @@ public class Unidad {
 		
 	}
 
-	public long diasParaVencimiento() {
+	public int diasParaVencimiento() {
 		LocalDate hoy = LocalDate.now();
 		DateTimeFormatter frm = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
 		LocalDate venc = LocalDate.parse(vencimiento, frm);
 		long dias = ChronoUnit.DAYS.between(hoy, venc);
-		return dias;
+		return (int)dias;
 	}
 	
 	public Descuento calcularOferta() {

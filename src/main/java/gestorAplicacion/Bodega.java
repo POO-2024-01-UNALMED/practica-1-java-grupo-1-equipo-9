@@ -1,7 +1,9 @@
 package gestorAplicacion;
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Bodega {
+public class Bodega implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private String nombre;
 	private String barrio;
 	private Supermercado supermercado;
@@ -11,6 +13,7 @@ public class Bodega {
 	public Bodega(String nombre, String barrio, Supermercado supermercado) {
 		this.nombre = nombre;
 		this.barrio = barrio;
+		this.supermercado = supermercado;
 	}
 
 	public String getNombre() {
@@ -49,6 +52,10 @@ public class Bodega {
 		productos.add(unidad);
 	}
 	
+	public void quitarProducto(Unidad unidad) {
+		productos.remove(unidad);
+	}
+	
 	public ArrayList<ArrayList<Unidad>> getPromos() {
 		return promos;
 	}
@@ -60,9 +67,4 @@ public class Bodega {
 	public void agragarPromo(ArrayList<Unidad> promo) {
 		promos.add(promo);
 	}
-	
-	public void quitarProducto(Unidad unidad) {
-		productos.remove(unidad);
-	}
-	
 }

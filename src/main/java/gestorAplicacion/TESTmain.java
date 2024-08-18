@@ -12,7 +12,7 @@ public class TESTmain {
 
 	public static void main(String[] args) {
 		
-		Supermercado sup1 = new Supermercado("MercaChicles");
+		Supermercado sup1 = new Supermercado("MercaChicles", 1000000);
 		Empleado emp1 = new Empleado("Pepe", 12345, sup1, 2000000);
 		Cliente cli1 = new Cliente("Jaimito", 23456);
 		Bodega bod1 = new Bodega("Bodega Principal", "Cordoba", sup1);
@@ -32,6 +32,8 @@ public class TESTmain {
 		Unidad uni1 = new Unidad("2024-09-20", prod1, bod1);
 		Unidad uni2 = new Unidad("2024-08-01", prod1, bod1);
 		Unidad uni3 = new Unidad("2024-10-05", prod1, bod2);
+		
+		System.out.println("----------numero unidades = " + sup1.numeroUnidades(prod8));
 		
 		Unidad uni4 = new Unidad("2024-09-30", prod2, bod2);
 		Unidad uni5 = new Unidad("2024-07-08", prod2, bod1);
@@ -187,7 +189,7 @@ public class TESTmain {
 
 //__________________________________________________________________________________________________________________________________________________________________________________________________________
 
-	Scanner scanner = new Scanner(System.in);
+/*	Scanner scanner = new Scanner(System.in);
 	
 	System.out.println("BIENVENIDO\n¿Qué desa hacer?");
 	System.out.println("1. Generar orden.\n2. Administrar productos proximos a vencer.");
@@ -269,8 +271,7 @@ public class TESTmain {
 		
 		
 		
+	}*/
+		System.out.println(sup1.numeroUnidades(prod1));
 	}
-	
-}}
-
-
+}
