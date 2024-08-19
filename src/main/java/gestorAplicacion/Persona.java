@@ -1,15 +1,24 @@
 package gestorAplicacion;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Persona implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String nombre;
 	private long cedula;
-	private int puntos = 0;
+	private String cargo;
+	private static ArrayList<Persona> personas = new ArrayList<>();
 	
 	public Persona(String nombre, long cedula) {
+		this(nombre, cedula, "Cliente");
+	}
+	
+	public Persona(String nombre, long cedula, String cargo) {
 		this.nombre = nombre;
 		this.cedula = cedula;
+		this.cargo = cargo;
+		personas.add(this);
 	}
 	
 	public String getNombre() {
@@ -27,12 +36,24 @@ public class Persona implements Serializable {
 	public void setCedula(long cedula) {
 		this.cedula = cedula;
 	}
-	
-	public int getPuntos() {
-		return puntos;
+
+	public String getCargo() {
+		return cargo;
+	}
+
+	public void setCargo(String cargo) {
+		this.cargo = cargo;
+	}
+
+	public static ArrayList<Persona> getPersonas() {
+		return personas;
+	}
+
+	public static void setPersonas(ArrayList<Persona> personas) {
+		Persona.personas = personas;
 	}
 	
-	public void setPuntos(int puntos) {
-		this.puntos = puntos;
+	public static void agregarPersona(Persona persona) {
+		personas.add(persona);
 	}
 }

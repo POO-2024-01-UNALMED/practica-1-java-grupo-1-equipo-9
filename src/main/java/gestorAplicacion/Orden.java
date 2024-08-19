@@ -47,6 +47,15 @@ public class Orden implements Serializable{
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
+	
+	public Supermercado getSupermercado() {
+		return supermercado;
+	}
+
+	public void setSupermercado(Supermercado supermercado) {
+		this.supermercado = supermercado;
+	}
+
 	public ArrayList<Unidad> getProductos() {
 		return productos;
 	}
@@ -54,27 +63,27 @@ public class Orden implements Serializable{
 		this.productos = productos;
 	}
 	public void agregarProducto(Producto producto, int cantidad) {
-		for (int i=0;i<cantidad;i++) {
-			Unidad unidad = producto.getUnidades().get(0);
-			productos.add(unidad);
-			unidad.getUbicacion().quitarProducto(unidad);
-			producto.getUnidades().remove(unidad);
-			
+		while (cantidad > 0) {
+			for(Unidad unidad : producto.getUnidades()) {
+				if(!unidad.isOferta()) {
+					productos.add(unidad);
+					unidad.getTipo().quitarUnidad(unidad);
+					unidad.getUbicacion().quitarProducto(unidad);
+					cantidad--;
+					break;
+				}
+			}
 		}
-	}
-	public void agregarProducto(Producto producto) {
-		agregarProducto(producto, 1);
 	}
 	public void agregarUnidad(Unidad unidad) {
 		productos.add(unidad);
+		unidad.getTipo().quitarUnidad(unidad);
+		unidad.getUbicacion().quitarProducto(unidad);
 	}
 	public void quitarUnidad(Unidad unidad) {
-		for (int i = 0;i<productos.size();i++) {
-			if (productos.get(i) == unidad) {
-				productos.remove(i);
-				break;
-			}
-		}
+		productos.remove(unidad);
+		unidad.getTipo().agregarUnidad(unidad, unidad.getUbicacion());
+		unidad.getUbicacion().agregarProducto(unidad);
 	}
 	public float getPrecio_total() {
 		return precio_total;

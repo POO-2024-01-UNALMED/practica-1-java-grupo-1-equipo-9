@@ -10,10 +10,11 @@ public class Empleado extends Persona implements Serializable{
 	private float salario;
 	private Supermercado supermercado;
 	private static int actual_id = 0;
+	private static ArrayList<Persona> empleados = new ArrayList<>();
 	
 	
-	public Empleado(String nombre, long cedula,Supermercado supermercado, float salario) {
-		super(nombre, cedula);
+	public Empleado(String nombre, long cedula,Supermercado supermercado, String cargo, float salario) {
+		super(nombre, cedula, cargo);
 		this.salario = salario;
 		this.supermercado = supermercado;
 		supermercado.agregarEmpleado(this);
@@ -43,6 +44,14 @@ public class Empleado extends Persona implements Serializable{
 
 	public void setSalario(float salario) {
 		this.salario = salario;
+	}
+
+	public Supermercado getSupermercado() {
+		return supermercado;
+	}
+
+	public void setSupermercado(Supermercado supermercado) {
+		this.supermercado = supermercado;
 	}
 	
 }

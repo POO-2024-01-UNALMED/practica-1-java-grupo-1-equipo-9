@@ -107,6 +107,10 @@ public class Producto implements Serializable {
 		}
 			
 	}
+	
+	public void quitarUnidad(Unidad unidad) {
+		unidades.remove(unidad);
+	}
 
 	public static ArrayList<Producto> getLista_productos() {
 		return lista_productos;

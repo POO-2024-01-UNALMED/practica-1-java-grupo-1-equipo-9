@@ -22,6 +22,7 @@ public class Supermercado implements Serializable {
 	public Supermercado(String nombre, double saldo) {
 		this.nombre = nombre;
 		this.saldo = saldo;
+		Supermercado.supermercados.add(this);
 	}
 
 	public String getNombre() {
@@ -150,7 +151,6 @@ public class Supermercado implements Serializable {
 	public int numeroUnidades(Producto producto) {
 		int numero = 0;
 		int indice = producto.getSupermercados().indexOf(this);
-		System.out.println("----------indice super = " + indice);
 		if (indice != -1) {
 			numero = producto.getUnidadesSupermercado().get(indice);
 		}
