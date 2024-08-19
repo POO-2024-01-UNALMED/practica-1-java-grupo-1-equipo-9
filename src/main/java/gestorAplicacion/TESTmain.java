@@ -290,9 +290,9 @@ public class TESTmain {
 		System.out.print("¿Desea crear paquete de promociones?\n   1.SI\n   2.NO\n   Ingrese el numero de la opción que desea: ");
 		int eleccion4 = scanner.nextInt();
 		if (eleccion4 == 1) {
-			while(avencer.size() != 0)
+			while(avencer.size() != 0) { 
+			ArrayList<Unidad> paquete = new ArrayList<Unidad>();
 			for (Unidad unidad : avencer) {
-				ArrayList<Unidad> paquete = new ArrayList<Unidad>();
 				for(Unidad unidadpaquete: paquete) {
 					ArrayList<TipoProducto> tipos = new ArrayList<TipoProducto>();
 					tipos.add(unidadpaquete.getTipo().getTipo());
@@ -305,9 +305,10 @@ public class TESTmain {
 						avencer.remove(unidad);
 					}
 				}
+				//instanciaSupermercado.getPaquetesPromocion().add(paquete);
 			}
 		}
 		
-	}
+	}}
 }
 }
