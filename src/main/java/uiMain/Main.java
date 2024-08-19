@@ -526,7 +526,18 @@ public class Main {
 		scanner.nextLine();
 		scanner.nextLine();
 		
-		System.out.println("______________________________________________________________________________________________________\nProductos disponibles para hacerle descuentos:");
+		int disponibles = 0;
+		for(int d=0; d<avencer.size(); d++) {
+			if( avencer.get(d).diasParaVencimiento() > 0 ) {
+				disponibles++;
+			}
+		}
+		if (disponibles > 0) {
+			System.out.println("______________________________________________________________________________________________________\nProductos disponibles para hacerle descuentos:");
+		}
+		else {
+			System.out.print("No hay productos disponibles para hacer descuentos.");
+		}
 		
 		for (int i=0; i<avencer.size(); i++) {
 			
