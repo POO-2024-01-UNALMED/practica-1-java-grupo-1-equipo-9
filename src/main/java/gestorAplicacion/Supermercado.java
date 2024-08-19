@@ -129,6 +129,14 @@ public class Supermercado implements Serializable {
 	public void setPaquetesPromocion(ArrayList<Object> paquetesPromocion) {
 		this.paquetesPromocion = paquetesPromocion;
 	}
+	
+	public void agregarPaquetePromocion(ArrayList<Object> paquetePromocion) {
+		this.paquetesPromocion.add(paquetePromocion);
+	}
+	
+	public void quitarPaquetePromocion(ArrayList<Object> paquetePromocion) {
+		this.paquetesPromocion.remove(paquetePromocion);
+	}
 
 	public void verificarVencimiento() {
 		verificarVencimiento(0);
