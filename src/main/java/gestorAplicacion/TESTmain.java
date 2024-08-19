@@ -234,7 +234,7 @@ public class TESTmain {
             }
 		});
 		
-		System.out.println("Estos son los productos vencidos o proximos a vencer:");
+		System.out.println("______________________________________________________________________________________________________\nEstos son los productos vencidos o proximos a vencer:\n______________________________________________________________________________________________________");
 		
 		for (int i=0; i<avencer.size(); i++) {
 			
