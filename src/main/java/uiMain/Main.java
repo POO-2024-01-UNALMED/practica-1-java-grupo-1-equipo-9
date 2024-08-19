@@ -6,6 +6,8 @@ import baseDatos.*;
 import java.io.*;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Main {
     private static final String CARPETA_TEMP = "src/baseDatos/temp/";
@@ -100,6 +102,7 @@ public class Main {
                 	crearOrden();
                     break;
                 case 2:
+                	administrarInventario();
                     break;
                 case 3:
                     exit = true;
@@ -418,4 +421,156 @@ public class Main {
     		System.out.println("");
     	}
     }
+
+
+//=============METODO PARA LA SEGUNDA FUNCION (ADMINISTRAR INVENTARIO)====================
+	
+	private static void administrarInventario() {
+		
+		Scanner scanner = new Scanner(System.in);
+		
+		ArrayList<Supermercado> supermercados = Supermercado.getSupermercados();
+		ArrayList<Persona> personas = Persona.getPersonas();
+    	ArrayList<Persona> empleados = new ArrayList<>();
+		
+    	for (Persona persona : personas) {
+    		if (persona.getCargo() != "Cliente") empleados.add(persona);}
+    	
+    	int j = 0;
+    	System.out.println("Lista de Supermercados:");
+    	for (Supermercado supermercado : supermercados) {
+    		j++;
+    		System.out.println(j+". "+supermercado.getNombre());
+    	}
+    	System.out.println("");
+    	System.out.print("Seleccione un supermercado: ");
+    	int opcion = scanner.nextInt();
+    	while (opcion < 1 || opcion > supermercados.size()) {
+        	System.out.print("- Opción inválida, por favor intente de nuevo: ");
+        	opcion = scanner.nextInt();
+        	scanner.nextLine();
+        }
+        Supermercado supermercado = supermercados.get(opcion - 1);
+        System.out.println("- Supermercado "+supermercado.getNombre()+" selecionado.");
+        j = 0;
+    	System.out.println("");
+    	System.out.println("Lista de Empleados:");
+        for (Persona persona : empleados) {
+        	j++;
+        	System.out.println(j + ". " + persona.getCargo()+ " " + persona.getNombre());
+        }
+        System.out.println("");
+        System.out.print("\nSeleccione empleado encargado: ");
+        opcion = scanner.nextInt();
+        while (opcion < 1 || opcion > empleados.size()) {
+        	System.out.print("- Opción inválida, por favor intente de nuevo: ");
+        	opcion = scanner.nextInt();
+        	scanner.nextLine();
+        }
+        Persona empleado = empleados.get(opcion - 1);
+        System.out.println("- "+empleado.getCargo()+" "+empleado.getNombre()+" selecionado.");
+        System.out.println("");
+    	
+		System.out.print("Ingrese los días para la busqueda: ");
+		int eleccion1 = scanner.nextInt();
+
+		
+		ArrayList<Bodega> bodegas = supermercado.getBodegas();
+		ArrayList<Unidad> unidades = new ArrayList<Unidad>();
+		ArrayList<Unidad> avencer = new ArrayList<Unidad>();
+		for (int i=0 ; i < bodegas.size(); i++) {
+			
+			unidades.addAll(bodegas.get(i).getProductos());
+			
+		}
+		
+		for (int i=0; i < unidades.size(); i++) {
+			long dias = unidades.get(i).diasParaVencimiento();
+			if (dias <= eleccion1) {
+				avencer.add(unidades.get(i));
+			}
+		}
+		
+		Collections.sort(avencer, new Comparator<Unidad>() {
+			@Override
+			public int compare(Unidad u1, Unidad u2) {
+                return Long.compare(u1.diasParaVencimiento(), u2.diasParaVencimiento());
+            }
+		});
+		
+		System.out.println("______________________________________________________________________________________________________"
+				+ "\nEstos son los productos vencidos o proximos a vencer:\n");
+		
+		for (int i=0; i<avencer.size(); i++) {
+			
+			if( avencer.get(i).diasParaVencimiento() <= 0 ) {
+				
+				System.out.println("Nombre: " + avencer.get(i).getTipo().getNombre() + ", Codigo: " + 
+				avencer.get(i).getCodigo() + ", Ubicación: " + avencer.get(i).getUbicacion().getNombre() + ", VENCIDO");
+				
+				avencer.get(i).getUbicacion().quitarProducto(avencer.get(i));
+				
+			}
+			
+			else { 
+				System.out.println("Nombre: " + avencer.get(i).getTipo().getNombre() + ", Codigo: " + avencer.get(i).getCodigo() 
+				+ ", Ubicacion: "+ avencer.get(i).getUbicacion().getNombre() +", Dias para vencer: " + avencer.get(i).diasParaVencimiento());
+			}
+		}
+		
+		scanner.nextLine();
+		scanner.nextLine();
+		
+		System.out.println("______________________________________________________________________________________________________\nProductos disponibles para hacerle descuentos:");
+		
+		for (int i=0; i<avencer.size(); i++) {
+			
+			if( avencer.get(i).diasParaVencimiento() > 0 ) {
+				
+			System.out.println("\n->Nombre: " + avencer.get(i).getTipo().getNombre() + ", Codigo: " + avencer.get(i).getCodigo() + ", Dias para vencer: " + avencer.get(i).diasParaVencimiento());
+				
+				if (avencer.get(i).getDescuentos().size() == 0) {
+					System.out.print("  No tiene descuentos disponibles ¿desea crear uno? (s/n): ");
+					String eleccion2 = scanner.next();
+					
+					while (!eleccion2.equalsIgnoreCase("s") && !eleccion2.equalsIgnoreCase("n")) {
+    	    			System.out.print("- Opción inválida, por favor intente de nuevo: ");
+    	    			eleccion2 = scanner.next();}
+					
+					if(eleccion2.equalsIgnoreCase("s")) {
+						System.out.print("  Ingrese el nombre del descuento: ");
+						String nombreDescuento = scanner.next();
+						System.out.print("  Ingrese el porcentaje de descuento: ");
+						int porcentajeDescuento = scanner.nextInt();
+						Descuento descuentoPorVencimiento = new Descuento(nombreDescuento, avencer.get(i), porcentajeDescuento);
+					}
+				}
+				
+				else{
+					System.out.println("  Mejor descuento:");
+					System.out.println("  Nombre del descuento: '" + avencer.get(i).calcularOferta().getNombre() + "' Descuento: " + avencer.get(i).calcularOferta().getPorcentaje_descuento() 
+							+ "% (Antes: " + avencer.get(i).getTipo().getPrecio() + " Ahora: " + avencer.get(i).calcularPrecio() + ")");
+					
+					
+					System.out.print("  ¿Desea agregar un mejor descuento? (s/n): ");
+					String eleccion3 = scanner.next();
+	    	    	
+	    	        while (!eleccion3.equalsIgnoreCase("s") && !eleccion3.equalsIgnoreCase("n")) {
+	    	    			System.out.print("- Opción inválida, por favor intente de nuevo: ");
+	    	    			eleccion3 = scanner.next();
+	    	    	    	scanner.nextLine();}
+					
+					if (eleccion3.equalsIgnoreCase("s")) {
+						System.out.print("  Ingrese el nombre del descuento: ");
+						String nombreDescuento = scanner.next();
+						System.out.print("  Ingrese el porcentaje de descuento: ");
+						int porcentajeDescuento = scanner.nextInt();
+						Descuento descuentoPorVencimiento = new Descuento(nombreDescuento, avencer.get(i), porcentajeDescuento);
+					}
+				}	
+			
+			}
+		}
+		scanner.nextLine();
+	}
 }

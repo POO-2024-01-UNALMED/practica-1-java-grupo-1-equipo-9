@@ -234,19 +234,23 @@ public class TESTmain {
             }
 		});
 		
-		System.out.println("______________________________________________________________________________________________________\nEstos son los productos vencidos o proximos a vencer:\n______________________________________________________________________________________________________");
+		System.out.println("______________________________________________________________________________________________________"
+				+ "\nEstos son los productos vencidos o proximos a vencer:\n______________________________________________________________________________________________________");
 		
 		for (int i=0; i<avencer.size(); i++) {
 			
 			if( avencer.get(i).diasParaVencimiento() <= 0 ) {
 				
-				System.out.println("Nombre: " + avencer.get(i).getTipo().getNombre() + ", Codigo: " + avencer.get(i).getCodigo() + ", Ubicación: " + avencer.get(i).getUbicacion().getNombre() + ", VENCIDO");
+				System.out.println("Nombre: " + avencer.get(i).getTipo().getNombre() + ", Codigo: " + 
+				avencer.get(i).getCodigo() + ", Ubicación: " + avencer.get(i).getUbicacion().getNombre() + ", VENCIDO");
+				
 				avencer.get(i).getUbicacion().quitarProducto(avencer.get(i));
 				
 			}
 			
 			else { 
-				System.out.println("Nombre: " + avencer.get(i).getTipo().getNombre() + ", Codigo: " + avencer.get(i).getCodigo() + ", Ubicacion: "+ avencer.get(i).getUbicacion().getNombre() +", Dias para vencer: " + avencer.get(i).diasParaVencimiento());
+				System.out.println("Nombre: " + avencer.get(i).getTipo().getNombre() + ", Codigo: " + avencer.get(i).getCodigo() 
+				+ ", Ubicacion: "+ avencer.get(i).getUbicacion().getNombre() +", Dias para vencer: " + avencer.get(i).diasParaVencimiento());
 			}
 		}
 		
@@ -256,7 +260,9 @@ public class TESTmain {
 			
 			if( avencer.get(i).diasParaVencimiento() > 0 ) {
 				
-				System.out.println("______________________________________________________________________________________________________\nNombre: " + avencer.get(i).getTipo().getNombre() + ", Codigo: " + avencer.get(i).getCodigo() + ", Dias para vencer: " + avencer.get(i).diasParaVencimiento());
+				System.out.println("______________________________________________________________________________________________________\nNombre: " + 
+				avencer.get(i).getTipo().getNombre() + ", Codigo: " + avencer.get(i).getCodigo() + ", Dias para vencer: " + avencer.get(i).diasParaVencimiento()+"\n");
+				
 				if (avencer.get(i).getDescuentos().size() == 0) {
 					System.out.print("   No tiene descuentos disponibles ¿desea crear uno?\n   1.SI\n   2.NO\n   Ingrese el numero de la opción que desea: ");
 					int eleccion2 = scanner.nextInt();
@@ -271,12 +277,20 @@ public class TESTmain {
 				
 				else{
 					System.out.println("Mejor descuento:");
-					System.out.println("Promo: " + avencer.get(i).calcularOferta().getNombre() + " Descuento: " + avencer.get(i).calcularOferta().getPorcentaje_descuento() + "% (Antes: " + avencer.get(i).getTipo().getPrecio() + " Ahora: " + avencer.get(i).calcularPrecio() + ")");
+					System.out.println("Nombre del descuento: ''" + avencer.get(i).calcularOferta().getNombre() + "'' Descuento: " + avencer.get(i).calcularOferta().getPorcentaje_descuento() 
+							+ "% (Antes: " + avencer.get(i).getTipo().getPrecio() + " Ahora: " + avencer.get(i).calcularPrecio() + ")");
 					
 					
-					System.out.print("¿Desea agregar un nuevo descuento?\n   1.SI\n   2.NO\n   Ingrese el numero de la opción que desea: ");
-					int eleccion3 = scanner.nextInt();
-					if (eleccion3 == 1) {
+					System.out.print("¿Desea agregar un mejor descuento? (s/n): ");
+					String eleccion3 = scanner.next();
+	    	        scanner.nextLine();
+	    	    	
+	    	        while (!eleccion3.equalsIgnoreCase("s") && !eleccion3.equalsIgnoreCase("n")) {
+	    	    			System.out.print("- Opción inválida, por favor intente de nuevo: ");
+	    	    			eleccion3 = scanner.next();
+	    	    	    	scanner.nextLine();}
+					
+					if (eleccion3.equalsIgnoreCase("s")) {
 						System.out.print("Ingrese el nombre del descuento: ");
 						String nombreDescuento = scanner.next();
 						System.out.print("Ingrese el porcentaje de descuento: ");
