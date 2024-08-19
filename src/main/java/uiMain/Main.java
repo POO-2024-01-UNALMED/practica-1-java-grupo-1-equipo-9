@@ -6,6 +6,7 @@ import baseDatos.*;
 import java.io.*;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 
 public class Main {
     private static final String CARPETA_TEMP = "src/baseDatos/temp/";
@@ -80,37 +81,47 @@ public class Main {
         // Deserializar los datos
         //deserializarDatos();
 
-        Scanner scanner = new Scanner(System.in);
-        boolean exit = false;
+		Scanner scanner = new Scanner(System.in);
+		boolean exit = false;
 
-        while (!exit) {
-            System.out.println("=== Menú Principal ===");
-            System.out.println("");
-            System.out.println("1. Nueva orden de compra");
-            System.out.println("2. Manejo de Inventario");
-            System.out.println("3. Salir");
-            System.out.println("");
-            System.out.print("Seleccione una opción: ");
+		while (!exit) {
+			System.out.println("______________________________________________________________________________________________________");
+		    System.out.println("=== Menú Principal ===\n");
+		    System.out.println("1. Nueva orden de compra");
+		    System.out.println("2. Manejo de Inventario");
+		    System.out.println("3. Salir");
+		    System.out.println("");
+		    System.out.print("Seleccione una opción: ");
 
-            int opcion = scanner.nextInt();
-            scanner.nextLine();  // Limpiar el buffer
+		    try {
+		        int opcion = scanner.nextInt();
+		        scanner.nextLine();
 
-            switch (opcion) {
-                case 1:
-                	crearOrden();
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    exit = true;
-                    System.out.print("¡Adiós!");
-                    break;
-                default:
-                    System.out.println("- Opción inválida, por favor intente de nuevo.");
-                    break;
-            }
-        }
-
+		        switch (opcion) {
+		            case 1:
+		                crearOrden();
+		                break;
+		            case 2:
+		                // Lógica para manejo de inventario
+		                break;
+		            case 3:
+		                exit = true;
+		                System.out.println("______________________________________________________________________________________________________");
+		                System.out.println("¡Adiós!");
+		                System.out.println("______________________________________________________________________________________________________");
+		                break;
+		            default:
+		            	System.out.println("______________________________________________________________________________________________________");
+		                System.out.println("- Opción inválida, por favor intente de nuevo.");
+		                break;
+		        }
+		    } 
+		    catch (InputMismatchException e) {
+		    	System.out.println("______________________________________________________________________________________________________");
+		        System.out.println("- Opción inválida, por favor intente de nuevo.");
+		        scanner.nextLine();
+		    }
+		}
         // Serializar los datos antes de salir
         //serializarDatos();
         scanner.close();
@@ -141,142 +152,225 @@ public class Main {
     }
 
     private static void crearOrden() {
-        int i = 0;
         ArrayList<Supermercado> supermercados = Supermercado.getSupermercados();
     	ArrayList<Persona> personas = Persona.getPersonas();
     	ArrayList<Persona> empleados = new ArrayList<>();
     	ArrayList<Persona> clientes = new ArrayList<>();
+    	Supermercado supermercado;
+    	Persona empleado;
     	Persona cliente;
     	for (Persona persona : personas) {
     		if (persona.getCargo() != "Cliente") empleados.add(persona);
     		else clientes.add(persona);
     	}
-    	Scanner scanner = new Scanner(System.in);
-    	System.out.println("");
-    	System.out.println("Lista de Supermercados:");
-    	for (Supermercado supermercado : supermercados) {
-    		i++;
-    		System.out.println(i+". "+supermercado.getNombre());
+    	Scanner scn = new Scanner(System.in);
+    	while (true) {
+    		int i = 0;
+    		System.out.println("______________________________________________________________________________________________________");
+    		System.out.println("=== Lista de Supermercados ===\n");
+    		for (Supermercado sup : supermercados) {
+    			i++;
+    			System.out.println(i+". "+sup.getNombre());
+    		}
+    		System.out.println("");
+    		System.out.print("Seleccione un supermercado: ");
+    		try {
+    			int opcion = scn.nextInt();
+    			while (opcion < 1 || opcion > supermercados.size()) {
+    				System.out.println("______________________________________________________________________________________________________");
+    				System.out.println("- Opción inválida, por favor intente de nuevo.");
+    				i = 0;
+    	    		System.out.println("______________________________________________________________________________________________________");
+    	    		System.out.println("=== Lista de Supermercados ===\n");
+    	    		for (Supermercado sup : supermercados) {
+    	    			i++;
+    	    			System.out.println(i+". "+sup.getNombre());
+    	    		}
+    	    		System.out.println("");
+    	    		System.out.print("Seleccione un supermercado: ");
+    	    		opcion = scn.nextInt();
+    	    		scn.nextLine();
+    			}
+    			supermercado = supermercados.get(opcion - 1);
+    			System.out.println("______________________________________________________________________________________________________");
+    			System.out.println("- Supermercado "+supermercado.getNombre()+" selecionado.");
+    			break;
+    		}
+    		catch (InputMismatchException e) {
+    			System.out.println("______________________________________________________________________________________________________");
+		        System.out.println("- Opción inválida, por favor intente de nuevo.");
+		        scn.nextLine();
+		    }
     	}
-    	System.out.println("");
-    	System.out.print("Seleccione un supermercado: ");
-    	int opcion = scanner.nextInt();
-    	while (opcion < 1 || opcion > supermercados.size()) {
-        	System.out.print("- Opción inválida, por favor intente de nuevo: ");
-        	opcion = scanner.nextInt();
-        	scanner.nextLine();
-        }
-        Supermercado supermercado = supermercados.get(opcion - 1);
-        System.out.println("- Supermercado "+supermercado.getNombre()+" selecionado.");
-        i = 0;
-    	System.out.println("");
-    	System.out.println("Lista de Empleados:");
-        for (Persona persona : empleados) {
-        	i++;
-        	System.out.println(i + ". " + persona.getCargo()+ " " + persona.getNombre());
-        }
-        System.out.println("");
-        System.out.print("Seleccione empleado encargado: ");
-        opcion = scanner.nextInt();
-        while (opcion < 1 || opcion > empleados.size()) {
-        	System.out.print("- Opción inválida, por favor intente de nuevo: ");
-        	opcion = scanner.nextInt();
-        	scanner.nextLine();
-        }
-        Persona empleado = empleados.get(opcion - 1);
-        System.out.println("- "+empleado.getCargo()+" "+empleado.getNombre()+" selecionado.");
-        System.out.println("");
-        i = 0;
-        System.out.print("El cliente ya está registrado? (s/n): ");
-        String opcionstr = scanner.next();
-        scanner.nextLine();
+    	while (true) {
+    		int i = 0;
+    		System.out.println("______________________________________________________________________________________________________");
+    		System.out.println("=== Lista de Empleados ===\n");
+    		for (Persona persona : empleados) {
+    			i++;
+    			System.out.println(i + ". " + persona.getCargo()+ " " + persona.getNombre());
+    		}
+    		System.out.println("");
+    		System.out.print("Seleccione empleado encargado: ");
+    		try {
+    			int opcion = scn.nextInt();
+    			while (opcion < 1 || opcion > empleados.size()) {
+    				System.out.println("______________________________________________________________________________________________________");
+    				System.out.println("- Opción inválida, por favor intente de nuevo.");
+    				i = 0;
+    	    		System.out.println("______________________________________________________________________________________________________");
+    	    		System.out.println("=== Lista de Empleados ===\n");
+    	    		for (Persona persona : empleados) {
+    	    			i++;
+    	    			System.out.println(i + ". " + persona.getCargo()+ " " + persona.getNombre());
+    	    		}
+    	    		System.out.println("");
+    	    		System.out.print("Seleccione empleado encargado: ");
+    				opcion = scn.nextInt();
+    				scn.nextLine();
+    			}
+    			empleado = (Empleado)empleados.get(opcion - 1);
+    			System.out.println("______________________________________________________________________________________________________");
+    			System.out.println("- "+empleado.getCargo()+" "+empleado.getNombre()+" selecionado.");
+    			break;
+    		}
+    		catch (InputMismatchException e) {
+    			System.out.println("______________________________________________________________________________________________________");
+		        System.out.println("- Opción inválida, por favor intente de nuevo.");
+		        scn.nextLine();
+		    }
+    	}
+    	System.out.println("______________________________________________________________________________________________________");
+    	System.out.print("El cliente ya está registrado? (s/n): ");
+    	String opcionstr = scn.next();
+    	scn.nextLine();
     	while (!opcionstr.equalsIgnoreCase("s") && !opcionstr.equalsIgnoreCase("n")) {
-    			System.out.print("- Opción inválida, por favor intente de nuevo: ");
-    			opcionstr = scanner.next();
-    	    	scanner.nextLine();
+    		System.out.println("______________________________________________________________________________________________________");
+    		System.out.println("- Opción inválida, por favor intente de nuevo.");
+    		System.out.println("______________________________________________________________________________________________________");
+    		System.out.print("El cliente ya está registrado? (s/n): ");
+    		opcionstr = scn.next();
+    	    scn.nextLine();
     	}
     	if (opcionstr.equalsIgnoreCase("s")) {
-    		System.out.println("");
-    	    System.out.println("Lista de Clientes:");
-    	    for (Persona persona : clientes) {
-    	        i++;
-    	        System.out.println(i + ". " + persona.getNombre()+" con cédula "+persona.getCedula());
-    	    }
-    	    System.out.println("");
-    	    System.out.print("Seleccione el cliente: ");
-    	    opcion = scanner.nextInt();
-    	    while (opcion < 1 || opcion > clientes.size()) {
-    	    	System.out.print("- Opción inválida, por favor intente de nuevo: ");
-    	    	opcion = scanner.nextInt();
-    	    	scanner.nextLine();
-    	    }
-    	    cliente = clientes.get(opcion - 1);
-            System.out.println("- "+cliente.getCargo()+" "+ cliente.getNombre()+" con cédula "+cliente.getCedula()+" selecionado.");
-            System.out.println("");
+    		while (true) {
+    			int i = 0;
+    			System.out.println("______________________________________________________________________________________________________");
+    			System.out.println("=== Lista de Clientes ===\n");
+    			for (Persona persona : clientes) {
+    				i++;
+    				System.out.println(i + ". " + persona.getNombre()+" con cédula "+persona.getCedula());
+    			}
+    			System.out.println("");
+    			System.out.print("Seleccione el cliente: ");
+    			try {
+    				int opcion = scn.nextInt();
+    				while (opcion < 1 || opcion > clientes.size()) {
+    					System.out.println("______________________________________________________________________________________________________");
+    					System.out.println("- Opción inválida, por favor intente de nuevo.");
+    					i = 0;
+    	    			System.out.println("______________________________________________________________________________________________________");
+    	    			System.out.println("=== Lista de Clientes ===\n");
+    	    			for (Persona persona : clientes) {
+    	    				i++;
+    	    				System.out.println(i + ". " + persona.getNombre()+" con cédula "+persona.getCedula());
+    	    			}
+    	    			System.out.println("");
+    	    			System.out.print("Seleccione el cliente: ");
+    					opcion = scn.nextInt();
+    					scn.nextLine();
+    				}
+    				cliente = clientes.get(opcion - 1);
+    				System.out.println("______________________________________________________________________________________________________");
+    				System.out.println("- "+cliente.getCargo()+" "+ cliente.getNombre()+" con cédula "+cliente.getCedula()+" selecionado.");
+    				break;
+    			}
+    			catch (InputMismatchException e) {
+    				System.out.println("______________________________________________________________________________________________________");
+    		        System.out.println("- Opción inválida, por favor intente de nuevo.");
+    		        scn.nextLine();
+    		    }
+    		}
     	}
     	else {
-    		System.out.println("");
+    		System.out.println("______________________________________________________________________________________________________");
     		System.out.println("- Iniciando registro de cliente...");
-    		System.out.println("");
+    		System.out.println("______________________________________________________________________________________________________");
     		System.out.print("Ingrese el nombre del cliente: ");
-    		String nombre = scanner.nextLine();
+    		String nombre = scn.nextLine();
 	    	System.out.print("Ingrese la cédula del cliente: ");
-    		Long cedula = scanner.nextLong();
-	    	scanner.nextLine();
+    		Long cedula = scn.nextLong();
+	    	scn.nextLine();
 	    	cliente = new Cliente(nombre, cedula);
-	    	System.out.println("- Cliente "+nombre+" con cédula "+cedula+" creado con éxito.");
-	    	System.out.println("");
+	    	System.out.println("______________________________________________________________________________________________________");
+	    	System.out.println("Cliente "+nombre+" con cédula "+cedula+" creado con éxito.");
     	}
     	Orden orden = new Orden(supermercado, (Empleado)empleado, (Cliente)cliente);
     	boolean exit = false;
     	while(!exit) {
-    		System.out.println("Qué desea hacer?.");
+    		System.out.println("______________________________________________________________________________________________________");
+    		System.out.println("=== Qué desea hacer? ===\n");
     		System.out.println("1. Agregar producto a la orden");
-    		System.out.println("2. Quitar producto de la orden");
+    		System.out.println("2. Remover producto de la orden");
     		System.out.println("3. Ver productos en la orden");
     		System.out.println("4. Finalizar orden");
     		System.out.println("5. Cancelar orden");
     		System.out.println("");
     		System.out.print("Seleccione una opción: ");
-    		opcion = scanner.nextInt();
-    		scanner.nextLine();
+    		
+    		try {
+    			int opcion = scn.nextInt();
+    			scn.nextLine();
         
-        	switch (opcion) {
-        		case 1:
-        			agregarProducto(orden);
-        			break;
-        		case 2:
-        			//quitarProducto(orden);
-        			break;
-        		case 3:
-        			//mostrarOrden(orden);
-        			break;
-        		case 4:
-        			orden.completarOrden();
-        			System.out.println("---Orden Completa---");
-        			System.out.println("");
-        			exit = true;
-        			break;
-        		case 5:
-        			System.out.println("---Orden Cancelada---");
-        			System.out.println("");
-        			exit = true;
-        			break;
-        		default:
-        			System.out.println("- Opción inválida, por favor intente de nuevo.");
-        			break;
-        	}
+    			switch (opcion) {
+        			case 1:
+        				agregarProducto(orden);
+        				break;
+        			case 2:
+        				quitarProducto(orden);
+        				break;
+        			case 3:
+        				mostrarOrden(orden);
+        				break;
+        			case 4:
+        				if (orden.getProductos().size()!=0) {
+        					orden.completarOrden();
+        					System.out.println("______________________________________________________________________________________________________");
+        					System.out.println("---Orden Completa---");
+        				}
+        				else {
+        					System.out.println("______________________________________________________________________________________________________");
+        					System.out.println("---La Orden no contiene productos---");
+        				}
+        				exit = true;
+        				break;
+        			case 5:
+        				orden.cancelarOrden();
+        				System.out.println("______________________________________________________________________________________________________");
+        				System.out.println("---Orden Cancelada---");
+        				exit = true;
+        				break;
+        			default:
+        				System.out.println("______________________________________________________________________________________________________");
+        				System.out.println("- Opción inválida, por favor intente de nuevo.");
+        				break;
+    			}
+    		}
+    		catch (InputMismatchException e) {
+    			System.out.println("______________________________________________________________________________________________________");
+		        System.out.println("- Opción inválida, por favor intente de nuevo.");
+		        scn.nextLine();
+		    }
+    		
         }
-    	
-    	//Lista productos
     }
-    public static void agregarProducto(Orden orden) {
-    	Scanner scanner = new Scanner(System.in);
+    private static void agregarProducto(Orden orden) {
+    	Scanner scann = new Scanner(System.in);
     	boolean exit = false;
     	TipoProducto tipo = null;;
     	while(!exit) {
-    		System.out.println("");
-    		System.out.println("Seleccione el tipo de producto a buscar:");
+    		System.out.println("______________________________________________________________________________________________________");
+    		System.out.println("=== Seleccione el tipo de producto a buscar ===\n");
     		System.out.println("1. Aseo");
     		System.out.println("2. Alimento");
     		System.out.println("3. Bebida");
@@ -285,78 +379,97 @@ public class Main {
     		System.out.println("6. Otro");
     		System.out.println("");
     		System.out.print("Seleccione una opción: ");
-    		int opcion = scanner.nextInt();
-    		scanner.nextLine();
+    		
+    		try {
+    			int opcion = scann.nextInt();
+    			scann.nextLine();
         
-        	switch (opcion) {
-        		case 1:
-        			tipo = TipoProducto.ASEO;
-        			exit = true;
-        			break;
-        		case 2:
-        			tipo = TipoProducto.ALIMENTO;
-        			exit = true;
-        			break;
-        		case 3:
-        			tipo = TipoProducto.BEBIDA;
-        			exit = true;
-        			break;
-        		case 4:
-        			tipo = TipoProducto.CUIDADOPERSONAL;
-        			exit = true;
-        			break;
-        		case 5:
-        			tipo = TipoProducto.MASCOTA;
-        			exit = true;
-        			break;
-        		case 6:
-        			tipo = TipoProducto.OTRO;
-        			exit = true;
-        			break;
-        		default:
-        			System.out.println("- Opción inválida, por favor intente de nuevo.");
-        			break;
-        	}
+    			switch (opcion) {
+        			case 1:
+        				tipo = TipoProducto.ASEO;
+        				exit = true;
+        				break;
+        			case 2:
+        				tipo = TipoProducto.ALIMENTO;
+        				exit = true;
+        				break;
+        			case 3:
+        				tipo = TipoProducto.BEBIDA;
+        				exit = true;
+        				break;
+        			case 4:
+        				tipo = TipoProducto.CUIDADOPERSONAL;
+        				exit = true;
+        				break;
+        			case 5:
+        				tipo = TipoProducto.MASCOTA;
+        				exit = true;
+        				break;
+        			case 6:
+        				tipo = TipoProducto.OTRO;
+        				exit = true;
+        				break;
+        			default:
+        				System.out.println("______________________________________________________________________________________________________");
+        				System.out.println("- Opción inválida, por favor intente de nuevo.");
+        				break;
+    			}
+    		}
+    		catch (InputMismatchException e) {
+		    	System.out.println("______________________________________________________________________________________________________");
+		        System.out.println("- Opción inválida, por favor intente de nuevo.");
+		        scann.nextLine();
+		    }
+    		
         }
     	ArrayList<Producto> lista1 = orden.getSupermercado().productosPorTipo(tipo);
     	if (lista1.size() == 0) {
+    		System.out.println("______________________________________________________________________________________________________");
     		System.out.println("No hay productos disponibles del tipo seleccionado.");
-    		System.out.println("");
     	}
     	else {
     		int i = 0;
-    		System.out.println("");
-    		System.out.println("Productos disponibles:");
+    		System.out.println("______________________________________________________________________________________________________");
+    		System.out.println("=== Productos disponibles ===\n");
     		for (Producto producto : lista1) {
     			i++;
     			System.out.println(i+". "+producto.getNombre());
     		}
-    		System.out.println("");
-    		System.out.print("Desea agregar algún producto al carrito? (s/n): ");
-	        String opcionstr = scanner.next();
-	        scanner.nextLine();
+    		System.out.print("\nDesea agregar algún producto al carrito? (s/n): ");
+	        String opcionstr = scann.next();
+	        scann.nextLine();
 	    	while (!opcionstr.equalsIgnoreCase("s") && !opcionstr.equalsIgnoreCase("n")) {
-	    			System.out.print("- Opción inválida, por favor intente de nuevo: ");
-	    			opcionstr = scanner.next();
-	    	    	scanner.nextLine();
+	    		System.out.print("- Opción inválida, por favor intente de nuevo: ");
+	    		opcionstr = scann.next();
+	    	    scann.nextLine();
 	    	}
 	    	if (opcionstr.equalsIgnoreCase("s")) {
+	    		int opcionproducto;
 	    		System.out.print("Seleccione el producto a agregar: ");
-	    		int opcionproducto = scanner.nextInt();
-	    		scanner.nextLine();
-	    		while (opcionproducto < 1 || opcionproducto > lista1.size()) {
-	    	    	System.out.print("- Opción inválida, por favor intente de nuevo: ");
-	    	    	opcionproducto = scanner.nextInt();
-	    	    	scanner.nextLine();
-	    	    }
+	    		while (true) {
+	    			try {
+	    				opcionproducto = scann.nextInt();
+	    				scann.nextLine();
+	    				while (opcionproducto < 1 || opcionproducto > lista1.size()) {
+	    					System.out.print("- Opción inválida, por favor intente de nuevo: ");
+	    					opcionproducto = scann.nextInt();
+	    					scann.nextLine();
+	    				}
+	    				break;
+	    			}
+	    			catch (InputMismatchException e) {
+	    				System.out.print("- Opción inválida, por favor intente de nuevo: ");
+	    				scann.nextLine();
+	    			}
+	    		}
 	    		ArrayList<Unidad> unienof = new ArrayList<>();
     			ArrayList<Unidad> unisinof = new ArrayList<>();
     			for (Unidad unidad : lista1.get(opcionproducto-1).getUnidades()) {
     				if (unidad.isOferta())unienof.add(unidad);
     				else unisinof.add(unidad);
     			}
-    			System.out.println("");
-        		System.out.println("Unidades disponibles:");
+    			System.out.println("______________________________________________________________________________________________________");
+        		System.out.println("=== Unidades disponibles=== \n");
         		i=0;
     			if (unisinof.size() != 0) {
     				i++;
@@ -364,58 +477,168 @@ public class Main {
     			}
     			if (unienof.size() != 0) {
     				for (Unidad unidad : unienof) {
-    					System.out.println(i+". "+unidad.calcularOferta().getNombre()+"("+unidad.calcularOferta().getPorcentaje_descuento()+"%)"+" $"+unidad.calcularPrecio());
     					i++;
+    					System.out.println(i+". "+unidad.calcularOferta().getNombre()+"("+unidad.calcularOferta().getPorcentaje_descuento()+"%)"+" $"+unidad.calcularPrecio());
     				}
     			}
     			System.out.println("");
         		System.out.print("Desea agregar alguna unidad? (s/n): ");
-    	        String opcionstr2 = scanner.next();
-    	        scanner.nextLine();
+    	        String opcionstr2 = scann.next();
+    	        scann.nextLine();
     	    	while (!opcionstr2.equalsIgnoreCase("s") && !opcionstr2.equalsIgnoreCase("n")) {
-    	    			System.out.print("- Opción inválida, por favor intente de nuevo: ");
-    	    			opcionstr2 = scanner.next();
-    	    	    	scanner.nextLine();
+    	    		System.out.println("______________________________________________________________________________________________________");
+    	    		System.out.println("- Opción inválida, por favor intente de nuevo.");
+    	    		System.out.println("______________________________________________________________________________________________________");
+            		System.out.println("=== Unidades disponibles=== \n");
+            		i=0;
+        			if (unisinof.size() != 0) {
+        				i++;
+        				System.out.println(i+". Sin oferta - $"+lista1.get(opcionproducto-1).getPrecio()+" cantidad disponible: "+unisinof.size());
+        			}
+        			if (unienof.size() != 0) {
+        				for (Unidad unidad : unienof) {
+        					i++;
+        					System.out.println(i+". "+unidad.calcularOferta().getNombre()+"("+unidad.calcularOferta().getPorcentaje_descuento()+"%)"+" $"+unidad.calcularPrecio());
+        				}
+        			}
+        			System.out.println("");
+            		System.out.print("Desea agregar alguna unidad? (s/n): ");
+        	        opcionstr2 = scann.next();
+        	        scann.nextLine();
     	    	}
     	    	if (opcionstr2.equalsIgnoreCase("s")) {
-    	    		System.out.println("");
-            		System.out.print("Seleccione la unidad: ");
-    	    		int opcion = scanner.nextInt();
-    	    		scanner.nextLine();
-    	    		while (opcion < 1 || opcion > i) {
-    	            	System.out.print("- Opción inválida, por favor intente de nuevo: ");
-    	            	opcion = scanner.nextInt();
-    	            	scanner.nextLine();
-    	            }
+    	    		int opcion;
+    	    		System.out.print("Seleccione la unidad a agregar: ");
+    	    		while (true) {
+    	    			try {
+    	    				opcion = scann.nextInt();
+    	    				scann.nextLine();
+    	    				while (opcion < 1 || opcion > i) {
+    	    					System.out.print("- Opción inválida, por favor intente de nuevo: ");
+    	    					opcion = scann.nextInt();
+    	    					scann.nextLine();
+    	    				}
+    	    				break;
+    	    			}
+    	    			catch (InputMismatchException e) {
+    	    				System.out.print("- Opción inválida, por favor intente de nuevo: ");
+    	    				scann.nextLine();
+    	    			}
+    	    		}
     	    		if (opcion == 1) {
     	    			if(unisinof.size() != 0) {
     	    				System.out.print("Ingrese el número de unidades a agregar: ");
-    	    				opcion = scanner.nextInt();
-    	        	        scanner.nextLine();
-    	        	        while (opcion < 0 || opcion > unisinof.size()) {
-    	    	    	    	System.out.print("- Opción inválida, por favor intente de nuevo: ");
-    	    	    	    	opcion = scanner.nextInt();
-    	    	    	    	scanner.nextLine();
-    	    	    	    }
+    	    				while(true) {
+    	    					try {
+    	    						opcion = scann.nextInt();
+    	    						scann.nextLine();
+    	    						while (opcion < 0 || opcion > unisinof.size()) {
+    	    							System.out.print("- Opción inválida, por favor intente de nuevo: ");
+    	    							opcion = scann.nextInt();
+    	    							scann.nextLine();
+    	    						}
+    	    						break;
+    	    					}
+    	    					catch (InputMismatchException e) {
+    	    	    				System.out.print("- Opción inválida, por favor intente de nuevo: ");
+    	    	    				scann.nextLine();
+    	    	    			}
+    	    				}
     	        	        orden.agregarProducto(lista1.get(opcionproducto-1), opcion);
-    	        	        System.out.println("");
-    	            		System.out.println("Producto(s) agregado(s) a la orden.");
+    	        	        System.out.println("______________________________________________________________________________________________________");
+    	            		System.out.println("Producto(s) agregado(s) a la orden: ");
     	    			}
     	    			else {
     	    				orden.agregarUnidad(unienof.get(0));
+    	    				System.out.println("______________________________________________________________________________________________________");
+    	            		System.out.println("Producto agregado a la orden: ");
     	    			}
     	    		}
     	    		else {
     	    			if(unisinof.size() != 0) {
     	    				orden.agregarUnidad(unienof.get(opcion-2));
+    	    				System.out.println("______________________________________________________________________________________________________");
+    	            		System.out.println("Producto agregado a la orden: ");
     	    			}
     	    			else {
     	    				orden.agregarUnidad(unienof.get(opcion-1));
+    	    				System.out.println("______________________________________________________________________________________________________");
+    	            		System.out.println("Producto agregado a la orden: ");
     	    			}
     	    		}
     	    	}
 	    	}
-    		System.out.println("");
     	}
+    }
+    
+    private static void quitarProducto(Orden orden) {
+    	Scanner scnn = new Scanner(System.in);
+    	boolean exit = false;
+    	while (!exit) {
+    		int i = 0;
+    		ArrayList<Unidad> unidades = orden.getProductos();
+    		System.out.println("______________________________________________________________________________________________________");
+    		System.out.println("=== Producto(s) actualmente en la orden ===\n");
+    		for (Unidad unidad : unidades) {
+    			i++;
+    			if (unidad.isOferta()) {
+    			System.out.println(i+". "+unidad.getTipo().getNombre()+" "+unidad.calcularOferta().getNombre()+"("+unidad.calcularOferta().getPorcentaje_descuento()+"%)"+" $"+unidad.calcularPrecio());
+    			}
+    			else {
+    				System.out.println(i+". "+unidad.getTipo().getNombre()+" $"+unidad.calcularPrecio());
+    			}
+    		}
+    		i++;
+    		System.out.println(i+". Cancelar");
+    		System.out.println("");
+    		System.out.print("Seleccione un producto para remover: ");
+    		try {
+    			int opcion = scnn.nextInt();
+    			scnn.nextLine();
+    			while (opcion < 0 || opcion > unidades.size()+1) {
+    				System.out.println("______________________________________________________________________________________________________");
+    				System.out.println("- Opción inválida, por favor intente de nuevo.");
+    				opcion = scnn.nextInt();
+    				scnn.nextLine();
+    			}
+    			if (opcion != i) {
+    				orden.quitarUnidad(unidades.get(opcion-1));
+    				System.out.println("______________________________________________________________________________________________________");
+    				System.out.println("El producto se removió con éxito.");
+    			}
+    			else exit = true;
+    		}
+    		catch (InputMismatchException e) {
+    			System.out.println("______________________________________________________________________________________________________");
+		        System.out.println("- Opción inválida, por favor intente de nuevo.");
+		        scnn.nextLine();
+		    }
+    		
+    	}
+    }
+    
+    private static void mostrarOrden(Orden orden) {
+    	int i = 0;
+    	ArrayList<Unidad> unidades = orden.getProductos();
+    	System.out.println("______________________________________________________________________________________________________");
+    	System.out.println("Orden id: "+orden.getId());
+		System.out.println("Supermercado: "+orden.getSupermercado().getNombre());
+		System.out.println("Empleado: "+orden.getEmpleado().getNombre());
+		System.out.println("Cliente: "+orden.getCliente().getNombre());
+		System.out.println("");
+    	System.out.println("Productos en la orden:");
+    	for (Unidad unidad : unidades) {
+			i++;
+			if (unidad.isOferta()) {
+			System.out.println(i+". "+unidad.getTipo().getNombre()+" "+unidad.calcularOferta().getNombre()+"("+unidad.calcularOferta().getPorcentaje_descuento()+"%)"+" $"+unidad.calcularPrecio());
+			}
+			else {
+				System.out.println(i+". "+unidad.getTipo().getNombre()+" $"+unidad.calcularPrecio());
+			}
+		}
+    	System.out.println("");
+    	System.out.println("Precio total: $"+orden.calcularPrecioTotal());
+    	System.out.println("______________________________________________________________________________________________________");
+    	
     }
 }

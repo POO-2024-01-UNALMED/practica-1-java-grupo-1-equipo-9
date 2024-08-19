@@ -101,11 +101,14 @@ public class Orden implements Serializable{
 	}
 	
 	public void completarOrden() {
-		precio_total = calcularPrecioTotal();
-		for (Unidad unidad : productos) {
-			unidad.getTipo().getUnidades().remove(unidad);
-			unidad.getUbicacion().quitarProducto(unidad);
-		}
 		cliente.agregarOrden(this);
+	}
+	
+	public void cancelarOrden() {
+		for (Unidad unidad : productos) {
+			unidad.getTipo().agregarUnidad(unidad, unidad.getUbicacion());
+			unidad.getUbicacion().agregarProducto(unidad);
+		}
+		productos = null;
 	}
 }
