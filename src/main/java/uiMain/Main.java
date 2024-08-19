@@ -474,6 +474,11 @@ public class Main {
 		System.out.print("Ingrese los días para la busqueda: ");
 		int eleccion1 = scanner.nextInt();
 
+		while (eleccion1 < 0 ) {
+        	System.out.print("- Opción inválida, por favor intente de nuevo: ");
+        	eleccion1 = scanner.nextInt();
+        	scanner.nextLine();
+        }
 		
 		ArrayList<Bodega> bodegas = supermercado.getBodegas();
 		ArrayList<Unidad> unidades = new ArrayList<Unidad>();
