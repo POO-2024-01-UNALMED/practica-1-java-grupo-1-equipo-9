@@ -106,7 +106,7 @@ public class Main {
 		                crearOrden();
 		                break;
 		            case 2:
-		                // Lógica para manejo de inventario
+		            	administrarInventario();
 		                break;
 		            case 3:
 		                exit = true;
@@ -650,7 +650,18 @@ public class Main {
 
 //=============METODO PARA LA SEGUNDA FUNCION (ADMINISTRAR INVENTARIO)====================
 	
-	private static void administrarInventario() {
+    private static int contarTiposDiferentes(ArrayList<Unidad> unidades) {
+        ArrayList<TipoProducto> tiposUnicos = new ArrayList<>();
+        for (Unidad unidad : unidades) {
+            if (!tiposUnicos.contains(unidad.getTipo().getTipo())) {
+                tiposUnicos.add(unidad.getTipo().getTipo());
+            }
+        }
+        System.out.println("Retornando: " + tiposUnicos.size());
+        return tiposUnicos.size();
+    }
+    
+    private static void administrarInventario() {
 		
 		Scanner scanner2 = new Scanner(System.in);
 		
@@ -813,5 +824,130 @@ public class Main {
 			}
 		}
 		scanner2.nextLine();
+		
+		ArrayList<Unidad> disponiblesParaPaquetes = new ArrayList<Unidad> ();
+		for(Unidad unidad : avencer) {
+			if(unidad.diasParaVencimiento()>0) {
+				disponiblesParaPaquetes.add(unidad);
+			}
+		}
+		
+		ArrayList<TipoProducto> tipos = new ArrayList<TipoProducto> ();
+		
+		for(Unidad unidad : disponiblesParaPaquetes) {
+			TipoProducto tipo = unidad.getTipo().getTipo();
+			if(!tipos.contains(tipo)) {
+				tipos.add(tipo);
+			}
+		}
+		
+		if(tipos.size()>1) {
+			System.out.print("\n¿Desea crear paquetes de promociones? (s/n): ");
+			String eleccion4 = scanner2.next();
+			 while (!eleccion4.equalsIgnoreCase("s") && !eleccion4.equalsIgnoreCase("n")) {
+	    			System.out.print("- Opción inválida, por favor intente de nuevo: ");
+	    			eleccion4 = scanner2.next();
+	    	    	scanner2.nextLine();}
+			 if(eleccion4.equalsIgnoreCase("s")) {
+				 
+				 while(true) {
+					 boolean buleano = false;
+					 
+					 ArrayList<Unidad> paquete = new ArrayList<Unidad>();
+					 ArrayList<TipoProducto> tiposListos = new ArrayList<TipoProducto>();
+					 
+					 for(Unidad unidad : disponiblesParaPaquetes ) {
+						 for(Unidad unidadEnPaquete : paquete) {
+							 
+							 //buleano = false;
+							 
+							 if(paquete.size() == 0) {
+								paquete.add(unidad);
+								unidad.setEnPaquete(true);
+							 }
+							 
+							 else{
+								 if((unidad.getTipo().getTipo() == unidadEnPaquete.getTipo().getTipo())) {
+								 buleano = false;
+								 break;
+								 }
+								 else {
+									 buleano = true;
+									 //break;
+								 }
+							 }
+						 }
+						 
+						 if(buleano == true) {
+							 paquete.add(unidad);
+							 unidad.setEnPaquete(true);
+						 }
+						 
+					 }
+					 supermercado.agregarPaquetePromocion(paquete);
+					 //System.out.println(paquete);
+					 int i = 0;
+					 for(Unidad unidad : disponiblesParaPaquetes ) {
+						 if(!unidad.isEnPaquete()) {
+							 i++;
+						 }
+						 else {
+							 if(!tiposListos.contains(unidad.getTipo().getTipo())) {
+								tiposListos.add(unidad.getTipo().getTipo());
+							 }
+						 }
+					 }
+					 if(i == 1) {
+						 break;
+					 }
+					 else {
+						 if(tiposListos.size() == 1) {
+							 break;
+						 }
+					 }
+				 }
+				 
+
+				 
+				 
+				 
+				 /*ArrayList<TipoProducto> tiposListos = new ArrayList<TipoProducto>();
+				 
+				 for(Unidad unidad : disponiblesParaPaquetes) {
+					 TipoProducto tipo = unidad.getTipo().getTipo();
+					 
+					 System.out.println(tiposListos.size());
+					 
+					 if(!tiposListos.contains(tipo)) {
+						 paquete.add(unidad);
+						 tiposListos.add(tipo);
+						 //disponiblesParaPaquetes.remove(unidad);
+					 }
+					 
+					 if(tiposListos.size() == contarTiposDiferentes(disponiblesParaPaquetes) || tiposListos.size() > 1 && tiposListos.contains(tipo)) {
+						 supermercado.agregarPaquetePromocion(paquete);
+						 
+						 paquete.clear();
+						 tiposListos.clear();
+						 
+						 paquete.add(unidad);
+						 tiposListos.add(tipo);
+;					 }
+					 
+				 }*/
+				 
+			 }
+			 
+			 for(int i = 0; i < supermercado.getPaquetesPromocion().size(); i++) {
+				 for(Unidad k : supermercado.getPaquetesPromocion().get(i)) {
+					 System.out.println("______________________________________________________________________________________________________\nPaquete #" + i);
+					 System.out.println("Producto: " + k.getTipo().getNombre() + " Codigo: " + k.getCodigo());
+				 }
+			 }
+		}
+		
+		else{
+			System.out.println("No hay suficientes productos para crear paquetes promocionados.");
+		}
 	}
 }

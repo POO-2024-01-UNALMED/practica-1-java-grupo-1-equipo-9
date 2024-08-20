@@ -17,6 +17,7 @@ public class Unidad implements Serializable {
 	private Producto tipo_producto;
 	private Bodega bodega;
 	private ArrayList<Descuento> descuentos = new ArrayList<>();
+	private boolean enPaquete = false;
 	
 	public Unidad(String vencimiento, Producto tipo, Bodega ubicacion) {
 		
@@ -140,4 +141,14 @@ public class Unidad implements Serializable {
 	public void eliminarDescuento(Descuento descuento) {
 		this.descuentos.remove(descuento);
 	}
+
+	public boolean isEnPaquete() {
+		return enPaquete;
+	}
+
+	public void setEnPaquete(boolean enPaquete) {
+		this.enPaquete = enPaquete;
+	}
+	
+	
 }
