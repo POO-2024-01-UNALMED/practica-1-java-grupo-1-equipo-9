@@ -17,7 +17,7 @@ public class Supermercado implements Serializable {
 	private ArrayList<Bodega> bodegas = new ArrayList<>();
 	private ArrayList<Orden> ordenes = new ArrayList<>();
 	private ArrayList<Unidad> productosPromocion = new ArrayList<>();
-	private ArrayList<Object> paquetesPromocion = new ArrayList<>();
+	private ArrayList<ArrayList<Unidad>> paquetesPromocion = new ArrayList<>();
 	
 	public Supermercado(String nombre, double saldo) {
 		this.nombre = nombre;
@@ -122,15 +122,15 @@ public class Supermercado implements Serializable {
 		this.productosPromocion = productosPromocion;
 	}
 
-	public ArrayList<Object> getPaquetesPromocion() {
+	public ArrayList<ArrayList<Unidad>> getPaquetesPromocion() {
 		return paquetesPromocion;
 	}
 
-	public void setPaquetesPromocion(ArrayList<Object> paquetesPromocion) {
+	public void setPaquetesPromocion(ArrayList<ArrayList<Unidad>> paquetesPromocion) {
 		this.paquetesPromocion = paquetesPromocion;
 	}
 	
-	public void agregarPaquetePromocion(ArrayList<Object> paquetePromocion) {
+	public void agregarPaquetePromocion(ArrayList<Unidad> paquetePromocion) {
 		this.paquetesPromocion.add(paquetePromocion);
 	}
 	

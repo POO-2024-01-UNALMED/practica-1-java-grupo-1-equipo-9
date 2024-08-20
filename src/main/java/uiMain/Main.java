@@ -849,8 +849,50 @@ public class Main {
 	    			eleccion4 = scanner2.next();
 	    	    	scanner2.nextLine();}
 			 if(eleccion4.equalsIgnoreCase("s")) {
-				 
-				 while(true) {
+				 ArrayList<TipoProducto> tiposdisp;
+				 ArrayList<Unidad> paquete;
+				 int i = 1;
+				 boolean ex = false;
+				 while (!ex) {
+					 System.out.println("Entra al while");
+					 paquete = new ArrayList<>();
+					 tiposdisp = new ArrayList<>();
+					 for (TipoProducto t : tipos) {
+						 tiposdisp.add(t);
+						 System.out.println("Tipo añadido "+t.name());
+					 }
+					 for(Unidad unidad : disponiblesParaPaquetes) {
+						 System.out.println(unidad.getTipo().getNombre()+" codigo "+unidad.getCodigo()+" entra al if");
+						 System.out.println(tiposdisp.contains(unidad.getTipo().getTipo()));
+						 System.out.println(!unidad.isEnPaquete());
+						 if (tiposdisp.contains(unidad.getTipo().getTipo()) && !unidad.isEnPaquete()) {
+							 System.out.println(unidad.getTipo().getNombre()+" codigo "+unidad.getCodigo()+" Cumple condiciones");
+							 paquete.add(unidad);
+							 unidad.setEnPaquete(true);
+							 tiposdisp.remove(unidad.getTipo().getTipo());
+							 System.out.println(unidad.getTipo().getTipo()+" eliminada de Tipos disponibles");
+						 }
+					 }
+					 if (paquete.size() > 1) {
+						 supermercado.agregarPaquetePromocion(paquete);
+						 System.out.println("Se crea paquete");
+						 System.out.println("______________________________________________________________________________________________________\nPaquete #" + i + ":");
+						 for (Unidad uni : paquete) {
+							 System.out.println("Producto: " + uni.getTipo().getNombre() + " Codigo: " + uni.getCodigo());
+						 }
+						 System.out.println("______________________________________________________________________________________________________");
+						 i++;
+					 }
+					 else {
+						 for (Unidad uni : paquete) {
+							 uni.setEnPaquete(false);
+							 ex = true;
+						 }
+					 }
+					 //if (disponiblesParaPaquetes.size() < 2 || )
+				 }
+			 }	 
+				 /*				 while(true) {
 					 boolean buleano = false;
 					 
 					 ArrayList<Unidad> paquete = new ArrayList<Unidad>();
@@ -911,7 +953,7 @@ public class Main {
 				 
 				 
 				 
-				 /*ArrayList<TipoProducto> tiposListos = new ArrayList<TipoProducto>();
+				 ArrayList<TipoProducto> tiposListos = new ArrayList<TipoProducto>();
 				 
 				 for(Unidad unidad : disponiblesParaPaquetes) {
 					 TipoProducto tipo = unidad.getTipo().getTipo();
@@ -934,7 +976,7 @@ public class Main {
 						 tiposListos.add(tipo);
 ;					 }
 					 
-				 }*/
+				 }
 				 
 			 }
 			 
@@ -944,8 +986,8 @@ public class Main {
 					 System.out.println("Producto: " + k.getTipo().getNombre() + " Codigo: " + k.getCodigo());
 				 }
 			 }
+		}*/
 		}
-		
 		else{
 			System.out.println("No hay suficientes productos para crear paquetes promocionados.");
 		}
