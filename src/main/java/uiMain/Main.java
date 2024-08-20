@@ -15,119 +15,9 @@ public class Main {
     private static final String CARPETA_TEMP = "src/baseDatos/temp/";
 
     public static void main(String[] args) {
-    	//--------------------------------------------------------------------------
-/* 	
-    	Supermercado sup1 = new Supermercado("MercaChicles", 1000000);
-    	Supermercado sup2 = new Supermercado("La Tapita", 1200000);
-    	Empleado emp1 = new Empleado("Pepe Perez", 12345, sup1, "Empleado", 2000000);
-    	Empleado emp2 = new Empleado("Pablo Tobon", 12345, sup1, "Gerente", 2000000);
-    	Empleado emp3 = new Empleado("Pepito Alea", 12345, sup2, "Empleado", 2000000);
-    	Empleado emp4 = new Empleado("Pedro Picapiedra", 12345, sup2, "Gerente", 2000000);
-    	Cliente cli1 = new Cliente("Jaimito Gutierrez", 23456);
-    	Cliente cli2 = new Cliente("Armando Mendoza", 23456);
-		Bodega bod1 = new Bodega("Bodega Principal", "Cordoba", sup1);
-		Bodega bod2 = new Bodega("Bodega Secundaria", "La Piedra", sup1);
-		Bodega bod3 = new Bodega("Bodega Principal 2", "Cordoba", sup2);
-		Bodega bod4 = new Bodega("Bodega Secundaria 2", "La Piedra", sup2);
-		sup1.agregarBodega(bod1);
-		sup1.agregarBodega(bod2);
-		sup2.agregarBodega(bod3);
-		sup2.agregarBodega(bod4);
-		Producto prod1 = new Producto("leche Colanta", TipoProducto.ALIMENTO, 3000, 2000);
-		Producto prod2 = new Producto("vodka Absoluti", TipoProducto.BEBIDA, 90000, 50000);
-		Producto prod3 = new Producto("leche Alqueria", TipoProducto.ALIMENTO, 3100, 2100);
-		Producto prod4 = new Producto("detergente Fav", TipoProducto.ASEO, 6500, 5000);
-		Producto prod5 = new Producto("jabón Dove", TipoProducto.CUIDADOPERSONAL, 18900, 13450);
-		Producto prod6 = new Producto("cuido Dog Chow", TipoProducto.MASCOTA, 125000, 98000);
-		Producto prod7 = new Producto("spray Raid", TipoProducto.OTRO, 17000, 15100);
-		Producto prod8 = new Producto("cepillo Pro 425", TipoProducto.CUIDADOPERSONAL, 4700, 3000);
-		
-		Unidad uni1 = new Unidad("2024-09-20", prod1, bod1);
-		Unidad uni2 = new Unidad("2024-08-25", prod1, bod1);
-		Unidad uni3 = new Unidad("2024-10-05", prod1, bod2);
-		
-		Unidad uni4 = new Unidad("2024-09-30", prod2, bod2);
-		Unidad uni5 = new Unidad("2024-07-08", prod2, bod1);
-		Unidad uni6 = new Unidad("2024-11-27", prod2, bod1);
-		
-		Unidad uni7 = new Unidad("2024-12-08", prod3, bod2);
-		Unidad uni8 = new Unidad("2024-10-20", prod3, bod1);
-		Unidad uni9 = new Unidad("2024-09-27", prod3, bod2);
-		Unidad uni10 = new Unidad("2025-01-30", prod3, bod1);
-		
-		Unidad uni11 = new Unidad("2026-02-25", prod4, bod1);
-		Unidad uni12 = new Unidad("2026-02-25", prod4, bod1);
-		Unidad uni13 = new Unidad("2026-02-25", prod4, bod2);
-		Unidad uni14 = new Unidad("2026-02-25", prod4, bod2);
-		
-		Unidad uni15 = new Unidad("2025-08-06", prod5, bod1);
-		Unidad uni16 = new Unidad("2025-08-06", prod5, bod1);
-		Unidad uni17 = new Unidad("2025-04-30", prod5, bod2);
-		
-		Unidad uni18 = new Unidad("2024-12-31", prod6, bod1);
-		Unidad uni19 = new Unidad("2024-12-31", prod6, bod2);
-		Unidad uni20 = new Unidad("2025-01-30", prod6, bod2);
-		Unidad uni21 = new Unidad("2025-01-30", prod6, bod1);
-		Unidad uni22 = new Unidad("2025-06-10", prod6, bod2);
-		
-		Unidad uni23 = new Unidad("2030-01-01", prod7, bod1);
-		Unidad uni24 = new Unidad("2030-01-01", prod7, bod1);
-		Unidad uni25 = new Unidad("2030-01-01", prod7, bod2);
-		Unidad uni26 = new Unidad("2030-01-01", prod7, bod2);
-		
-		Unidad uni27 = new Unidad("2025-03-25", prod8, bod1);
-		Unidad uni28 = new Unidad("2025-03-25", prod8, bod1);
-		Unidad uni29 = new Unidad("2025-05-01", prod8, bod2);
-		Unidad uni30 = new Unidad("2025-05-01", prod8, bod2);
-		Unidad uni31 = new Unidad("2025-07-10", prod8, bod1);
-		
-		Unidad uni41 = new Unidad("2024-09-20", prod1, bod3);
-		Unidad uni42 = new Unidad("2024-08-25", prod1, bod3);
-		Unidad uni43 = new Unidad("2024-10-05", prod1, bod4);
-		
-		Unidad uni44 = new Unidad("2024-09-30", prod2, bod4);
-		Unidad uni45 = new Unidad("2024-07-08", prod2, bod3);
-		Unidad uni46 = new Unidad("2024-11-27", prod2, bod3);
-		
-		Unidad uni47 = new Unidad("2024-12-08", prod3, bod4);
-		Unidad uni48 = new Unidad("2024-10-20", prod3, bod3);
-		Unidad uni49 = new Unidad("2024-09-27", prod3, bod4);
-		Unidad uni50 = new Unidad("2025-01-30", prod3, bod3);
-		
-		Unidad uni51 = new Unidad("2026-02-25", prod4, bod3);
-		Unidad uni52 = new Unidad("2026-02-25", prod4, bod3);
-		Unidad uni53 = new Unidad("2026-02-25", prod4, bod4);
-		Unidad uni54 = new Unidad("2026-02-25", prod4, bod4);
-		
-		Unidad uni55 = new Unidad("2025-08-06", prod5, bod3);
-		Unidad uni56 = new Unidad("2025-08-06", prod5, bod3);
-		Unidad uni57 = new Unidad("2025-04-30", prod5, bod4);
-		
-		Unidad uni58 = new Unidad("2024-12-31", prod6, bod3);
-		Unidad uni59 = new Unidad("2024-12-31", prod6, bod4);
-		Unidad uni60 = new Unidad("2025-01-30", prod6, bod4);
-		Unidad uni61 = new Unidad("2025-01-30", prod6, bod3);
-		Unidad uni62 = new Unidad("2025-06-10", prod6, bod4);
-		
-		Unidad uni63 = new Unidad("2030-01-01", prod7, bod3);
-		Unidad uni64 = new Unidad("2030-01-01", prod7, bod3);
-		Unidad uni65 = new Unidad("2030-01-01", prod7, bod4);
-		Unidad uni66 = new Unidad("2030-01-01", prod7, bod4);
-		
-		Unidad uni67 = new Unidad("2025-03-25", prod8, bod3);
-		Unidad uni68 = new Unidad("2025-03-25", prod8, bod3);
-		Unidad uni69 = new Unidad("2025-05-01", prod8, bod4);
-		Unidad uni70 = new Unidad("2025-05-01", prod8, bod4);
-		Unidad uni71 = new Unidad("2025-07-10", prod8, bod3);
-    	
-		//Descuento desc1 = new Descuento("Descuento Alimentos", TipoProducto.ALIMENTO, 25);
-		//Descuento desc2 = new Descuento("Descuento Leche Coranta", prod1, 30);
-		Descuento desc3 = new Descuento("Descuento cerca de vencer", uni2, 50);
-*/		
-    	//--------------------------------------------------------------------------
         // Deserializar los datos
-        deserializarDatos();
-
+		deserializarDatos();
+	
 		Scanner scanner = new Scanner(System.in);
 		boolean exit = false;
 
@@ -1088,17 +978,17 @@ public class Main {
 		        scni.nextLine();
 		    }
     	}
-    	for (Producto producto : Producto.getLista_productos()) {
+    	for (Producto prod : Producto.getLista_productos()) {
     		int i = 0;
     		for (Bodega bodega : supermercado1.getBodegas()) {
     			for (Unidad unidad : bodega.getProductos()) {
-    				if (unidad.getTipo() == producto) {
+    				if (unidad.getTipo().getNombre().equals(prod.getNombre())) {
     					i++;
     				}
     			}
     		}
     		System.out.println("______________________________________________________________________________________________________");
-    		System.out.println("En "+supermercado1.getNombre()+" habían inicialmente "+supermercado1.numeroUnidades(producto)+" unidades de "+producto.getNombre());
+    		System.out.println("En "+supermercado1.getNombre()+" habían inicialmente "+supermercado1.numeroUnidades(prod)+" unidades de "+prod.getNombre());
     		System.out.println("Actualmente hay "+i+" unidades");
     	}
     	System.out.println("______________________________________________________________________________________________________");
@@ -1107,7 +997,7 @@ public class Main {
     		int i = 0;
     		for (Bodega bodega : supermercado2.getBodegas()) {
     			for (Unidad unidad : bodega.getProductos()) {
-    				if (unidad.getTipo() == producto) {
+    				if (unidad.getTipo().getNombre().equals(producto.getNombre())) {
     					i++;
     				}
     			}
@@ -1308,4 +1198,30 @@ public class Main {
 			 unienv.setUbicacion(bodrecibe);
 		 }
     }
+    
+    private static void verificarVencimiento(Supermercado supermercado) {
+    	verificarVencimiento(supermercado, 0);
+    }
+    
+	private static void verificarVencimiento(Supermercado supermercado, int dias) {
+		for (Bodega bodega : supermercado.getBodegas()) {
+			for (Unidad unidad : bodega.getProductos()) {
+				if (unidad.diasParaVencimiento() <= dias) {
+					if (unidad.diasParaVencimiento() > 0) {
+						System.out.println("Al producto " + unidad.getTipo().getNombre() + " con código: " + unidad.getCodigo() + 
+								", ubicado en " + bodega.getNombre() + " le quedan " + unidad.diasParaVencimiento() + " días para vencer.");
+					}
+					else if (unidad.diasParaVencimiento() == 0) {
+						System.out.println("El producto " + unidad.getTipo().getNombre() + " con código: " + unidad.getCodigo() + 
+								", ubicado en " + bodega.getNombre() + " se vence hoy.");
+					}
+					else {
+						System.out.println("El producto " + unidad.getTipo().getNombre() + " con código: " + unidad.getCodigo() + 
+								", ubicado en " + bodega.getNombre() + " se venció hace " + (unidad.diasParaVencimiento() * -1) + 
+								" días.");
+					}
+				}	
+			}
+		}
+	}
 }

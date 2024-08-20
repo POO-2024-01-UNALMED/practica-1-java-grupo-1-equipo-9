@@ -142,10 +142,6 @@ public class Supermercado implements Serializable {
 		this.paquetesPromocion.remove(paquetePromocion);
 	}
 
-	public void verificarVencimiento() {
-		verificarVencimiento(0);
-	}
-
 	public ArrayList<Producto> productosPorTipo(TipoProducto tipo){
 		ArrayList<Producto> resultado = new ArrayList<>();
 		for (Bodega bodega : bodegas) {
@@ -161,33 +157,15 @@ public class Supermercado implements Serializable {
 	}
 	
 	public int numeroUnidades(Producto producto) {
-		int numero = 0;
+		int numero;
 		int indice = producto.getSupermercados().indexOf(this);
 		if (indice != -1) {
 			numero = producto.getUnidadesSupermercado().get(indice);
 		}
+		else {
+			numero = 0;
+		}
 		return numero;
 	}
 	
-	public void verificarVencimiento(int dias) {
-		for (Bodega bodega : this.getBodegas()) {
-			for (Unidad unidad : bodega.getProductos()) {
-				if (unidad.diasParaVencimiento() <= dias) {
-					if (unidad.diasParaVencimiento() > 0) {
-						System.out.println("Al producto " + unidad.getTipo().getNombre() + " con código: " + unidad.getCodigo() + 
-								", ubicado en " + bodega.getNombre() + " le quedan " + unidad.diasParaVencimiento() + " días para vencer.");
-					}
-					else if (unidad.diasParaVencimiento() == 0) {
-						System.out.println("El producto " + unidad.getTipo().getNombre() + " con código: " + unidad.getCodigo() + 
-								", ubicado en " + bodega.getNombre() + " se vence hoy.");
-					}
-					else {
-						System.out.println("El producto " + unidad.getTipo().getNombre() + " con código: " + unidad.getCodigo() + 
-								", ubicado en " + bodega.getNombre() + " se venció hace " + (unidad.diasParaVencimiento() * -1) + 
-								" días.");
-					}
-				}	
-			}
-		}
-	}
 }

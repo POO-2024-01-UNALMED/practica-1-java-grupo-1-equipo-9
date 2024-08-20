@@ -14,6 +14,13 @@ public class Deserializador {
         Descuento.setDescuentos(cargarObjeto("descuentos.txt"));
         Persona.setPersonas(cargarObjeto("personas.txt"));
         System.out.println("Datos deserializados");
+//        for (Supermercado supermercado : Supermercado.getSupermercados()) {
+ //       	for (Bodega bodega : supermercado.getBodegas()) {
+  //      		for (Unidad unidad : bodega.getProductos()) {
+   //     			unidad.getTipo().actualizarUnidad(unidad);
+    //    		}
+     //   	}
+      //  }
     }
 	
 	private static <T> ArrayList<T> cargarObjeto(String nombreArchivo) {

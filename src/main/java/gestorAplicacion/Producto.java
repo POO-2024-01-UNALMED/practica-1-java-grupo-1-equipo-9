@@ -128,6 +128,22 @@ public class Producto implements Serializable {
 			
 	}
 	
+	public void actualizarUnidad(Unidad unidad) {
+		int indice = supermercados.indexOf(unidad.getUbicacion().getSupermercado());
+		if (indice == -1) {
+			supermercados.add(unidad.getUbicacion().getSupermercado());
+			unidadesSupermercado.add(1);
+			System.out.println("Añadiendo "+unidad.getUbicacion().getSupermercado().getNombre()+" indice "+supermercados.indexOf(unidad.getUbicacion().getSupermercado()));
+		}
+		else {
+			int valor = unidadesSupermercado.get(indice);
+			unidadesSupermercado.set(indice, (valor + 1));
+			System.out.println(unidad.getUbicacion().getSupermercado().getNombre()+" ya esta indice "+supermercados.indexOf(unidad.getUbicacion().getSupermercado()));
+			System.out.println("Nuevo valor "+unidadesSupermercado.get(supermercados.indexOf(unidad.getUbicacion().getSupermercado())));
+		}
+			
+	}
+	
 	public void quitarUnidad(Unidad unidad) {
 		unidades.remove(unidad);
 	}

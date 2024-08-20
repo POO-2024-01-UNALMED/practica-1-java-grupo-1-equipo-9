@@ -2,7 +2,7 @@ package gestorAplicacion;
 import java.util.ArrayList;
 import java.io.Serializable;
 
-public class Bodega implements Serializable{
+public class Bodega implements Serializable, Manejable{
 	private static final long serialVersionUID = 1L;
 	private String nombre;
 	private String barrio;
