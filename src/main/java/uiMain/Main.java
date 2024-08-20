@@ -21,13 +21,18 @@ public class Main {
     	Supermercado sup2 = new Supermercado("La Tapita", 1200000);
     	Empleado emp1 = new Empleado("Pepe Perez", 12345, sup1, "Empleado", 2000000);
     	Empleado emp2 = new Empleado("Pablo Tobon", 12345, sup1, "Gerente", 2000000);
+    	Empleado emp3 = new Empleado("Pepito Alea", 12345, sup2, "Empleado", 2000000);
+    	Empleado emp4 = new Empleado("Pedro Picapiedra", 12345, sup2, "Gerente", 2000000);
     	Cliente cli1 = new Cliente("Jaimito Gutierrez", 23456);
     	Cliente cli2 = new Cliente("Armando Mendoza", 23456);
 		Bodega bod1 = new Bodega("Bodega Principal", "Cordoba", sup1);
 		Bodega bod2 = new Bodega("Bodega Secundaria", "La Piedra", sup1);
-		sup1.agregarEmpleado(emp1);
+		Bodega bod3 = new Bodega("Bodega Principal 2", "Cordoba", sup2);
+		Bodega bod4 = new Bodega("Bodega Secundaria 2", "La Piedra", sup2);
 		sup1.agregarBodega(bod1);
 		sup1.agregarBodega(bod2);
+		sup2.agregarBodega(bod3);
+		sup2.agregarBodega(bod4);
 		Producto prod1 = new Producto("leche Colanta", TipoProducto.ALIMENTO, 3000, 2000);
 		Producto prod2 = new Producto("vodka Absoluti", TipoProducto.BEBIDA, 90000, 50000);
 		Producto prod3 = new Producto("leche Alqueria", TipoProducto.ALIMENTO, 3100, 2100);
@@ -75,6 +80,45 @@ public class Main {
 		Unidad uni29 = new Unidad("2025-05-01", prod8, bod2);
 		Unidad uni30 = new Unidad("2025-05-01", prod8, bod2);
 		Unidad uni31 = new Unidad("2025-07-10", prod8, bod1);
+		
+		Unidad uni41 = new Unidad("2024-09-20", prod1, bod3);
+		Unidad uni42 = new Unidad("2024-08-25", prod1, bod3);
+		Unidad uni43 = new Unidad("2024-10-05", prod1, bod4);
+		
+		Unidad uni44 = new Unidad("2024-09-30", prod2, bod4);
+		Unidad uni45 = new Unidad("2024-07-08", prod2, bod3);
+		Unidad uni46 = new Unidad("2024-11-27", prod2, bod3);
+		
+		Unidad uni47 = new Unidad("2024-12-08", prod3, bod4);
+		Unidad uni48 = new Unidad("2024-10-20", prod3, bod3);
+		Unidad uni49 = new Unidad("2024-09-27", prod3, bod4);
+		Unidad uni50 = new Unidad("2025-01-30", prod3, bod3);
+		
+		Unidad uni51 = new Unidad("2026-02-25", prod4, bod3);
+		Unidad uni52 = new Unidad("2026-02-25", prod4, bod3);
+		Unidad uni53 = new Unidad("2026-02-25", prod4, bod4);
+		Unidad uni54 = new Unidad("2026-02-25", prod4, bod4);
+		
+		Unidad uni55 = new Unidad("2025-08-06", prod5, bod3);
+		Unidad uni56 = new Unidad("2025-08-06", prod5, bod3);
+		Unidad uni57 = new Unidad("2025-04-30", prod5, bod4);
+		
+		Unidad uni58 = new Unidad("2024-12-31", prod6, bod3);
+		Unidad uni59 = new Unidad("2024-12-31", prod6, bod4);
+		Unidad uni60 = new Unidad("2025-01-30", prod6, bod4);
+		Unidad uni61 = new Unidad("2025-01-30", prod6, bod3);
+		Unidad uni62 = new Unidad("2025-06-10", prod6, bod4);
+		
+		Unidad uni63 = new Unidad("2030-01-01", prod7, bod3);
+		Unidad uni64 = new Unidad("2030-01-01", prod7, bod3);
+		Unidad uni65 = new Unidad("2030-01-01", prod7, bod4);
+		Unidad uni66 = new Unidad("2030-01-01", prod7, bod4);
+		
+		Unidad uni67 = new Unidad("2025-03-25", prod8, bod3);
+		Unidad uni68 = new Unidad("2025-03-25", prod8, bod3);
+		Unidad uni69 = new Unidad("2025-05-01", prod8, bod4);
+		Unidad uni70 = new Unidad("2025-05-01", prod8, bod4);
+		Unidad uni71 = new Unidad("2025-07-10", prod8, bod3);
     	
 		//Descuento desc1 = new Descuento("Descuento Alimentos", TipoProducto.ALIMENTO, 25);
 		//Descuento desc2 = new Descuento("Descuento Leche Coranta", prod1, 30);
@@ -106,8 +150,46 @@ public class Main {
 		                crearOrden();
 		                break;
 		            case 2:
-		            	administrarInventario();
-		                break;
+		            	boolean et = false;
+		            	while(!et) {
+		            		System.out.println("______________________________________________________________________________________________________");
+		            		System.out.println("=== Que desea hacer ===\n");
+		            		System.out.println("1. Descuentos por vencimiento");
+		            		System.out.println("2. Intercambio de productos entre supermercados");
+		            		System.out.println("3. Surtir");
+		            		System.out.println("");
+		            		System.out.print("Seleccione una opción: ");
+		    		    
+		            		try {
+		            			opcion = scanner.nextInt();
+		            			scanner.nextLine();
+
+		            			switch (opcion) {
+		    		            	case 1:
+		    		            		administrarInventario();
+		    		            		et = true;
+		    		            		break;
+		    		            	case 2:
+		    		            		intercambioProductos();
+		    		            		et = true;
+		    		            		break;
+		    		            	case 3:
+		    		            		//surtir();
+		    		            		et = true;
+		    		            		break;
+		    		            	default:
+		    		            		System.out.println("______________________________________________________________________________________________________");
+		    		            		System.out.println("- Opción inválida, por favor intente de nuevo.");
+		    		            		break;
+		            			}
+		            		}
+		            		catch (InputMismatchException e) {
+		            			System.out.println("______________________________________________________________________________________________________");
+		            			System.out.println("- Opción inválida, por favor intente de nuevo.");
+		            			scanner.nextLine();
+		            		}	
+		            	}
+		            	break;
 		            case 3:
 		                exit = true;
 		                System.out.println("______________________________________________________________________________________________________");
@@ -158,15 +240,15 @@ public class Main {
     private static void crearOrden() {
         ArrayList<Supermercado> supermercados = Supermercado.getSupermercados();
     	ArrayList<Persona> personas = Persona.getPersonas();
-    	ArrayList<Persona> empleados = new ArrayList<>();
+    	ArrayList<Empleado> empleados;
     	ArrayList<Persona> clientes = new ArrayList<>();
     	Supermercado supermercado;
     	Persona empleado;
     	Persona cliente;
-    	for (Persona persona : personas) {
-    		if (persona.getCargo() != "Cliente") empleados.add(persona);
-    		else clientes.add(persona);
-    	}
+//    	for (Persona persona : personas) {
+//    		if (persona.getCargo() != "Cliente") empleados.add(persona);
+//    		else clientes.add(persona);
+//    	}
     	Scanner scn = new Scanner(System.in);
     	while (true) {
     		int i = 0;
@@ -206,6 +288,7 @@ public class Main {
 		        scn.nextLine();
 		    }
     	}
+    	empleados = supermercado.getEmpleados();
     	while (true) {
     		int i = 0;
     		System.out.println("______________________________________________________________________________________________________");
@@ -667,10 +750,7 @@ public class Main {
 		
 		ArrayList<Supermercado> supermercados = Supermercado.getSupermercados();
 		ArrayList<Persona> personas = Persona.getPersonas();
-    	ArrayList<Persona> empleados = new ArrayList<>();
-		
-    	for (Persona persona : personas) {
-    		if (persona.getCargo() != "Cliente") empleados.add(persona);}
+    	ArrayList<Empleado> empleados;
     	
     	int j = 0;
     	System.out.println("Lista de Supermercados:");
@@ -687,6 +767,7 @@ public class Main {
         	scanner2.nextLine();
         }
         Supermercado supermercado = supermercados.get(opcion - 1);
+        empleados = supermercado.getEmpleados();
         System.out.println("- Supermercado "+supermercado.getNombre()+" selecionado.");
         j = 0;
     	System.out.println("");
@@ -992,4 +1073,107 @@ public class Main {
 			System.out.println("No hay suficientes productos para crear paquetes promocionados.");
 		}
 	}
+    private static void intercambioProductos() {
+    	ArrayList<Supermercado> supermercados = new ArrayList<>();
+    	for(Supermercado supermercado: Supermercado.getSupermercados()) {
+    		supermercados.add(supermercado);
+    	}
+    	Supermercado supermercado1;
+    	Supermercado supermercado2;
+    	Scanner scni = new Scanner(System.in);
+    	while (true) {
+    		int i = 0;
+    		System.out.println("______________________________________________________________________________________________________");
+    		System.out.println("=== Lista de Supermercados ===\n");
+    		for (Supermercado sup : supermercados) {
+    			i++;
+    			System.out.println(i+". "+sup.getNombre());
+    		}
+    		System.out.println("");
+    		System.out.print("Seleccione el primer supermercado: ");
+    		try {
+    			int opcion = scni.nextInt();
+    			while (opcion < 1 || opcion > supermercados.size()) {
+    				System.out.println("______________________________________________________________________________________________________");
+    				System.out.println("- Opción inválida, por favor intente de nuevo.");
+    				i = 0;
+    	    		System.out.println("______________________________________________________________________________________________________");
+    	    		System.out.println("=== Lista de Supermercados ===\n");
+    	    		for (Supermercado sup : supermercados) {
+    	    			i++;
+    	    			System.out.println(i+". "+sup.getNombre());
+    	    		}
+    	    		System.out.println("");
+    	    		System.out.print("Seleccione el primer supermercado: ");
+    	    		opcion = scni.nextInt();
+    	    		scni.nextLine();
+    			}
+    			supermercado1 = supermercados.get(opcion - 1);
+    			supermercados.remove(supermercado1);
+    			System.out.println("______________________________________________________________________________________________________");
+    			System.out.println("- Supermercado "+supermercado1.getNombre()+" selecionado.");
+    			break;
+    		}
+    		catch (InputMismatchException e) {
+    			System.out.println("______________________________________________________________________________________________________");
+		        System.out.println("- Opción inválida, por favor intente de nuevo.");
+		        scni.nextLine();
+		    }
+    	}
+    	while (true) {
+    		int i = 0;
+    		System.out.println("______________________________________________________________________________________________________");
+    		System.out.println("=== Lista de Supermercados ===\n");
+    		for (Supermercado sup : supermercados) {
+    			i++;
+    			System.out.println(i+". "+sup.getNombre());
+    		}
+    		System.out.println("");
+    		System.out.print("Seleccione el segundo supermercado: ");
+    		try {
+    			int opcion = scni.nextInt();
+    			while (opcion < 1 || opcion > supermercados.size()) {
+    				System.out.println("______________________________________________________________________________________________________");
+    				System.out.println("- Opción inválida, por favor intente de nuevo.");
+    				i = 0;
+    	    		System.out.println("______________________________________________________________________________________________________");
+    	    		System.out.println("=== Lista de Supermercados ===\n");
+    	    		for (Supermercado sup : supermercados) {
+    	    			i++;
+    	    			System.out.println(i+". "+sup.getNombre());
+    	    		}
+    	    		System.out.println("");
+    	    		System.out.print("Seleccione el segundo supermercado: ");
+    	    		opcion = scni.nextInt();
+    	    		scni.nextLine();
+    			}
+    			supermercado2 = supermercados.get(opcion - 1);
+    			supermercados.remove(supermercado2);
+    			System.out.println("______________________________________________________________________________________________________");
+    			System.out.println("- Supermercado "+supermercado2.getNombre()+" selecionado.");
+    			break;
+    		}
+    		catch (InputMismatchException e) {
+    			System.out.println("______________________________________________________________________________________________________");
+		        System.out.println("- Opción inválida, por favor intente de nuevo.");
+		        scni.nextLine();
+		    }
+    	}
+    	//System.out.print("Leche colanta en supermercado "+Supermercado.getSupermercados().get(0).getNombre()+" "+Producto.getLista_productos().get(0).getUnidadesSupermercado().get(0));
+    	for (Producto producto : Producto.getLista_productos()) {
+    		int i = 0;
+    		for (Bodega bodega : supermercado1.getBodegas()) {
+    			for (Unidad unidad : bodega.getProductos()) {
+    				if (unidad.getTipo() == producto) {
+    					i++;
+    				}
+    			}
+    		}
+    		System.out.println("En "+supermercado1.getNombre()+" habían inicialmente "+supermercado1.numeroUnidades(producto)+" unidades de "+producto.getNombre());
+    		System.out.println("Actualmente hay "+i+" unidades");
+    	}
+    	for (Producto producto : Producto.getLista_productos()) {
+    		System.out.println("En "+supermercado2.getNombre()+" habían inicialmente "+supermercado2.numeroUnidades(producto)+" unidades de "+producto.getNombre());
+    	}
+    }
 }
