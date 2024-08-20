@@ -738,258 +738,194 @@ public class Main {
                 return Long.compare(u1.diasParaVencimiento(), u2.diasParaVencimiento());
             }
 		});
-		
-		System.out.println("______________________________________________________________________________________________________"
-				+ "\nEstos son los productos vencidos o proximos a vencer:\n");
-		
-		for (int i=0; i<avencer.size(); i++) {
-			
-			if( avencer.get(i).diasParaVencimiento() <= 0 ) {
-				
-				System.out.println("Nombre: " + avencer.get(i).getTipo().getNombre() + ", Codigo: " + 
-				avencer.get(i).getCodigo() + ", Ubicación: " + avencer.get(i).getUbicacion().getNombre() + ", VENCIDO");
-				
-				avencer.get(i).getUbicacion().quitarProducto(avencer.get(i));
-				
-			}
-			
-			else { 
-				System.out.println("Nombre: " + avencer.get(i).getTipo().getNombre() + ", Codigo: " + avencer.get(i).getCodigo() 
-				+ ", Ubicacion: "+ avencer.get(i).getUbicacion().getNombre() +", Dias para vencer: " + avencer.get(i).diasParaVencimiento());
-			}
-		}
-		
-		scanner2.nextLine();
-		scanner2.nextLine();
-		
-		int disponibles = 0;
-		for(int d=0; d<avencer.size(); d++) {
-			if( avencer.get(d).diasParaVencimiento() > 0 ) {
-				disponibles++;
-			}
-		}
-		if (disponibles > 0) {
-			System.out.println("______________________________________________________________________________________________________\nProductos disponibles para hacerle descuentos:");
+		if(avencer.size() == 0) {
+			System.out.println("No hay productos proximos a vencer en ese plazo");
 		}
 		else {
-			System.out.print("No hay productos disponibles para hacer descuentos.");
-		}
+			System.out.println("______________________________________________________________________________________________________"
+					+ "\nEstos son los productos vencidos o proximos a vencer:\n");
 		
-		for (int i=0; i<avencer.size(); i++) {
-			
-			if( avencer.get(i).diasParaVencimiento() > 0 ) {
+			for (int i=0; i<avencer.size(); i++) {
 				
-			System.out.println("\n->Nombre: " + avencer.get(i).getTipo().getNombre() + ", Codigo: " + avencer.get(i).getCodigo() + ", Dias para vencer: " + avencer.get(i).diasParaVencimiento());
-				
-				if (avencer.get(i).getDescuentos().size() == 0) {
-					System.out.print("  No tiene descuentos disponibles ¿desea crear uno? (s/n): ");
-					String eleccion2 = scanner2.next();
+				if( avencer.get(i).diasParaVencimiento() <= 0 ) {
 					
-					while (!eleccion2.equalsIgnoreCase("s") && !eleccion2.equalsIgnoreCase("n")) {
-    	    			System.out.print("- Opción inválida, por favor intente de nuevo: ");
-    	    			eleccion2 = scanner2.next();}
+					System.out.println("Nombre: " + avencer.get(i).getTipo().getNombre() + ", Codigo: " + 
+					avencer.get(i).getCodigo() + ", Ubicación: " + avencer.get(i).getUbicacion().getNombre() + ", VENCIDO");
 					
-					if(eleccion2.equalsIgnoreCase("s")) {
-						System.out.print("  Ingrese el nombre del descuento: ");
-						String nombreDescuento = scanner2.next();
-						System.out.print("  Ingrese el porcentaje de descuento: ");
-						int porcentajeDescuento = scanner2.nextInt();
-						Descuento descuentoPorVencimiento = new Descuento(nombreDescuento, avencer.get(i), porcentajeDescuento);
-					}
+					avencer.get(i).getUbicacion().quitarProducto(avencer.get(i));
+					
 				}
 				
-				else{
-					System.out.println("  Mejor descuento:");
-					System.out.println("  Nombre del descuento: '" + avencer.get(i).calcularOferta().getNombre() + "' Descuento: " + avencer.get(i).calcularOferta().getPorcentaje_descuento() 
-							+ "% (Antes: " + avencer.get(i).getTipo().getPrecio() + " Ahora: " + avencer.get(i).calcularPrecio() + ")");
-					
-					
-					System.out.print("  ¿Desea agregar un mejor descuento? (s/n): ");
-					String eleccion3 = scanner2.next();
-	    	    	
-	    	        while (!eleccion3.equalsIgnoreCase("s") && !eleccion3.equalsIgnoreCase("n")) {
-	    	    			System.out.print("- Opción inválida, por favor intente de nuevo: ");
-	    	    			eleccion3 = scanner2.next();
-	    	    	    	scanner2.nextLine();}
-					
-					if (eleccion3.equalsIgnoreCase("s")) {
-						System.out.print("  Ingrese el nombre del descuento: ");
-						String nombreDescuento = scanner2.next();
-						System.out.print("  Ingrese el porcentaje de descuento: ");
-						int porcentajeDescuento = scanner2.nextInt();
-						Descuento descuentoPorVencimiento = new Descuento(nombreDescuento, avencer.get(i), porcentajeDescuento);
-					}
-				}	
+				else { 
+					System.out.println("Nombre: " + avencer.get(i).getTipo().getNombre() + ", Codigo: " + avencer.get(i).getCodigo() 
+					+ ", Ubicacion: "+ avencer.get(i).getUbicacion().getNombre() +", Dias para vencer: " + avencer.get(i).diasParaVencimiento());
+				}
+			}
 			
+			scanner2.nextLine();
+			scanner2.nextLine();
+			
+			int disponibles = 0;
+			for(int d=0; d<avencer.size(); d++) {
+				if( avencer.get(d).diasParaVencimiento() > 0 ) {
+					disponibles++;
+				}
 			}
-		}
-		scanner2.nextLine();
-		
-		ArrayList<Unidad> disponiblesParaPaquetes = new ArrayList<Unidad> ();
-		for(Unidad unidad : avencer) {
-			if(unidad.diasParaVencimiento()>0) {
-				disponiblesParaPaquetes.add(unidad);
+			if (disponibles > 0) {
+				System.out.println("______________________________________________________________________________________________________\nProductos disponibles para hacerle descuentos:");
 			}
-		}
-		
-		ArrayList<TipoProducto> tipos = new ArrayList<TipoProducto> ();
-		
-		for(Unidad unidad : disponiblesParaPaquetes) {
-			TipoProducto tipo = unidad.getTipo().getTipo();
-			if(!tipos.contains(tipo)) {
-				tipos.add(tipo);
+			else {
+				System.out.print("No hay productos disponibles para hacer descuentos.");
 			}
-		}
-		
-		if(tipos.size()>1) {
-			System.out.print("\n¿Desea crear paquetes de promociones? (s/n): ");
-			String eleccion4 = scanner2.next();
-			 while (!eleccion4.equalsIgnoreCase("s") && !eleccion4.equalsIgnoreCase("n")) {
-	    			System.out.print("- Opción inválida, por favor intente de nuevo: ");
-	    			eleccion4 = scanner2.next();
-	    	    	scanner2.nextLine();}
-			 if(eleccion4.equalsIgnoreCase("s")) {
-				 ArrayList<TipoProducto> tiposdisp;
-				 ArrayList<Unidad> paquete;
-				 int i = 1;
-				 boolean ex = false;
-				 while (!ex) {
-					 System.out.println("Entra al while");
-					 paquete = new ArrayList<>();
-					 tiposdisp = new ArrayList<>();
-					 for (TipoProducto t : tipos) {
-						 tiposdisp.add(t);
-						 System.out.println("Tipo añadido "+t.name());
-					 }
-					 for(Unidad unidad : disponiblesParaPaquetes) {
-						 System.out.println(unidad.getTipo().getNombre()+" codigo "+unidad.getCodigo()+" entra al if");
-						 System.out.println(tiposdisp.contains(unidad.getTipo().getTipo()));
-						 System.out.println(!unidad.isEnPaquete());
-						 if (tiposdisp.contains(unidad.getTipo().getTipo()) && !unidad.isEnPaquete()) {
-							 System.out.println(unidad.getTipo().getNombre()+" codigo "+unidad.getCodigo()+" Cumple condiciones");
-							 paquete.add(unidad);
-							 unidad.setEnPaquete(true);
-							 tiposdisp.remove(unidad.getTipo().getTipo());
-							 System.out.println(unidad.getTipo().getTipo()+" eliminada de Tipos disponibles");
+			
+			for (int i=0; i<avencer.size(); i++) {
+				
+				if( avencer.get(i).diasParaVencimiento() > 0 ) {
+					
+				System.out.println("\n->Nombre: " + avencer.get(i).getTipo().getNombre() + ", Codigo: " + avencer.get(i).getCodigo() + ", Dias para vencer: " + avencer.get(i).diasParaVencimiento());
+					
+					if (avencer.get(i).getDescuentos().size() == 0) {
+						System.out.print("  No tiene descuentos disponibles ¿desea crear uno? (s/n): ");
+						String eleccion2 = scanner2.next();
+						
+						while (!eleccion2.equalsIgnoreCase("s") && !eleccion2.equalsIgnoreCase("n")) {
+	    	    			System.out.print("- Opción inválida, por favor intente de nuevo: ");
+	    	    			eleccion2 = scanner2.next();}
+						
+						if(eleccion2.equalsIgnoreCase("s")) {
+							System.out.print("  Ingrese el nombre del descuento: ");
+							String nombreDescuento = scanner2.next();
+							System.out.print("  Ingrese el porcentaje de descuento: ");
+							int porcentajeDescuento = scanner2.nextInt();
+							Descuento descuentoPorVencimiento = new Descuento(nombreDescuento, avencer.get(i), porcentajeDescuento);
+						}
+					}
+					
+					else{
+						System.out.println("  Mejor descuento:");
+						System.out.println("  Nombre del descuento: '" + avencer.get(i).calcularOferta().getNombre() + "' Descuento: " + avencer.get(i).calcularOferta().getPorcentaje_descuento() 
+								+ "% (Antes: " + avencer.get(i).getTipo().getPrecio() + " Ahora: " + avencer.get(i).calcularPrecio() + ")");
+						
+						
+						System.out.print("  ¿Desea agregar un mejor descuento? (s/n): ");
+						String eleccion3 = scanner2.next();
+		    	    	
+		    	        while (!eleccion3.equalsIgnoreCase("s") && !eleccion3.equalsIgnoreCase("n")) {
+		    	    			System.out.print("- Opción inválida, por favor intente de nuevo: ");
+		    	    			eleccion3 = scanner2.next();
+		    	    	    	scanner2.nextLine();}
+						
+						if (eleccion3.equalsIgnoreCase("s")) {
+							System.out.print("  Ingrese el nombre del descuento: ");
+							String nombreDescuento = scanner2.next();
+							System.out.print("  Ingrese el porcentaje de descuento: ");
+							int porcentajeDescuento = scanner2.nextInt();
+							Descuento descuentoPorVencimiento = new Descuento(nombreDescuento, avencer.get(i), porcentajeDescuento);
+						}
+					}	
+				
+				}
+			}
+			scanner2.nextLine();
+			
+			ArrayList<Unidad> disponiblesParaPaquetes = new ArrayList<Unidad> ();
+			for(Unidad unidad : avencer) {
+				if(unidad.diasParaVencimiento()>0) {
+					disponiblesParaPaquetes.add(unidad);
+				}
+			}
+			
+			ArrayList<TipoProducto> tipos = new ArrayList<TipoProducto> ();
+			
+			for(Unidad unidad : disponiblesParaPaquetes) {
+				TipoProducto tipo = unidad.getTipo().getTipo();
+				if(!tipos.contains(tipo)) {
+					tipos.add(tipo);
+				}
+			}
+			
+			if(tipos.size()>1) {
+				System.out.print("\n¿Desea crear paquetes de promociones? (s/n): ");
+				String eleccion4 = scanner2.next();
+				 while (!eleccion4.equalsIgnoreCase("s") && !eleccion4.equalsIgnoreCase("n")) {
+		    			System.out.print("- Opción inválida, por favor intente de nuevo: ");
+		    			eleccion4 = scanner2.next();
+		    	    	scanner2.nextLine();}
+				 if(eleccion4.equalsIgnoreCase("s")) {
+					 ArrayList<TipoProducto> tiposdisp;
+					 ArrayList<Unidad> paquete;
+					 //
+					 boolean ex = false;
+					 while (!ex) {
+						 paquete = new ArrayList<>();
+						 tiposdisp = new ArrayList<>();
+						 for (TipoProducto t : tipos) {
+							 tiposdisp.add(t);
+						
 						 }
-					 }
-					 if (paquete.size() > 1) {
-						 supermercado.agregarPaquetePromocion(paquete);
-						 System.out.println("Se crea paquete");
-						 System.out.println("______________________________________________________________________________________________________\nPaquete #" + i + ":");
-						 for (Unidad uni : paquete) {
-							 System.out.println("Producto: " + uni.getTipo().getNombre() + " Codigo: " + uni.getCodigo());
-						 }
-						 System.out.println("______________________________________________________________________________________________________");
-						 i++;
-					 }
-					 else {
-						 for (Unidad uni : paquete) {
-							 uni.setEnPaquete(false);
-							 ex = true;
-						 }
-					 }
-					 //if (disponiblesParaPaquetes.size() < 2 || )
-				 }
-			 }	 
-				 /*				 while(true) {
-					 boolean buleano = false;
-					 
-					 ArrayList<Unidad> paquete = new ArrayList<Unidad>();
-					 ArrayList<TipoProducto> tiposListos = new ArrayList<TipoProducto>();
-					 
-					 for(Unidad unidad : disponiblesParaPaquetes ) {
-						 for(Unidad unidadEnPaquete : paquete) {
-							 
-							 //buleano = false;
-							 
-							 if(paquete.size() == 0) {
-								paquete.add(unidad);
-								unidad.setEnPaquete(true);
+						 for(Unidad unidad : disponiblesParaPaquetes) {
+							
+							 if (tiposdisp.contains(unidad.getTipo().getTipo()) && !unidad.isEnPaquete()) {
+								 paquete.add(unidad);
+								 unidad.setEnPaquete(true);
+								 tiposdisp.remove(unidad.getTipo().getTipo());
+								
 							 }
-							 
-							 else{
-								 if((unidad.getTipo().getTipo() == unidadEnPaquete.getTipo().getTipo())) {
-								 buleano = false;
-								 break;
-								 }
-								 else {
-									 buleano = true;
-									 //break;
-								 }
-							 }
 						 }
-						 
-						 if(buleano == true) {
-							 paquete.add(unidad);
-							 unidad.setEnPaquete(true);
-						 }
-						 
-					 }
-					 supermercado.agregarPaquetePromocion(paquete);
-					 //System.out.println(paquete);
-					 int i = 0;
-					 for(Unidad unidad : disponiblesParaPaquetes ) {
-						 if(!unidad.isEnPaquete()) {
-							 i++;
+						 if (paquete.size() > 1) {
+							 supermercado.agregarPaquetePromocion(paquete);
 						 }
 						 else {
-							 if(!tiposListos.contains(unidad.getTipo().getTipo())) {
-								tiposListos.add(unidad.getTipo().getTipo());
+							 for (Unidad uni : paquete) {
+								 uni.setEnPaquete(false);
+								 ex = true;
 							 }
 						 }
 					 }
-					 if(i == 1) {
-						 break;
+				 }	
+				 System.out.println("______________________________________________________________________________________________________");
+				 System.out.println("Paquetes creados.");
+				 int i = 1;
+				 for (ArrayList<Unidad> uni : supermercado.getPaquetesPromocion()) {
+					 float valorPromo = 0;
+					for(Unidad u : uni) {
+						valorPromo += u.calcularPrecio();
+					}
+					 System.out.println("______________________________________________________________________________________________________\nPaquete #" + i + " Precio: " + valorPromo);
+					 
+					 for(Unidad u : uni) {
+						 System.out.println("Producto: " + u.getTipo().getNombre() + " Codigo: " + u.getCodigo());
 					 }
-					 else {
-						 if(tiposListos.size() == 1) {
-							 break;
+					 
+					System.out.print("\n¿Desea hacer decuento al precio? (s/n): ");
+					String eleccion5 = scanner2.next();
+					 while (!eleccion5.equalsIgnoreCase("s") && !eleccion5.equalsIgnoreCase("n")) {
+			    			System.out.print("- Opción inválida, por favor intente de nuevo: ");
+			    			eleccion5 = scanner2.next();
+			    	    	scanner2.nextLine();}
+					 if(eleccion5.equalsIgnoreCase("s")) {
+						 System.out.print("Ingrese el descuento que desea: ");
+						 int descuentoPaquete = scanner2.nextInt();
+						 for(Unidad u : uni) {
+							 if(u.calcularPrecio() == u.getTipo().getPrecio()) {
+								 Descuento descuento = new Descuento(null,u,descuentoPaquete);
+							 }
+							 else {
+								 u.calcularOferta().setPorcentaje_descuento(((u.calcularOferta().getPorcentaje_descuento()*descuentoPaquete)/100)+u.calcularOferta().getPorcentaje_descuento());
+							 }
 						 }
+						 valorPromo = 0;
+							for(Unidad u : uni) {
+								valorPromo += u.calcularPrecio();
+							}
+						 System.out.println("______________________________________________________________________________________________________\nPaquete #" + i + " Precio con descuento: " + valorPromo);
 					 }
+					 i++;
 				 }
-				 
-
-				 
-				 
-				 
-				 ArrayList<TipoProducto> tiposListos = new ArrayList<TipoProducto>();
-				 
-				 for(Unidad unidad : disponiblesParaPaquetes) {
-					 TipoProducto tipo = unidad.getTipo().getTipo();
-					 
-					 System.out.println(tiposListos.size());
-					 
-					 if(!tiposListos.contains(tipo)) {
-						 paquete.add(unidad);
-						 tiposListos.add(tipo);
-						 //disponiblesParaPaquetes.remove(unidad);
-					 }
-					 
-					 if(tiposListos.size() == contarTiposDiferentes(disponiblesParaPaquetes) || tiposListos.size() > 1 && tiposListos.contains(tipo)) {
-						 supermercado.agregarPaquetePromocion(paquete);
-						 
-						 paquete.clear();
-						 tiposListos.clear();
-						 
-						 paquete.add(unidad);
-						 tiposListos.add(tipo);
-;					 }
-					 
-				 }
-				 
-			 }
-			 
-			 for(int i = 0; i < supermercado.getPaquetesPromocion().size(); i++) {
-				 for(Unidad k : supermercado.getPaquetesPromocion().get(i)) {
-					 System.out.println("______________________________________________________________________________________________________\nPaquete #" + i);
-					 System.out.println("Producto: " + k.getTipo().getNombre() + " Codigo: " + k.getCodigo());
-				 }
-			 }
-		}*/
-		}
-		else{
-			System.out.println("No hay suficientes productos para crear paquetes promocionados.");
+			}
+			else{
+				System.out.println("No hay suficientes productos para crear paquetes promocionados.");
+			}
 		}
 	}
 }
