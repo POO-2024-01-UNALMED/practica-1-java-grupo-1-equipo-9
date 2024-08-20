@@ -6,7 +6,7 @@ import gestorAplicacion.*;
 
 public class Deserializador {
 
-	private static final String DIRECTORIO = "src/main/java/baseDatos/temp";
+	private static final String DIRECTORIO = "baseDatos/temp";
 	
 	public static void cargarDatos() {
         Supermercado.setSupermercados(cargarObjeto("supermercados.txt"));

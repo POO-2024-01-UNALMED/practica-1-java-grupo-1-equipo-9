@@ -6,7 +6,7 @@ import gestorAplicacion.*;
 
 public class Serializador {
 
-	private static final String DIRECTORIO = "src/main/java/baseDatos/temp";
+	private static final String DIRECTORIO = "baseDatos/temp";
 	
 	public static void guardarDatos() {
 		crearCarpetaTemp();
