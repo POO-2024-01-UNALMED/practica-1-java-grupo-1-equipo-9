@@ -16,7 +16,7 @@ public class Main {
 
     public static void main(String[] args) {
     	//--------------------------------------------------------------------------
-    	
+/* 	
     	Supermercado sup1 = new Supermercado("MercaChicles", 1000000);
     	Supermercado sup2 = new Supermercado("La Tapita", 1200000);
     	Empleado emp1 = new Empleado("Pepe Perez", 12345, sup1, "Empleado", 2000000);
@@ -123,10 +123,10 @@ public class Main {
 		//Descuento desc1 = new Descuento("Descuento Alimentos", TipoProducto.ALIMENTO, 25);
 		//Descuento desc2 = new Descuento("Descuento Leche Coranta", prod1, 30);
 		Descuento desc3 = new Descuento("Descuento cerca de vencer", uni2, 50);
-		
+*/		
     	//--------------------------------------------------------------------------
         // Deserializar los datos
-        //deserializarDatos();
+        deserializarDatos();
 
 		Scanner scanner = new Scanner(System.in);
 		boolean exit = false;
@@ -209,46 +209,29 @@ public class Main {
 		    }
 		}
         // Serializar los datos antes de salir
-        //serializarDatos();
+        serializarDatos();
         scanner.close();
     }
 
     private static void deserializarDatos() {
-    	GestorDeArchivos.crearCarpetaTemp();
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(CARPETA_TEMP + "datos.dat"))) {
-            Supermercado.setSupermercados((ArrayList<Supermercado>) ois.readObject());
-            Producto.setLista_productos((ArrayList<Producto>) ois.readObject());
-            Descuento.setDescuentos((ArrayList<Descuento>) ois.readObject());
-            // Añadir la deserialización de otras clases si es necesario
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Error al deserializar los datos: " + e.getMessage());
-        }
+        Deserializador.cargarDatos();
     }
 
     private static void serializarDatos() {
-    	GestorDeArchivos.crearCarpetaTemp();
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(CARPETA_TEMP + "datos.dat"))) {
-            oos.writeObject(Supermercado.getSupermercados());
-            oos.writeObject(Producto.getLista_productos());
-            oos.writeObject(Descuento.getDescuentos());
-            // Añadir la serialización de otras clases si es necesario
-        } catch (IOException e) {
-            System.out.println("Error al serializar los datos: " + e.getMessage());
-        }
+    	Serializador.guardarDatos();
     }
 
     private static void crearOrden() {
         ArrayList<Supermercado> supermercados = Supermercado.getSupermercados();
     	ArrayList<Persona> personas = Persona.getPersonas();
     	ArrayList<Empleado> empleados;
-    	ArrayList<Persona> clientes = new ArrayList<>();
+    	ArrayList<Cliente> clientes = new ArrayList<>();
     	Supermercado supermercado;
     	Persona empleado;
     	Persona cliente;
-//    	for (Persona persona : personas) {
-//    		if (persona.getCargo() != "Cliente") empleados.add(persona);
-//    		else clientes.add(persona);
-//    	}
+    	for (Persona persona : personas) {
+    		if (persona.getCargo().equals("Cliente")) {clientes.add((Cliente)persona);}
+    	}
     	Scanner scn = new Scanner(System.in);
     	while (true) {
     		int i = 0;
@@ -295,7 +278,7 @@ public class Main {
     		System.out.println("=== Lista de Empleados ===\n");
     		for (Persona persona : empleados) {
     			i++;
-    			System.out.println(i + ". " + persona.getCargo()+ " " + persona.getNombre());
+    			System.out.println(i + ". " + persona.informacion());
     		}
     		System.out.println("");
     		System.out.print("Seleccione empleado encargado: ");
@@ -346,7 +329,7 @@ public class Main {
     			System.out.println("=== Lista de Clientes ===\n");
     			for (Persona persona : clientes) {
     				i++;
-    				System.out.println(i + ". " + persona.getNombre()+" con cédula "+persona.getCedula());
+    				System.out.println(i + ". " + persona.informacion());
     			}
     			System.out.println("");
     			System.out.print("Seleccione el cliente: ");
@@ -452,6 +435,8 @@ public class Main {
     		
         }
     }
+    
+  //=============METODO PARA LA PRIMERA FUNCION====================
     private static void agregarProducto(Orden orden) {
     	Scanner scann = new Scanner(System.in);
     	boolean exit = false;
@@ -552,7 +537,7 @@ public class Main {
 	    		}
 	    		ArrayList<Unidad> unienof = new ArrayList<>();
     			ArrayList<Unidad> unisinof = new ArrayList<>();
-    			for (Unidad unidad : lista1.get(opcionproducto-1).getUnidades()) {
+    			for (Unidad unidad : lista1.get(opcionproducto-1).getUnidades(orden.getSupermercado())) {
     				if (unidad.isOferta())unienof.add(unidad);
     				else unisinof.add(unidad);
     			}
@@ -632,7 +617,7 @@ public class Main {
     	    	    				scann.nextLine();
     	    	    			}
     	    				}
-    	        	        orden.agregarProducto(lista1.get(opcionproducto-1), opcion);
+    	        	        orden.agregarProducto(orden.getSupermercado() , lista1.get(opcionproducto-1), opcion);
     	        	        System.out.println("______________________________________________________________________________________________________");
     	            		System.out.println("Producto(s) agregado(s) a la orden: ");
     	    			}
@@ -659,6 +644,7 @@ public class Main {
     	}
     }
     
+    //=============METODO PARA LA PRIMERA FUNCION====================
     private static void quitarProducto(Orden orden) {
     	Scanner scnn = new Scanner(System.in);
     	boolean exit = false;
@@ -704,7 +690,8 @@ public class Main {
     		
     	}
     }
-    
+
+    //=============METODO PARA LA PRIMERA FUNCION====================
     private static void mostrarOrden(Orden orden) {
     	int i = 0;
     	ArrayList<Unidad> unidades = orden.getProductos();
@@ -753,7 +740,8 @@ public class Main {
     	ArrayList<Empleado> empleados;
     	
     	int j = 0;
-    	System.out.println("Lista de Supermercados:");
+    	System.out.println("______________________________________________________________________________________________________");
+    	System.out.println("Lista de Supermercados:\n");
     	for (Supermercado supermercado : supermercados) {
     		j++;
     		System.out.println(j+". "+supermercado.getNombre());
@@ -949,6 +937,7 @@ public class Main {
 							 if (tiposdisp.contains(unidad.getTipo().getTipo()) && !unidad.isEnPaquete()) {
 								 paquete.add(unidad);
 								 unidad.setEnPaquete(true);
+								 unidad.getUbicacion().getProductos().remove(unidad);
 								 tiposdisp.remove(unidad.getTipo().getTipo());
 								
 							 }
@@ -959,6 +948,7 @@ public class Main {
 						 else {
 							 for (Unidad uni : paquete) {
 								 uni.setEnPaquete(false);
+								 uni.getUbicacion().getProductos().add(uni);
 								 ex = true;
 							 }
 						 }
@@ -978,7 +968,7 @@ public class Main {
 						 System.out.println("Producto: " + u.getTipo().getNombre() + " Codigo: " + u.getCodigo());
 					 }
 					 
-					System.out.print("\n¿Desea hacer decuento al precio? (s/n): ");
+					System.out.print("\n¿Desea hacer descuento al precio? (s/n): ");
 					String eleccion5 = scanner2.next();
 					 while (!eleccion5.equalsIgnoreCase("s") && !eleccion5.equalsIgnoreCase("n")) {
 			    			System.out.print("- Opción inválida, por favor intente de nuevo: ");
@@ -1009,8 +999,11 @@ public class Main {
 			}
 		}
 	}
+    
+//=============METODO PARA LA TERCERA FUNCION====================
     private static void intercambioProductos() {
     	ArrayList<Supermercado> supermercados = new ArrayList<>();
+    	Scanner sci = new Scanner(System.in);
     	for(Supermercado supermercado: Supermercado.getSupermercados()) {
     		supermercados.add(supermercado);
     	}
@@ -1095,7 +1088,6 @@ public class Main {
 		        scni.nextLine();
 		    }
     	}
-    	//System.out.print("Leche colanta en supermercado "+Supermercado.getSupermercados().get(0).getNombre()+" "+Producto.getLista_productos().get(0).getUnidadesSupermercado().get(0));
     	for (Producto producto : Producto.getLista_productos()) {
     		int i = 0;
     		for (Bodega bodega : supermercado1.getBodegas()) {
@@ -1105,11 +1097,215 @@ public class Main {
     				}
     			}
     		}
+    		System.out.println("______________________________________________________________________________________________________");
     		System.out.println("En "+supermercado1.getNombre()+" habían inicialmente "+supermercado1.numeroUnidades(producto)+" unidades de "+producto.getNombre());
     		System.out.println("Actualmente hay "+i+" unidades");
     	}
+    	System.out.println("______________________________________________________________________________________________________");
+    	System.out.println("______________________________________________________________________________________________________");
     	for (Producto producto : Producto.getLista_productos()) {
+    		int i = 0;
+    		for (Bodega bodega : supermercado2.getBodegas()) {
+    			for (Unidad unidad : bodega.getProductos()) {
+    				if (unidad.getTipo() == producto) {
+    					i++;
+    				}
+    			}
+    		}
+    		System.out.println("______________________________________________________________________________________________________");
     		System.out.println("En "+supermercado2.getNombre()+" habían inicialmente "+supermercado2.numeroUnidades(producto)+" unidades de "+producto.getNombre());
+    		System.out.println("Actualmente hay "+i+" unidades");
     	}
+    	System.out.print("\n¿Desea intercambiar productos entre los supermercados? (s/n): ");
+		String select = sci.next();
+		 while (!select.equalsIgnoreCase("s") && !select.equalsIgnoreCase("n")) {
+    			System.out.print("- Opción inválida, por favor intente de nuevo: ");
+    			select = sci.next();
+    	    	sci.nextLine();}
+		 if(select.equalsIgnoreCase("s")) {
+			 Supermercado envia = null;
+			 Supermercado recibe = null;
+			 boolean exiti = false;
+
+			 while (!exiti) {
+				System.out.println("______________________________________________________________________________________________________");
+				   System.out.println("=== Supermercado que enviará los productos ===\n");
+				   System.out.println("1. "+supermercado1.getNombre());
+				   System.out.println("2. "+supermercado2.getNombre());
+				   System.out.println("");
+				   System.out.print("Seleccione una opción: ");
+
+
+				   try {
+				       int opcion = sci.nextInt();
+				       sci.nextLine();
+
+				       switch (opcion) {
+				       		case 1:
+				       			envia = supermercado1;
+				       			recibe = supermercado2;
+				       			exiti = true;
+				            	break;
+				            case 2:
+				            	envia = supermercado2;
+				            	recibe = supermercado1;
+				            	exiti = true;
+				            	break;
+				            default:
+				            	System.out.println("______________________________________________________________________________________________________");
+				                System.out.println("- Opción inválida, por favor intente de nuevo.");
+				                break;
+				       }
+				   } 
+				   catch (InputMismatchException e) {
+					   System.out.println("______________________________________________________________________________________________________");
+				       System.out.println("- Opción inválida, por favor intente de nuevo.");
+				       sci.nextLine();
+				   }
+			 }
+			 
+			 ArrayList<Producto> productosenv = new ArrayList<>();
+			 for (Producto producto : Producto.getLista_productos()) {
+				 for (Bodega bodega : envia.getBodegas()) {
+					 for (Unidad unidad : bodega.getProductos()) {
+						 if (unidad.getTipo() == producto && !productosenv.contains(unidad.getTipo())) {
+							 productosenv.add(producto);
+						 }
+					 }
+				 }
+			 }
+			 Producto seleccionado = null;
+			 boolean exitj = false;
+
+			 while (!exitj) {
+				 System.out.println("______________________________________________________________________________________________________");
+				 System.out.println("=== Productos disponibles para enviar ===\n");
+				 int i = 0;
+				 for (Producto p : productosenv) {
+					 i++;
+					 System.out.println(i+". "+p.getNombre());
+				 }
+				 System.out.println("");
+				 System.out.print("Seleccione una opción: ");
+				 
+				 try {
+					 int opcion = sci.nextInt();
+					 sci.nextLine();
+					 while (opcion < 1 || opcion > productosenv.size()) {
+						 System.out.println("______________________________________________________________________________________________________");
+						 System.out.println("- Opción inválida, por favor intente de nuevo.");
+						 System.out.println("______________________________________________________________________________________________________");
+		   				 System.out.println("=== Productos disponibles para enviar ===\n");
+		   				 i = 0;
+		   				 for (Producto p : productosenv) {
+		   					 i++;
+		   					 System.out.println(i+". "+p.getNombre());
+		   				 }
+		   				 System.out.println("");
+		   				 System.out.print("Seleccione una opción: ");
+		    	    		opcion = scni.nextInt();
+		    	    		scni.nextLine();
+					 }
+					 seleccionado = productosenv.get(opcion-1);
+					 break;
+				 } 
+				 catch (InputMismatchException e) {
+					 System.out.println("______________________________________________________________________________________________________");
+					 System.out.println("- Opción inválida, por favor intente de nuevo.");
+					 sci.nextLine();
+				 }
+			 }
+			 
+			 ArrayList<Unidad> unidades = new ArrayList<>();
+			 for (Bodega bodega : envia.getBodegas()) {
+				 for(Unidad unidad : bodega.getProductos()) {
+					 if (unidad.getTipo() == seleccionado) {
+						 unidades.add(unidad);
+					 }
+				 }
+			 }
+			 Unidad unienv = null;
+			 while (true) {
+	    			System.out.println("______________________________________________________________________________________________________");
+	        		System.out.println("=== Unidades disponibles para enviar ===\n");
+	        		int i=0;
+	        		for (Unidad unidad : unidades) {
+	        			i++;
+	        			if (!unidad.isOferta()) {
+	        				System.out.println(i+". "+unidad.getTipo().getNombre()+" Sin oferta");
+	        			}
+	        			else {
+	        				System.out.println(i+". "+unidad.getTipo().getNombre()+" "+unidad.calcularOferta().getNombre()+"("+unidad.calcularOferta().getPorcentaje_descuento()+"%)");
+	        			}
+	        		}
+	        		System.out.println("");
+        			System.out.print("Seleccione una opción: ");
+	        		try {
+	        			int opcion = sci.nextInt();
+	        			sci.nextLine();
+						 while (opcion < 1 || opcion > unidades.size()) {
+							 System.out.println("______________________________________________________________________________________________________");
+							 System.out.println("- Opción inválida, por favor intente de nuevo.");
+							 System.out.println("______________________________________________________________________________________________________");
+							 System.out.println("=== Unidades disponibles para enviar ===\n");
+							 i=0;
+							 for (Unidad unidad : unidades) {
+								 i++;
+								 if (!unidad.isOferta()) {
+									 System.out.println(i+". "+unidad.getTipo().getNombre()+" Sin oferta");
+								 }
+								 else {
+									 System.out.println(i+". "+unidad.getTipo().getNombre()+" "+unidad.calcularOferta().getNombre()+"("+unidad.calcularOferta().getPorcentaje_descuento()+"%)");
+								 }
+							 }
+							 System.out.println("");
+							 System.out.print("Seleccione una opción: ");
+							 opcion = scni.nextInt();
+							 scni.nextLine();
+						 }
+						 unienv = unidades.get(opcion-1);
+						 break;
+	        		}
+	        		catch (InputMismatchException e) {
+	        			System.out.println("______________________________________________________________________________________________________");
+	        			System.out.println("- Opción inválida, por favor intente de nuevo.");
+	        			sci.nextLine();
+	        		}
+			 }
+			 Bodega bodrecibe = null;
+			 while (true) {
+				 System.out.println("______________________________________________________________________________________________________");
+				 System.out.println("=== Bodega que recibirá los productos ===\n");
+				 int i=0;
+				 for (Bodega bodega : recibe.getBodegas()) {
+					 i++;
+					 System.out.println(i+". "+bodega.getNombre());
+				 }
+				 System.out.println("");
+				 System.out.print("Seleccione una opción: ");
+				 try {
+					 int opcion = sci.nextInt();
+		    			sci.nextLine();
+		    			while (opcion < 0 || opcion > recibe.getBodegas().size()) {
+		    				System.out.println("______________________________________________________________________________________________________");
+		    				System.out.print("- Opción inválida, por favor intente de nuevo: ");
+		    				opcion = sci.nextInt();
+		    				sci.nextLine();
+		    			}
+		    			bodrecibe = recibe.getBodegas().get(opcion-1);
+		    			break;
+				 }
+				 catch (InputMismatchException e) {
+		    			System.out.println("______________________________________________________________________________________________________");
+				        System.out.println("- Opción inválida, por favor intente de nuevo.");
+				        sci.nextLine();
+				 }
+			 }
+			 System.out.println("______________________________________________________________________________________________________");
+			 System.out.println(unienv.getTipo().getNombre()+" con código "+unienv.getCodigo()+" enviado de "+unienv.getUbicacion().getNombre()+" a "+bodrecibe.getNombre());
+			 bodrecibe.agregarProducto(unienv);
+			 unienv.getUbicacion().quitarProducto(unienv);
+			 unienv.setUbicacion(bodrecibe);
+		 }
     }
 }

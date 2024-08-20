@@ -3,7 +3,7 @@ package gestorAplicacion;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Persona implements Serializable {
+public  abstract class Persona implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String nombre;
 	private long cedula;
@@ -20,6 +20,8 @@ public class Persona implements Serializable {
 		this.cargo = cargo;
 		personas.add(this);
 	}
+	
+	public abstract String informacion();
 	
 	public String getNombre() {
 		return nombre;
@@ -55,5 +57,10 @@ public class Persona implements Serializable {
 	
 	public static void agregarPersona(Persona persona) {
 		personas.add(persona);
+	}
+	
+	@Override
+    public String toString() {
+        return "Persona con nombre "+this.getNombre()+" y cédula "+this.getCedula();
 	}
 }

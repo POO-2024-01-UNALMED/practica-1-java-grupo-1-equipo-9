@@ -19,6 +19,10 @@ public class Supermercado implements Serializable {
 	private ArrayList<Unidad> productosPromocion = new ArrayList<>();
 	private ArrayList<ArrayList<Unidad>> paquetesPromocion = new ArrayList<>();
 	
+	public Supermercado(String nombre) {
+		this(nombre, 0);
+	}
+	
 	public Supermercado(String nombre, double saldo) {
 		this.nombre = nombre;
 		this.saldo = saldo;

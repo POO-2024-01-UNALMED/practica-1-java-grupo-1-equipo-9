@@ -19,6 +19,14 @@ public class Producto implements Serializable {
 	private ArrayList<Supermercado> supermercados = new ArrayList<>();
 	private ArrayList<Integer> unidadesSupermercado = new ArrayList<>();
 
+	public Producto(String nombre, TipoProducto tipo) {
+		this(nombre, tipo, 0, 0);
+	}
+	
+	public Producto(String nombre, TipoProducto tipo, float precio) {
+		this(nombre, tipo, precio, 0);
+	}
+	
 	public Producto(String nombre, TipoProducto tipo, float precio, float precio_compra) {
 		
 		Producto.actual_id += 1; 
@@ -88,6 +96,18 @@ public class Producto implements Serializable {
 
 	public ArrayList<Unidad> getUnidades() {
 		return unidades;
+	}
+	
+	public ArrayList<Unidad> getUnidades(Supermercado supermercado) {
+		ArrayList<Unidad> unidadessup = new ArrayList<>();
+		for (Bodega bodega : supermercado.getBodegas()) {
+			for (Unidad unidad : bodega.getProductos()) {
+				if (unidad.getTipo() == this) {
+					unidadessup.add(unidad);
+				}
+			}
+		}
+		return unidadessup;
 	}
 
 	public void setUnidades(ArrayList<Unidad> unidades) {

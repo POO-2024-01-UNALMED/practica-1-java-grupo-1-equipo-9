@@ -22,6 +22,10 @@ public class Empleado extends Persona implements Serializable{
 		id = Empleado.actual_id;
 	}
 
+	public String informacion() {
+		return getCargo()+ " " + getNombre()+" con cédula "+getCedula();
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -54,4 +58,8 @@ public class Empleado extends Persona implements Serializable{
 		this.supermercado = supermercado;
 	}
 	
+	@Override
+    public String toString() {
+        return "Empleado con nombre "+this.getNombre()+", cédula "+this.getCedula()+" y cargo "+this.getCargo();
+	}
 }

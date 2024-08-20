@@ -62,10 +62,10 @@ public class Orden implements Serializable{
 	public void setProductos(ArrayList<Unidad> productos) {
 		this.productos = productos;
 	}
-	public void agregarProducto(Producto producto, int cantidad) {
+	public void agregarProducto(Supermercado supermercado, Producto producto, int cantidad) {
 		while (cantidad > 0) {
 			for(Unidad unidad : producto.getUnidades()) {
-				if(!unidad.isOferta()) {
+				if(!unidad.isOferta() && unidad.getUbicacion().getSupermercado() == supermercado) {
 					productos.add(unidad);
 					unidad.getTipo().quitarUnidad(unidad);
 					unidad.getUbicacion().quitarProducto(unidad);

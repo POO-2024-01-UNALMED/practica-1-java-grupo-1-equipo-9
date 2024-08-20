@@ -1,5 +1,7 @@
 package gestorAplicacion;
 
-public enum TipoProducto {
+import java.io.Serializable;
+
+public enum TipoProducto implements Serializable{
 	ASEO, ALIMENTO, BEBIDA, CUIDADOPERSONAL, MASCOTA, OTRO
 }
